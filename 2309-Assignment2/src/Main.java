@@ -24,7 +24,6 @@ public class Main {
                 gui.begin(controller);
             }
         });
-		// GIT er done
 
 	}
 
