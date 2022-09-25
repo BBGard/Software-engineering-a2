@@ -6,8 +6,6 @@ package tacticsAndTrouble;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import tacticsAndTrouble.tests.MonsterFactory;
-
 /**
  * @author Benjamin Gardiner
  * This is the controller class for the Tactics and Trouble game

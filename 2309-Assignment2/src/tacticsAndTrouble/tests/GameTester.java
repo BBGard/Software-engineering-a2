@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import tacticsAndTrouble.Game;
 import tacticsAndTrouble.GameCharacter;
 import tacticsAndTrouble.Monster;
+import tacticsAndTrouble.MonsterFactory;
 import tacticsAndTrouble.Player;
 import tacticsAndTrouble.PowerType;
 
@@ -65,14 +66,14 @@ public class GameTester {
 	
 	@Test
 	public void testAddPlayer() {
-		assertTrue(game.addPlayer(player1));
+		assertEquals("Player added!", game.addPlayer(player1));
 		
 		assertEquals(1, game.getPlayerCount());
 	}
 	
 	@Test
 	public void testAddNullPlayer() {
-		assertFalse(game.addPlayer(null));
+		assertEquals("Could not add player!", game.addPlayer(null));
 	}
 	
 	@Test
@@ -81,9 +82,9 @@ public class GameTester {
 		GameCharacter player3 = new Player("Bob", 33, 10, 23, 1);
 		GameCharacter player4 = new Player("Bree", 44, 50, 12, 5);
 		
-		assertTrue(game.addPlayer(player2));
-		assertTrue(game.addPlayer(player3));
-		assertTrue(game.addPlayer(player4));
+		assertEquals("Player added!", game.addPlayer(player2));
+		assertEquals("Player added!", game.addPlayer(player3));
+		assertEquals("Player added!", game.addPlayer(player4));
 		
 		assertEquals(3, game.getPlayerCount());
 	}
@@ -91,7 +92,7 @@ public class GameTester {
 	@Test
 	public void addPlayerWithWeapon() {
 		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType(PowerType.LIGHTNING));
-		assertTrue(game.addPlayer(player));
+		assertEquals("Player added!", game.addPlayer(player));
 		assertEquals(1, game.getPlayerCount());
 	}
 	
@@ -124,7 +125,7 @@ public class GameTester {
 	public void testAddMonster() {
 		GameCharacter monster = new Monster(Monster.BARON_OF_HELL, 23, 44, 55, 12, new PowerType(PowerType.SPIRIT));
 		
-		assertTrue(game.addMonster(monster));
+		assertEquals("Monster added!", game.addMonster(monster));
 		assertEquals(1, game.getMonsterCount());
 	}
 	

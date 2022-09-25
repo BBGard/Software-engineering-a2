@@ -15,6 +15,9 @@ import java.util.List;
 public class Game {
 	private List<GameCharacter> players;
 	private List<GameCharacter> monsters;
+	
+	private static final int MAX_PLAYERS = 5; // Maximum number of players
+	private static final int MAX_MONSTERS = 5; // Maximum number of monsters
 
 	public Game() {
 		players = new ArrayList<GameCharacter>();
@@ -24,25 +27,34 @@ public class Game {
 	/*
 	 * Add a player to the game
 	 */
-	public boolean addPlayer(GameCharacter player) {
-		if(player != null) {
-			players.add(player);
-			return true;
+	public String addPlayer(GameCharacter player) {
+		
+		if (players.size() == MAX_PLAYERS) {
+			return "Reached player limit!";
 		}
 		
-		return false;
+		if(player != null) {
+			players.add(player);
+			return "Player added!";
+		}
+		
+		return "Could not add player!";
 	}
 	
 	/*
 	 * Add a monster to the game
 	 */
-	public boolean addMonster(GameCharacter monster) {
-		if(monster != null) {
-			monsters.add(monster);
-			return true;
+	public String addMonster(GameCharacter monster) {
+		if(monsters.size() == MAX_MONSTERS) {
+			return "Reached monster limit!";
 		}
 		
-		return false; 
+		if(monster != null) {
+			monsters.add(monster);
+			return "Monster added!";
+		}
+		
+		return "Could not add monster!"; 
 	}
 	
 	/*

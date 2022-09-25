@@ -1,7 +1,4 @@
-package tacticsAndTrouble.tests;
-
-import tacticsAndTrouble.Monster;
-import tacticsAndTrouble.PowerType;
+package tacticsAndTrouble;
 
 public class MonsterFactory {
 
