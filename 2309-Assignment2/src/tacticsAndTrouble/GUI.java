@@ -17,11 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -37,14 +40,16 @@ public class GUI extends JFrame {
 
 	// UI elements
 	private Container container;
-	private JPanel mainTitlePanel, mainStartButtonPanel, setupTitlePanel, setupLeftPanel, setupRightPanel;
-	private JLabel mainTitleLabel, setupTitleLabel;
-	private JButton mainStartButton, setupAddPlayerButton, setupAddMonsterButton, setupStartButton, setupCombatButton;
+	private JPanel mainTitlePanel, mainStartButtonPanel, setupTitlePanel, setupLeftPanel, setupRightPanel, setupMonstersButtonPanel;
+	private JLabel mainTitleLabel, setupTitleLabel, setupPlayersLabel, setupMonstersLabel;
+	private JButton mainStartButton, setupAddPlayerButton, setupAddMonsterButton, setupStartButton, setupMonstersButton;
 	private JTextField setupNameTextField, setupPowerTextField, setupDefenceTextField, setupLifeTextField,
 			setupSpeedTextField;
 	private JLabel setupNameLabel, setupPowerLabel, setupDefenceLabel, setupLifeLabel, setupSpeedLabel,
 			setupWeaponLabel, setupMonsterLabel, emptyLabel;
 	private JComboBox<String> setupWeaponCombo, setupMonsterCombo;
+	private JTextArea setupPlayerList, setupMonsterList;
+	
 	// Fonts
 	private Font mainTitleFont = new Font("Serif", Font.BOLD, 60);
 	private Font buttonFont = new Font("Sans-Serif", Font.PLAIN, 25);
@@ -54,6 +59,7 @@ public class GUI extends JFrame {
 	// Button Handlers
 	private MainStartButtonHandler mainStartHandler = new MainStartButtonHandler();
 	private AddPlayerButtonHandler addPlayerButtonHandler = new AddPlayerButtonHandler();
+	private SetupCombatButtonHandler setupCombatButtonHandler = new SetupCombatButtonHandler();
 
 	private List<JTextField> playerSetupTextFields = new ArrayList<JTextField>();
 	private List<JLabel> playerSetupLabels = new ArrayList<JLabel>();
@@ -95,10 +101,11 @@ public class GUI extends JFrame {
 
 		// Start Button
 		mainStartButton = new JButton("BEGIN");
-		mainStartButton.setBackground(Color.black);
+		mainStartButton.setBackground(Color.blue);
 		mainStartButton.setForeground(Color.white);
 		mainStartButton.setFont(buttonFont);
 		mainStartButtonPanel.add(mainStartButton);
+		
 
 		// Action listener for start button
 		mainStartButton.addActionListener(mainStartHandler);
@@ -123,7 +130,7 @@ public class GUI extends JFrame {
 		// Title Panel
 		setupTitlePanel = new JPanel();
 		setupTitlePanel.setBounds(0, 12, 800, 48);
-		setupTitlePanel.setBackground(Color.blue);
+		setupTitlePanel.setBackground(Color.black);
 		container.add(setupTitlePanel);
 
 		// Title
@@ -134,12 +141,36 @@ public class GUI extends JFrame {
 
 		// Left panel
 		setupLeftPanel = new JPanel();
-		setupLeftPanel.setBounds(50, 60, 350, 480);
-		setupLeftPanel.setBackground(Color.red);
+		setupLeftPanel.setBounds(50, 125, 350, 300);
+		setupLeftPanel.setBackground(Color.black);
 		setupLeftPanel.setLayout(new GridLayout(7, 2, 5, 5));
 		container.add(setupLeftPanel);
+		
+		// Right panel
+		setupRightPanel = new JPanel();
+		setupRightPanel.setBounds(450, 125, 200, 300);
+		setupRightPanel.setBackground(Color.white);
+		setupRightPanel.setLayout(new BorderLayout());
+		container.add(setupRightPanel);
+		
+		// Setup combat button
+		setupMonstersButtonPanel = new JPanel();
+		setupMonstersButtonPanel.setBounds(450, 450, 200, 180);
+		setupMonstersButtonPanel.setBackground(Color.red);
+		container.add(setupMonstersButtonPanel);
+		
+		setupMonstersButton = new JButton("Setup Monsters");
+		setupMonstersButton.setBackground(Color.red);
+		setupMonstersButton.setForeground(Color.white);
+		setupMonstersButton.setFont(normalFont);
+		
+		setupMonstersButton.addActionListener(setupCombatButtonHandler);
 
-		// Setup TextFields
+		setupMonstersButtonPanel.add(setupMonstersButton);
+
+		
+		/*------------------------------------------------------*/
+		// Left panel components
 		setupNameTextField = new JTextField(10);
 		setupPowerTextField = new JTextField(10);
 		setupDefenceTextField = new JTextField(10);
@@ -161,12 +192,12 @@ public class GUI extends JFrame {
 		}
 
 		// Setup labels
-		setupNameLabel = new JLabel("Name", SwingConstants.LEFT);
-		setupPowerLabel = new JLabel("Power", SwingConstants.LEFT);
-		setupDefenceLabel = new JLabel("Defence", SwingConstants.LEFT);
-		setupLifeLabel = new JLabel("Life", SwingConstants.LEFT);
-		setupSpeedLabel = new JLabel("Speed", SwingConstants.LEFT);
-		setupWeaponLabel = new JLabel("Weapon", SwingConstants.LEFT);
+		setupNameLabel = new JLabel("Name", SwingConstants.RIGHT);
+		setupPowerLabel = new JLabel("Power", SwingConstants.RIGHT);
+		setupDefenceLabel = new JLabel("Defence", SwingConstants.RIGHT);
+		setupLifeLabel = new JLabel("Life", SwingConstants.RIGHT);
+		setupSpeedLabel = new JLabel("Speed", SwingConstants.RIGHT);
+		setupWeaponLabel = new JLabel("Weapon", SwingConstants.RIGHT);
 		emptyLabel = new JLabel();
 
 		playerSetupLabels.add(setupNameLabel);
@@ -182,8 +213,8 @@ public class GUI extends JFrame {
 			jLabel.setForeground(Color.white);
 		}
 
-		// TODO add weapon objects here
 		setupWeaponCombo = new JComboBox<String>();
+		setupWeaponCombo.addItem(new String("Normal"));
 		setupWeaponCombo.addItem(new String("Lightning"));
 		setupWeaponCombo.addItem(new String("Wood"));
 		setupWeaponCombo.addItem(new String("Metal"));
@@ -192,7 +223,7 @@ public class GUI extends JFrame {
 
 		// Add player button
 		setupAddPlayerButton = new JButton("Add Player");
-		setupAddPlayerButton.setBackground(Color.black);
+		setupAddPlayerButton.setBackground(Color.blue);
 		setupAddPlayerButton.setForeground(Color.white);
 		setupAddPlayerButton.setFont(normalFont);
 
@@ -212,18 +243,22 @@ public class GUI extends JFrame {
 		setupLeftPanel.add(emptyLabel);
 		setupLeftPanel.add(setupAddPlayerButton);
 
-		// Right panel
-		setupRightPanel = new JPanel();
-		setupRightPanel.setBounds(400, 60, 350, 480);
-		setupRightPanel.setBackground(Color.green);
-		setupRightPanel.setLayout(new GridLayout(7, 2, 5, 5));
-		container.add(setupRightPanel);
-
-		// Right Panel components
-		// use textfield.getText() to get names, stats, etc
-
-		// Jlist for player list? https://www.javatpoint.com/java-jlist
-		// jseperator under title
+		/*------------------------------------------------------*/
+		
+		// Right Panel components		
+		setupPlayersLabel = new JLabel("Players", SwingConstants.CENTER);
+		setupPlayersLabel.setFont(normalFont);
+		setupPlayersLabel.setForeground(Color.blue);
+		setupPlayersLabel.setBackground(Color.white);
+		setupPlayersLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		setupPlayerList = new JTextArea(10, 1);
+		setupPlayerList.setFont(normalFont);
+		
+			
+		// Add components to right panel
+		setupRightPanel.add(setupPlayersLabel, BorderLayout.NORTH);
+		setupRightPanel.add(setupPlayerList);
+		
 
 		// Add action listener for addPlayerButton
 		setupAddPlayerButton.addActionListener(addPlayerButtonHandler);
@@ -268,13 +303,42 @@ public class GUI extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO get all values from screen, create character, send to game?
-			//GameCharacter player = new GameCharacter();
-//			game.addPlayer(player);
+			// Add player name to player list
+			setupPlayerList.append(setupNameTextField.getText() + "\n");
+			System.out.println(setupNameTextField.getText());
 			
+			// Add player to game
 			controller.addPlayer(setupNameTextField.getText(), setupPowerTextField.getText(), setupDefenceTextField.getText(), setupLifeTextField.getText(),
 					setupSpeedTextField.getText(), setupWeaponCombo.getSelectedItem().toString());
+			
+			// Reset textFields
+			setupNameTextField.setText("");
+			setupPowerTextField.setText("");
+			setupDefenceTextField.setText("");
+			setupLifeTextField.setText("");
+			setupSpeedTextField.setText("");
+			setupWeaponCombo.setSelectedIndex(0);
 		}
 
+	}
+	
+	/*
+	 * Setup combat button handler inner class
+	 */
+	public class SetupCombatButtonHandler implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			// Disable player setup screen
+			setupTitlePanel.setVisible(false);
+			setupLeftPanel.setVisible(false);
+			setupRightPanel.setVisible(false);
+			setupMonstersButtonPanel.setVisible(false);
+			
+			// Create monster setup screen
+			createMonsterSetupScreen();
+
+		}
 	}
 }

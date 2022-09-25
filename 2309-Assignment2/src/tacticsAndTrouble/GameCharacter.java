@@ -16,10 +16,11 @@ public abstract class GameCharacter {
 	protected int speed;	// The speed of the monster/player
 	protected int health;	// The health of the monster/player
 	protected int turns;	// The number of turns of the monster/player 
-//	protected PowerType weapon;	// The weapon type/monster type of the monster/player
 	
-	protected boolean isAlive;	// Wether the monster/player is alive
-
+	protected boolean isAlive;	// Weather the monster/player is alive
+	
+	protected PowerType powerType;
+	
 	public GameCharacter(String name, int power, int defense, int life, int speed) {
 		this.name = name;
 		this.power = power;
@@ -27,6 +28,9 @@ public abstract class GameCharacter {
 		this.life = life;
 		this.speed = speed;
 		this.health = life;
+		this.turns = speed;
+		
+		this.powerType = new PowerType();
 	}
 
 	public String getName() {
@@ -92,8 +96,10 @@ public abstract class GameCharacter {
 	public void setAlive(boolean isAlive) {
 		this.isAlive = isAlive;
 	}
-
-	public abstract String getWeaponType();
+	
+	public  String getPowerTypeString() {
+		return this.powerType.toString();
+	}
 	
 	
 }

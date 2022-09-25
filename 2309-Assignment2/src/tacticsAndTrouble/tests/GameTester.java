@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import tacticsAndTrouble.Game;
 import tacticsAndTrouble.GameCharacter;
+import tacticsAndTrouble.Monster;
 import tacticsAndTrouble.Player;
 import tacticsAndTrouble.PowerType;
-import tacticsAndTrouble.Weapon;
 
 /**
  * 
@@ -36,36 +36,43 @@ public class GameTester {
 		assertEquals(12, player.getLife());	
 		assertEquals(2, player.getSpeed());	
 		assertEquals(12, player.getHealth());	
-		assertEquals("Normal", player.getWeaponType());	
+		assertEquals("Normal", player.getPowerTypeString());	
 	}
 	
 	@Test
 	public void testCreatePlayerWithWeapon() {
-		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new Weapon(PowerType.METAL));
+		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType(PowerType.METAL));
 		assertEquals("Ben", player.getName());	
 		assertEquals(35, player.getPower());	
 		assertEquals(44, player.getDefense());	
 		assertEquals(12, player.getLife());	
 		assertEquals(2, player.getSpeed());	
 		assertEquals(12, player.getHealth());	
-		assertEquals("Metal", player.getWeaponType());	
+		assertEquals("Metal", player.getPowerTypeString());	
 	}
 	
 	@Test
 	public void testCreatePlayerWithMadeUpWeapon() {
-		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new Weapon("Doom"));
+		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType("Doom"));
 		assertEquals("Ben", player.getName());	
 		assertEquals(35, player.getPower());	
 		assertEquals(44, player.getDefense());	
 		assertEquals(12, player.getLife());	
 		assertEquals(2, player.getSpeed());	
 		assertEquals(12, player.getHealth());	
-		assertEquals("Doom", player.getWeaponType());	
+		assertEquals("Doom", player.getPowerTypeString());	
 	}
 	
 	@Test
 	public void testAddPlayer() {
 		assertTrue(game.addPlayer(player1));
+		
+		assertEquals(1, game.getPlayerCount());
+	}
+	
+	@Test
+	public void testAddNullPlayer() {
+		assertFalse(game.addPlayer(null));
 	}
 	
 	@Test
@@ -77,12 +84,68 @@ public class GameTester {
 		assertTrue(game.addPlayer(player2));
 		assertTrue(game.addPlayer(player3));
 		assertTrue(game.addPlayer(player4));
+		
+		assertEquals(3, game.getPlayerCount());
 	}
 	
 	@Test
 	public void addPlayerWithWeapon() {
-		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new Weapon(PowerType.LIGHTNING));
+		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType(PowerType.LIGHTNING));
 		assertTrue(game.addPlayer(player));
+		assertEquals(1, game.getPlayerCount());
+	}
+	
+	
+	@Test
+	public void testCreateMonster() {
+		GameCharacter monster = new Monster(Monster.BARON_OF_HELL, 23, 44, 55, 12);
+		assertEquals("Baron of Hell", monster.getName());	
+		assertEquals(23, monster.getPower());	
+		assertEquals(44, monster.getDefense());	
+		assertEquals(55, monster.getLife());	
+		assertEquals(12, monster.getSpeed());	
+		assertEquals(55, monster.getHealth());	
+		assertEquals("Normal", monster.getPowerTypeString());
+	}
+	
+	@Test
+	public void testCreateMonsterWithType() {
+		GameCharacter monster = new Monster(Monster.BARON_OF_HELL, 23, 44, 55, 12, new PowerType(PowerType.SPIRIT));
+		assertEquals("Baron of Hell", monster.getName());	
+		assertEquals(23, monster.getPower());	
+		assertEquals(44, monster.getDefense());	
+		assertEquals(55, monster.getLife());	
+		assertEquals(12, monster.getSpeed());	
+		assertEquals(55, monster.getHealth());	
+		assertEquals("Spirit", monster.getPowerTypeString());
+	}
+	
+	@Test
+	public void testAddMonster() {
+		GameCharacter monster = new Monster(Monster.BARON_OF_HELL, 23, 44, 55, 12, new PowerType(PowerType.SPIRIT));
+		
+		assertTrue(game.addMonster(monster));
+		assertEquals(1, game.getMonsterCount());
+	}
+	
+	@Test 
+	public void testAddNullMonster() {
+		game.addMonster(null);
+	}
+	
+	@Test
+	public void testMonsterFactory() {
+		MonsterFactory monsterMaker = new MonsterFactory();
+		
+		Monster monster = monsterMaker.createMonster(Monster.BARON_OF_HELL);
+		
+		assertEquals("Baron of Hell", monster.getName());
+		assertEquals(80, monster.getPower());	
+		assertEquals(40, monster.getDefense());	
+		assertEquals(150, monster.getLife());	
+		assertEquals(1, monster.getSpeed());	
+		assertEquals(150, monster.getHealth());	
+		assertEquals("Lightning", monster.getPowerTypeString());
 	}
 	
 	

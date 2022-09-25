@@ -25,6 +25,37 @@ public class Game {
 	 * Add a player to the game
 	 */
 	public boolean addPlayer(GameCharacter player) {
-		return players.add(player);
+		if(player != null) {
+			players.add(player);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * Add a monster to the game
+	 */
+	public boolean addMonster(GameCharacter monster) {
+		if(monster != null) {
+			monsters.add(monster);
+			return true;
+		}
+		
+		return false; 
+	}
+	
+	/*
+	 * Returns the number of players in the game
+	 */
+	public int getPlayerCount() {
+		return players.size();
+	}
+	
+	/*
+	 * Returns the number of monsters in the game
+	 */
+	public int getMonsterCount() {
+		return monsters.size();
 	}
 }
