@@ -27,9 +27,5 @@ public class Main {
 
 	}
 
-//	public static void startGame() {
-//		theGame = new Game();
-//
-//	}
 
 }
