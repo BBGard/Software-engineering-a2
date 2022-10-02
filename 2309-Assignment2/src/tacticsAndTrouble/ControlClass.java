@@ -6,6 +6,8 @@ package tacticsAndTrouble;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import tacticsAndTrouble.UI.SplashScreen;
+
 /**
  * @author Benjamin Gardiner
  * This is the controller class for the Tactics and Trouble game
@@ -14,14 +16,14 @@ import java.awt.event.ActionListener;
  */
 public class ControlClass {
 	private Game game;
-	private GUI gui;	
+	private SplashScreen gui;	
 	
 	private MonsterFactory monsterMaker; // For creating monsters
 
 	
-	public ControlClass(Game game, GUI gui) {
+	public ControlClass(Game game, SplashScreen window) {
 		this.game = game;
-		this.gui = gui;
+		this.gui = window;
 		
 		monsterMaker = new MonsterFactory();
 	}
@@ -30,7 +32,6 @@ public class ControlClass {
 	 * Converts input to appropiate types, creates a new GameCharacter and adds it to the Game
 	 */
 	public void addPlayer(String name, String power, String defense, String life, String speed, String weapon) {
-		
 		// Assuming no limit on number of players
 		GameCharacter player = new Player(name, Integer.parseInt(power), Integer.parseInt(defense), Integer.parseInt(life), 
 				Integer.parseInt(speed), new PowerType(weapon));
@@ -45,5 +46,4 @@ public class ControlClass {
 		Monster monster = monsterMaker.createMonster(type);		
 		game.addMonster(monster);		
 	}
-	
 }
