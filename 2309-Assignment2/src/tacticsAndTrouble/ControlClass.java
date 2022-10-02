@@ -6,6 +6,7 @@ package tacticsAndTrouble;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import tacticsAndTrouble.UI.Screen;
 import tacticsAndTrouble.UI.SplashScreen;
 
 /**
@@ -16,26 +17,52 @@ import tacticsAndTrouble.UI.SplashScreen;
  */
 public class ControlClass {
 	private Game game;
-	private SplashScreen gui;	
+	private Screen screen;	
 	
 	private MonsterFactory monsterMaker; // For creating monsters
 
 	
-	public ControlClass(Game game, SplashScreen window) {
+	public ControlClass(Game game, Screen screen) {
 		this.game = game;
-		this.gui = window;
+		this.screen = screen;
 		
 		monsterMaker = new MonsterFactory();
+		
+		// FOR TESTING ONLY
+		// DELETE ME
+		setupFakeGame();
 	}
 	
+	/*
+	 * TESTING PURPOSES ONLY - DELETE
+	 */
+	private void setupFakeGame() {
+		addPlayer("Antoxx", "40", "20", "80", "2", "Spirit");
+		addPlayer("Breta", "20", "15", "53", "3", "Normal");
+		addPlayer("Crum", "70", "30", "35", "1", "Spirit");
+		addMonster("Zombie");
+		addMonster("Baron of Hell");
+		
+	}
+	
+	/*
+	 * Opens the splash screen to begin the program
+	 */
+	public void open() {
+		screen.open(this);
+	}
+
 	/*
 	 * Converts input to appropiate types, creates a new GameCharacter and adds it to the Game
 	 */
 	public void addPlayer(String name, String power, String defense, String life, String speed, String weapon) {
-		// Assuming no limit on number of players
-		GameCharacter player = new Player(name, Integer.parseInt(power), Integer.parseInt(defense), Integer.parseInt(life), 
-				Integer.parseInt(speed), new PowerType(weapon));
-		game.addPlayer(player);
+		
+		if (game.canAddPlayers()) {
+			GameCharacter player = new Player(name, Integer.parseInt(power), Integer.parseInt(defense), Integer.parseInt(life), 
+					Integer.parseInt(speed), new PowerType(weapon));
+			game.addPlayer(player);			
+		}
+		
 	}	
 	
 	/*
@@ -45,5 +72,12 @@ public class ControlClass {
 	public void addMonster(String type) {
 		Monster monster = monsterMaker.createMonster(type);		
 		game.addMonster(monster);		
+	}
+	
+	/*
+	 * Begins the game loop
+	 */
+	public void startGame() {
+		game.startGame();
 	}
 }

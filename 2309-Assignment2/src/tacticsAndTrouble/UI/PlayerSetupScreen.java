@@ -26,15 +26,14 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class PlayerSetupScreen {
+public class PlayerSetupScreen extends Screen{
 
-	protected Shell shell;
+	//protected Shell shell;
 	private Text textName;
 	private Text textPower;
 	private Text textDefence;
 	private Text textLife;
 	private Text textSpeed;
-	private ControlClass controller; // A reference to the controller class
 
 
 	/**
@@ -52,29 +51,30 @@ public class PlayerSetupScreen {
 //			e.printStackTrace();
 //		}
 //	}
-
-	/**
-	 * Open the window.
-	 * @wbp.parser.entryPoint
-	 */
-	public void open(ControlClass controller) {
-		this.controller = controller;
-		
-		Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-		
-	}
+//
+//	/**
+//	 * Open the window.
+//	 * @wbp.parser.entryPoint
+//	 */
+//	public void open(ControlClass controller) {
+//		this.controller = controller;
+//		
+//		Display display = Display.getDefault();
+//		createContents();
+//		shell.open();
+//		shell.layout();
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch()) {
+//				display.sleep();
+//			}
+//		}
+//		
+//	}
 
 	/**
 	 * Create contents of the window.
 	 */
+	@Override
 	protected void createContents() {
 		shell = new Shell();
 		shell.setSize(800, 600);
@@ -178,7 +178,7 @@ public class PlayerSetupScreen {
 		comboWeapon.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(groupInput, SWT.NONE);
 		
-		Button btnAddPlayer = new Button(groupInput, SWT.CENTER);
+		final Button btnAddPlayer = new Button(groupInput, SWT.CENTER);
 		
 		btnAddPlayer.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnAddPlayer.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
@@ -211,6 +211,7 @@ public class PlayerSetupScreen {
 		listPlayers.setBounds(10, 79, 218, 224);
 		
 		Button btnSetupMonsters = new Button(groupPlayerList, SWT.NONE);
+		
 		btnSetupMonsters.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnSetupMonsters.setBackground(SWTResourceManager.getColor(255, 102, 102));
 		btnSetupMonsters.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -230,10 +231,11 @@ public class PlayerSetupScreen {
 				listPlayers.add(textName.getText() + "\n");
 
 				// Add player to game
+				
 				controller.addPlayer(textName.getText(), textPower.getText(),
-						textDefence.getText(), textLife.getText(), textSpeed.getText(),
-						comboWeapon.getText());
-
+				textDefence.getText(), textLife.getText(), textSpeed.getText(),
+				comboWeapon.getText());
+				
 								
 				// Reset textFields
 				textName.setText("");
@@ -244,6 +246,18 @@ public class PlayerSetupScreen {
 			}
 
 			
+		});
+		
+		btnSetupMonsters.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// Show monster setup screen
+				shell.close();
+
+				// Create player setup screen
+				MonsterSetupScreen monsterSetup = new MonsterSetupScreen();
+				monsterSetup.open(controller);
+			}
 		});
 	
 	}

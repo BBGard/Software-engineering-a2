@@ -149,5 +149,12 @@ public class GameTester {
 		assertEquals("Lightning", monster.getPowerTypeString());
 	}
 	
-	
+	@Test
+	public void testAttack() {
+		MonsterFactory monsterMaker = new MonsterFactory();		
+		Monster monster = monsterMaker.createMonster(Monster.BARON_OF_HELL);
+		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType(PowerType.LIGHTNING));
+		
+		assertEquals("", game.attack());
+	}
 }

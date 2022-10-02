@@ -14,7 +14,7 @@ public class MonsterFactory {
 		case Monster.MANCU_BEN: 			
 			return new Monster(type, 40, 80, 75, 2, new PowerType(PowerType.VOID));
 		case Monster.ZOMBIE: 			
-			return new Monster(type, 30, 30, 90, 1, new PowerType(PowerType.WOOD));		
+			return new Monster(type, 30, 30, 90, 4, new PowerType(PowerType.WOOD));		
 		default:
 			return new Monster("Gary Demon", 80, 40, 150, 1, new PowerType(PowerType.NORMAL));
 		}

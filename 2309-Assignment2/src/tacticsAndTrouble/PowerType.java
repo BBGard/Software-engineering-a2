@@ -45,6 +45,7 @@ public class PowerType {
 		return this.type;		
 	}
 
+	@Override
 	public String toString() {
 		return this.getType();
 	}

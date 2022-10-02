@@ -21,41 +21,41 @@ import org.eclipse.swt.events.SelectionEvent;
  *         Trouble & Tactics
  *         Created using WindowBuilder
  */
-public class SplashScreen {
+public class SplashScreen extends Screen{
 	
-	private ControlClass controller; // A reference to the controller class
-	protected Shell shlTacticsTrouble;
+//	private ControlClass controller; // A reference to the controller class
+//	protected Shell shell;
 	
 
-	/**
-	 * Open the window.
-	 * @wbp.parser.entryPoint
-	 */
-	public void open(ControlClass controller) {
-		this.controller = controller;
-
-		Display display = Display.getDefault();
-		createContents();
-		shlTacticsTrouble.open();
-		shlTacticsTrouble.layout();
-		while (!shlTacticsTrouble.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
+//	/**
+//	 * Open the window.
+//	 * @wbp.parser.entryPoint
+//	 */
+//	public void open(ControlClass controller) {
+//		this.controller = controller;
+//
+//		Display display = Display.getDefault();
+//		createContents();
+//		shell.open();
+//		shell.layout();
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch()) {
+//				display.sleep();
+//			}
+//		}
+//	}
 
 	/**
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shlTacticsTrouble = new Shell();
-		shlTacticsTrouble.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		shlTacticsTrouble.setSize(800, 600);
-		shlTacticsTrouble.setText("Tactics & Trouble");
-		shlTacticsTrouble.setLayout(null);
+		shell = new Shell();
+		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		shell.setSize(800, 600);
+		shell.setText("Tactics & Trouble");
+		shell.setLayout(null);
 		
-		final Label lblSplashTitle = new Label(shlTacticsTrouble, SWT.NONE);
+		final Label lblSplashTitle = new Label(shell, SWT.NONE);
 		lblSplashTitle.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		lblSplashTitle.setFont(SWTResourceManager.getFont("Franklin Gothic Heavy", 38, SWT.BOLD));
 		lblSplashTitle.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -63,14 +63,14 @@ public class SplashScreen {
 		lblSplashTitle.setBounds(100, 100, 600, 150);
 		lblSplashTitle.setText("Tactics and Trouble");
 		
-		final Button btnSplashStart = new Button(shlTacticsTrouble, SWT.NONE);
+		final Button btnSplashStart = new Button(shell, SWT.NONE);
 		btnSplashStart.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// Disable title screen
 				//lblSplashTitle.setVisible(false);
 				//btnSplashStart.setVisible(false);
-				shlTacticsTrouble.close();
+				shell.close();
 
 				
 				// Create player setup screen

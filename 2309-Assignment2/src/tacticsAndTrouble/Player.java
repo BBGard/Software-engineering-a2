@@ -21,7 +21,7 @@ public class Player extends GameCharacter {
 	 */
 	public Player(String name, int power, int defense, int life, int speed, PowerType weapon) {
 		super(name, power, defense, life, speed);
-		this.powerType = weapon;
+		setPowerType(weapon);
 	}
 	
 	
@@ -31,13 +31,13 @@ public class Player extends GameCharacter {
 	public String toString() {
 		String playerStats = "";
 		
-		playerStats = "Name: " + name + "\n" +
-				"Power: " + power + "\n" +
-				"Defense: " + defense + "\n" +
-				"Life: " + life + "\n" +
-				"Speed: " + speed + "\n" +
-				"Health: " + health + "\n" +
-				"Weapon: " + powerType + "\n";
+		playerStats = "Name: " + getName() + "\n" +
+				"Power: " + getPower() + "\n" +
+				"Defense: " + getDefense() + "\n" +
+				"Life: " + getLife() + "\n" +
+				"Speed: " + getSpeed() + "\n" +
+				"Health: " + getHealth() + "\n" +
+				"Weapon: " + getPowerTypeString() + "\n";
 		
 		return playerStats;
 	}

@@ -28,20 +28,20 @@ public class Monster extends GameCharacter {
 	 */
 	public Monster(String name, int power, int defense, int life, int speed, PowerType type) {
 		super(name, power, defense, life, speed);
-		this.powerType = type;
+		setPowerType(type);
 	}
 
 	@Override
 	public String toString() {
 		String monsterStats = "";
 		
-		monsterStats = "Name: " + name + "\n" +
-				"Power: " + power + "\n" +
-				"Defense: " + defense + "\n" +
-				"Life: " + life + "\n" +
-				"Speed: " + speed + "\n" +
-				"Health: " + health + "\n" +
-				"Type: " + powerType + "\n";
+		monsterStats = "Name: " + getName() + "\n" +
+				"Power: " + getPower() + "\n" +
+				"Defense: " + getDefense() + "\n" +
+				"Life: " + getLife() + "\n" +
+				"Speed: " + getSpeed() + "\n" +
+				"Health: " + getHealth() + "\n" +
+				"Type: " + getPowerTypeString() + "\n";
 		
 		return monsterStats;
 	}

@@ -9,17 +9,17 @@ package tacticsAndTrouble;
  * Both Player characters and Monsters
  */
 public abstract class GameCharacter {
-	protected String name;	// The name of the monster/player
-	protected int power;	// The power of the monster/player
-	protected int defense;	// The defense of the monster/player
-	protected int life;		// The life of the monster/player
-	protected int speed;	// The speed of the monster/player
-	protected int health;	// The health of the monster/player
-	protected int turns;	// The number of turns of the monster/player 
+	private String name;	// The name of the monster/player
+	private int power;	// The power of the monster/player
+	private int defense;	// The defense of the monster/player
+	private int life;		// The life of the monster/player
+	private int speed;	// The speed of the monster/player
+	private int health;	// The health of the monster/player
+	private int turns;	// The number of turns of the monster/player 
 	
-	protected boolean isAlive;	// Weather the monster/player is alive
+	private boolean isAlive = true;	// Weather the monster/player is alive
 	
-	protected PowerType powerType;
+	private PowerType powerType;
 	
 	public GameCharacter(String name, int power, int defense, int life, int speed) {
 		this.name = name;
@@ -99,6 +99,10 @@ public abstract class GameCharacter {
 	
 	public  String getPowerTypeString() {
 		return this.powerType.toString();
+	}
+	
+	public void setPowerType(PowerType power) {
+		this.powerType = power;
 	}
 	
 	

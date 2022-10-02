@@ -2,8 +2,8 @@
 import javax.swing.SwingUtilities;
 
 import tacticsAndTrouble.ControlClass;
-import tacticsAndTrouble.GUI;
 import tacticsAndTrouble.Game;
+import tacticsAndTrouble.UI.Screen;
 import tacticsAndTrouble.UI.SplashScreen;
 
 /**
@@ -25,10 +25,10 @@ public class Main {
 //                gui.begin(controller);
             	
             	try {
-            		Game game = new Game();
-        			SplashScreen window = new SplashScreen();
-        			ControlClass controller = new ControlClass(game,window);
-        			window.open(controller);
+            		Game game = new Game(); // The model
+        			Screen screen = new SplashScreen(); // The view
+        			ControlClass controller = new ControlClass(game,screen); // The controller
+        			controller.open();
         		} catch (Exception e) {
         			e.printStackTrace();
         		}
