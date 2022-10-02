@@ -107,27 +107,27 @@ public class PlayerSetupScreen {
 		Label lblName = new Label(groupInput, SWT.NONE);
 		lblName.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		lblName.setAlignment(SWT.RIGHT);
-		lblName.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		lblName.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		GridData gd_lblName = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
 		gd_lblName.widthHint = 119;
 		lblName.setLayoutData(gd_lblName);
 		lblName.setText("Name");
 		
 		textName = new Text(groupInput, SWT.BORDER);
-		textName.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		textName.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblPower = new Label(groupInput, SWT.NONE);
 		lblPower.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		lblPower.setAlignment(SWT.RIGHT);
-		lblPower.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		lblPower.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		GridData gd_lblPower = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
 		gd_lblPower.widthHint = 119;
 		lblPower.setLayoutData(gd_lblPower);
 		lblPower.setText("Power");
 		
 		textPower = new Text(groupInput, SWT.BORDER);
-		textPower.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		textPower.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textPower.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblDefence = new Label(groupInput, SWT.NONE);
@@ -135,10 +135,10 @@ public class PlayerSetupScreen {
 		lblDefence.setAlignment(SWT.RIGHT);
 		lblDefence.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblDefence.setText("Defence");
-		lblDefence.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		lblDefence.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
 		textDefence = new Text(groupInput, SWT.BORDER);
-		textDefence.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		textDefence.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textDefence.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblLife = new Label(groupInput, SWT.NONE);
@@ -146,10 +146,10 @@ public class PlayerSetupScreen {
 		lblLife.setAlignment(SWT.RIGHT);
 		lblLife.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblLife.setText("Life");
-		lblLife.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		lblLife.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
 		textLife = new Text(groupInput, SWT.BORDER);
-		textLife.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		textLife.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textLife.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblSpeed = new Label(groupInput, SWT.NONE);
@@ -157,10 +157,10 @@ public class PlayerSetupScreen {
 		lblSpeed.setAlignment(SWT.RIGHT);
 		lblSpeed.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblSpeed.setText("Speed");
-		lblSpeed.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		lblSpeed.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
 		textSpeed = new Text(groupInput, SWT.BORDER);
-		textSpeed.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		textSpeed.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textSpeed.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblWeapon = new Label(groupInput, SWT.NONE);
@@ -170,9 +170,10 @@ public class PlayerSetupScreen {
 		lblWeapon.setLayoutData(gd_lblWeapon);
 		lblWeapon.setAlignment(SWT.RIGHT);
 		lblWeapon.setText("Weapon");
-		lblWeapon.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		lblWeapon.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
 		final Combo comboWeapon = new Combo(groupInput, SWT.NONE);
+		comboWeapon.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		comboWeapon.setItems(new String[] {"Normal", "Lightning", "Wood", "Metal", "Void", "Spirit"});
 		comboWeapon.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(groupInput, SWT.NONE);
@@ -198,7 +199,7 @@ public class PlayerSetupScreen {
 		Label lblPlayers = new Label(groupPlayerList, SWT.NONE);
 		lblPlayers.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
 		lblPlayers.setAlignment(SWT.CENTER);
-		lblPlayers.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
+		lblPlayers.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
 		lblPlayers.setBounds(10, 16, 218, 30);
 		lblPlayers.setText("Players");
 		

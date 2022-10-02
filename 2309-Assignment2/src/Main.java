@@ -23,7 +23,7 @@ public class Main {
 //                GUI gui = new GUI("Tactics & Trouble"); 
 //                ControlClass controller = new ControlClass(game,gui);
 //                gui.begin(controller);
-            	//delete this
+            	
             	try {
             		Game game = new Game();
         			SplashScreen window = new SplashScreen();
