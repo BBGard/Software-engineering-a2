@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="C:/Users/gonzo/.p2/pool/plugins/org.eclipse.core.commands_3.10.200.v20220512-0851.jar"/>
 	<classpathentry kind="lib" path="C:/Users/gonzo/.p2/pool/plugins/org.eclipse.core.runtime_3.26.0.v20220813-0916.jar"/>
 	<classpathentry kind="lib" path="C:/Users/gonzo/.p2/pool/plugins/org.eclipse.equinox.common_3.16.200.v20220817-1601.jar"/>
@@ -25,5 +14,7 @@
 	<classpathentry kind="lib" path="C:/Users/gonzo/.p2/pool/plugins/org.eclipse.ui.workbench_3.126.0.v20220823-0718.jar"/>
 	<classpathentry kind="lib" path="C:/Users/gonzo/.p2/pool/plugins/com.ibm.icu_67.1.0.jar"/>
 	<classpathentry kind="lib" path="swing2swt.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

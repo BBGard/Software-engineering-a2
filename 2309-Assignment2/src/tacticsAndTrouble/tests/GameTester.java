@@ -21,11 +21,13 @@ public class GameTester {
 
 	private Game game;
 	private GameCharacter player1;
+	private MonsterFactory monsterMaker;
 	
 	@BeforeEach
 	public void setup() {
 		game = new Game();
 		player1 = new Player("Ben", 36, 24, 44, 3);
+		monsterMaker = new MonsterFactory();	
 	}
 	
 	@Test
@@ -136,12 +138,11 @@ public class GameTester {
 	
 	@Test
 	public void testMonsterFactory() {
-		MonsterFactory monsterMaker = new MonsterFactory();
-		
+		MonsterFactory monsterMaker = new MonsterFactory();		
 		Monster monster = monsterMaker.createMonster(Monster.BARON_OF_HELL);
 		
 		assertEquals("Baron of Hell", monster.getName());
-		assertEquals(80, monster.getPower());	
+		assertEquals(70, monster.getPower());	
 		assertEquals(40, monster.getDefense());	
 		assertEquals(150, monster.getLife());	
 		assertEquals(1, monster.getSpeed());	
@@ -150,11 +151,62 @@ public class GameTester {
 	}
 	
 	@Test
-	public void testAttack() {
-		MonsterFactory monsterMaker = new MonsterFactory();		
+	public void testGameAttack() {			
 		Monster monster = monsterMaker.createMonster(Monster.BARON_OF_HELL);
 		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType(PowerType.LIGHTNING));
+		GameCharacter player2 = new Player("Bill", 50, 50, 50, 1, new PowerType(PowerType.WOOD));
 		
-		assertEquals("", game.attack());
+		assertEquals("Ben attacks the Baron of Hell. "
+				+ "Ben's Lightning weapon does normal damage to "
+				+ "Lightning monsters but is reduced by 40 Defense "
+				+ "so deals 0 damage. The Baron of Hell now has 150 health.", game.attack(player, monster));
+		
+		assertEquals("Baron of Hell attacks Bill. "
+				+ "It does 70-50=20 damage."
+				+ " Bill now has 30 health.", game.attack(monster, player2));
+	}
+	@Test
+	public void testPlayerAttackMonster() {
+		Monster monster = monsterMaker.createMonster(Monster.CYBER_DEMON);
+		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType(PowerType.LIGHTNING));
+		
+		assertEquals(
+				"Ben attacks the Cyber Demon. "
+				+ "Ben's Lightning weapon does double damage to Metal monsters "
+				+ "but is reduced by 30 Defense so deals 40 damage. "
+				+ "The Cyber Demon now has 60 health.", player.attack(monster));
+	}
+	
+	@Test 
+	public void testPlayerKillsMonster() {
+		Monster monster = monsterMaker.createMonster(Monster.GARY_DEMON);
+		GameCharacter player = new Player("Ben", 150, 44, 12, 2, new PowerType(PowerType.LIGHTNING));
+		
+		assertEquals(
+				"Ben attacks the Gary Demon. "
+				+ "Ben's Lightning weapon does normal damage to Normal monsters "
+				+ "but is reduced by 20 Defense so deals 130 damage. "
+				+ "The Gary Demon is now dead.", player.attack(monster));
+	}
+	
+	@Test
+	public void testMonsterAttacksPlayer() {
+		Monster monster = monsterMaker.createMonster(Monster.IMP);
+		GameCharacter player = new Player("Alex", 40, 20, 80, 2, new PowerType(PowerType.SPIRIT));
+		
+		assertEquals("Imp attacks Alex. "
+				+ "It does 50-20=30 damage."
+				+ " Alex now has 50 health.", game.attack(monster, player));
+
+	}
+	
+	@Test
+	public void testMonsterKillsPlayer() {
+		Monster monster = monsterMaker.createMonster(Monster.MANCU_BEN);
+		GameCharacter player = new Player("Alex", 40, 20, 20, 2, new PowerType(PowerType.VOID));
+		
+		assertEquals("Mancu-Ben attacks Alex. "
+				+ "It does 40-20=20 damage."
+				+ " Alex is now dead.", game.attack(monster, player));
 	}
 }

@@ -24,8 +24,33 @@ public class Player extends GameCharacter {
 		setPowerType(weapon);
 	}
 	
-	
-	
+	/*
+	 * Multiplies the attacking characters power vs this characters damage multiplier
+	 * Applies the damage to this character
+	 * Ignores powerTypes for player characters
+	 * Returns the damage applied
+	 */
+	@Override
+	public int applyDamage(GameCharacter attacker) {
+		int damage = 0;
+		
+		// if no damage can be done, return 0
+		if (attacker.getPower() < this.getDefense()) {
+			return damage;
+		}
+		else {
+			damage = attacker.getPower() - this.getDefense();
+		}
+		
+		if(damage > 0) {
+			reduceHealth(damage);
+		}
+		else {
+			damage = 0;
+		}
+		
+		return damage;
+	}
 	
 	@Override
 	public String toString() {
@@ -41,4 +66,6 @@ public class Player extends GameCharacter {
 		
 		return playerStats;
 	}
+
+	
 }

@@ -147,10 +147,13 @@ public class Game {
 	/*
 	 * Attack
 	 */
-	public String attack() {
-		String result ="";
-		
-		
-		return result;
+	public String attack(GameCharacter attacker, GameCharacter defender) {
+//		String result ="";
+//		result = attacker.getName() + " attacks " + defender.getName() + ".\n"
+//				+ attacker.getName() + "'s " + attacker.getPowerTypeString() 
+//				+ " weapon does [get damage here] to " + defender.getPowerTypeString() + " monsters";
+//		
+//		return result;
+		return attacker.attack(defender);
 	}
 }

@@ -32,6 +32,76 @@ public abstract class GameCharacter {
 		
 		this.powerType = new PowerType();
 	}
+	
+	/*
+	 * Calculates the damage from this character attacking another
+	 * Returns a string containing the details of the attack
+	 */
+	public String attack(GameCharacter defender) {
+		String result = "";
+		// Calculate the damage
+
+		// For players vs monsters
+		if (this instanceof Player) {
+			result += getName() + " attacks the " + defender.getName() + ". " + getName() + "'s "
+					+getPowerTypeString() + " weapon does " + this.powerType.getDamageString(defender.getPowerType())
+					+ " damage to " + defender.getPowerTypeString() + " monsters but is reduced by " + defender.getDefense()
+					+ " Defense so deals " + defender.applyDamage(this) + " damage. The " + defender.getName()
+					+ defender.getHealthStatus();
+		} 
+		// For monsters vs players
+		else if (this instanceof Monster) {
+			result += getName() + " attacks " + defender.getName() + ". It does "
+					+ getPower() + "-" + defender.getDefense() + "=" + defender.applyDamage(this)
+					+ " damage. " + defender.getName() + defender.getHealthStatus();
+		}
+		
+		return result;
+	}
+
+	
+
+	/*
+	 * Multiplies the attacking characters power vs this characters damage multiplier
+	 * Applies the damage to this character
+	 * Returns the damage applied
+	 */
+	public abstract int applyDamage(GameCharacter attacker);		
+//		int damage = (int)(power * this.powerType.getDamageMultiplier(defender.getPowerType())) - defender.getDefense();
+//		
+//		// Don't allow negative damage
+//		if (damage > defender.getDefense()) {
+//			defender.reduceHealth(damage);
+//		}
+//		else {
+//			damage = 0;
+//		}
+//		
+//		return damage;
+	
+
+	/*
+	 * Reduces the characters health by the set amount
+	 * Checks if the character is still alive
+	 */
+	public void reduceHealth(int damage) {
+		this.health -= damage;
+		
+		if(this.health <= 0) {
+			setAlive(false);
+			this.setHealth(0);
+		}
+	}
+	
+	private String getHealthStatus() {
+		String status = " now has " + getHealth() + " health.";
+		
+		if (!isAlive) {
+			status = " is now dead.";
+		}
+		
+		return status;
+	}
 
 	public String getName() {
 		return name;
@@ -99,6 +169,10 @@ public abstract class GameCharacter {
 	
 	public  String getPowerTypeString() {
 		return this.powerType.toString();
+	}
+	
+	public PowerType getPowerType() {
+		return powerType;
 	}
 	
 	public void setPowerType(PowerType power) {
