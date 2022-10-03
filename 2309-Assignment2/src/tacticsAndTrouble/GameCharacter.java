@@ -12,7 +12,7 @@ public abstract class GameCharacter {
 	private String name;	// The name of the monster/player
 	private int power;	// The power of the monster/player
 	private int defense;	// The defense of the monster/player
-	private int life;		// The life of the monster/player
+	private int life;		// The life of the monster/player ie the max health
 	private int speed;	// The speed of the monster/player
 	private int health;	// The health of the monster/player
 	private int turns;	// The number of turns of the monster/player 
@@ -65,20 +65,9 @@ public abstract class GameCharacter {
 	 * Multiplies the attacking characters power vs this characters damage multiplier
 	 * Applies the damage to this character
 	 * Returns the damage applied
-	 */
+	 */	
 	public abstract int applyDamage(GameCharacter attacker);		
-//		int damage = (int)(power * this.powerType.getDamageMultiplier(defender.getPowerType())) - defender.getDefense();
-//		
-//		// Don't allow negative damage
-//		if (damage > defender.getDefense()) {
-//			defender.reduceHealth(damage);
-//		}
-//		else {
-//			damage = 0;
-//		}
-//		
-//		return damage;
-	
+
 
 	/*
 	 * Reduces the characters health by the set amount
@@ -90,6 +79,18 @@ public abstract class GameCharacter {
 		if(this.health <= 0) {
 			setAlive(false);
 			this.setHealth(0);
+		}
+	}
+	
+	/*
+	 * Adds the specified mount of health to the character
+	 */
+	public void addHealth(int amount) {
+		this.health += amount;
+		
+		// Prevent going above max health
+		if(health > life) {
+			health = life;
 		}
 	}
 	

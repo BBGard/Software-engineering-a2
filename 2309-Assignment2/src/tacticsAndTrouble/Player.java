@@ -45,6 +45,32 @@ public class Player extends GameCharacter {
 		return damage;
 	}
 	
+	/*
+	 * This player heals the playerToHeal
+	 */
+	public String heal(Player playerToHeal) {
+		if (playerToHeal == null) {
+			return "Null playerToHeal";
+		}
+				
+		if (!playerToHeal.isAlive()) {
+			return "Can't heal a dead player. Try revive instead.";
+		}
+		
+		playerToHeal.addHealth(this.getPower());
+		
+		return this.getName() + " heals " + playerToHeal.getName()
+		+ ". It's successful, healing up to " + this.getPower() + " health."
+		+" Crum now has " + playerToHeal.getHealth() + " health.";
+	}
+	
+	/*
+	 * Revives the player
+	 */
+	public String revive(Player playerToRevive) {
+		return "";
+	}
+	
 	@Override
 	public String toString() {
 		String playerStats = "";

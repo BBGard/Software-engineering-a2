@@ -16,6 +16,7 @@ import java.util.Random;
  */
 public class Game {
 	private List<GameCharacter> turnList; 	// List of all players and monsters added according to speed/turns
+	private List<GameCharacter> sinBin; 	// List of all players who have been revived, waiting for the next round
 	
 	private List<GameCharacter> players;	// List of all players
 	private List<GameCharacter> monsters;	// List of all monsters
@@ -107,12 +108,12 @@ public class Game {
 	 * Begins the game loop
 	 */
 	public void startGame() {
-//		System.out.println("turnList before: ");
-//		for (GameCharacter gameCharacter : turnList) {
-//			System.out.println(gameCharacter.getName());
-//		}
+
 		System.out.println("Starting game loop");
 		running = true;
+
+		// TODO revive all players in the sinBin
+		// set isAlive to true, remove from sin bin
 		
 		// Game loop
 		while (running) {
@@ -150,6 +151,20 @@ public class Game {
 	 */
 	public String attack(GameCharacter attacker, GameCharacter defender) {
 		return attacker.attack(defender);
+	}
+	
+	/*
+	 * Attempts to heal another player
+	 */
+	public String heal(Player healer, Player playerToHeal) {
+		// Roll for a 50% chance to heal
+		if(rollForChance(50)) {
+			return healer.heal(playerToHeal);
+		}
+		else {
+			return healer.getName() + " attempts to heal " 
+					+ playerToHeal.getName() + " but fails!";
+		}
 	}
 	
 	/*
