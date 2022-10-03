@@ -6,6 +6,7 @@ package tacticsAndTrouble;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Benjamin Gardiner
@@ -145,15 +146,33 @@ public class Game {
 	}
 	
 	/*
-	 * Attack
+	 * Calls the attack function on a character
 	 */
 	public String attack(GameCharacter attacker, GameCharacter defender) {
-//		String result ="";
-//		result = attacker.getName() + " attacks " + defender.getName() + ".\n"
-//				+ attacker.getName() + "'s " + attacker.getPowerTypeString() 
-//				+ " weapon does [get damage here] to " + defender.getPowerTypeString() + " monsters";
-//		
-//		return result;
 		return attacker.attack(defender);
 	}
+	
+	/*
+	 * Picks a random number based on the percentage input
+	 * if 75% picks random number between 0 and 4 (3 in 4 chance)
+	 * if 50% picks random number between 0 and 2 (1 in 2 chance)
+	 * checks the answer based on percentage
+	 */
+	public boolean rollForChance(int percentage) {
+		Random diceRoll = new Random();
+		int roll = 0;
+		
+		switch (percentage) {
+		case 75:
+			roll = diceRoll.nextInt(4);
+			return roll == 0 || roll == 1 || roll == 2;
+		case 50:
+			roll = diceRoll.nextInt(2);
+			return roll == 0 ;
+
+		default:
+			return false;
+		}
+	}
+	
 }

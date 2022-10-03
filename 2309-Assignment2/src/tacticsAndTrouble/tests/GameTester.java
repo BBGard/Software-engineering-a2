@@ -159,7 +159,7 @@ public class GameTester {
 		assertEquals("Ben attacks the Baron of Hell. "
 				+ "Ben's Lightning weapon does normal damage to "
 				+ "Lightning monsters but is reduced by 40 Defense "
-				+ "so deals 0 damage. The Baron of Hell now has 150 health.", game.attack(player, monster));
+				+ "so deals 1 damage. The Baron of Hell now has 149 health.", game.attack(player, monster));
 		
 		assertEquals("Baron of Hell attacks Bill. "
 				+ "It does 70-50=20 damage."
@@ -209,4 +209,30 @@ public class GameTester {
 				+ "It does 40-20=20 damage."
 				+ " Alex is now dead.", game.attack(monster, player));
 	}
+	
+	@Test
+	public void testMonsterDoesAtLeast1Damage() {
+		Monster monster = monsterMaker.createMonster(Monster.BARON_OF_HELL); // 70 power
+		GameCharacter player = new Player("Old Greg", 40, 80, 20, 2, new PowerType(PowerType.VOID)); // vs 80 defence
+		
+		assertEquals("Baron of Hell attacks Old Greg. "
+				+ "It does 70-80=1 damage."
+				+ " Old Greg now has 19 health.", game.attack(monster, player));
+	}
+	
+	@Test
+	public void testRandomChanceRoll() {
+		boolean roll1 = game.rollForChance(75);
+		boolean roll2 = game.rollForChance(50);
+		
+		// Make sure its a bool returned - actual value will be random each time
+		assertTrue( roll1 == true || roll1 == false);
+		assertTrue( roll2 == true || roll2 == false);
+		
+		// Test for chances not allowed - should always be false
+		assertEquals(false , game.rollForChance(20));
+		assertEquals(false , game.rollForChance(-1));
+		assertEquals(false , game.rollForChance(51));
+	}
+	
 }
