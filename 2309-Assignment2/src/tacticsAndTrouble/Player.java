@@ -65,12 +65,64 @@ public class Player extends GameCharacter {
 	}
 	
 	/*
-	 * Revives the player
+	 * Revives a player
 	 */
 	public String revive(Player playerToRevive) {
-		return "";
+		if (playerToRevive == null) {
+			return "Null playerToRevive";
+		}
+				
+		if (playerToRevive.isAlive()) {
+			return "Can't revive a living player. Try heal instead.";
+		}
+		
+		playerToRevive.bringBack();
+		
+		return getName() + " revives " + playerToRevive.getName() + ". " + playerToRevive.getName() + " now has "
+				+ playerToRevive.getHealth() + " health but does not get a turn this round.";
 	}
 	
+	/*
+	 * Revives this player
+	 */
+	private void bringBack() {
+		// Sets health to 30% of life
+		addHealth(getLife() * 30 / 100);
+		
+		// Sets this player to alive
+		setAlive(true);
+	}
+	
+	/*
+	 * Applies power up
+	 */
+	public String powerUp() {
+		if(getSpeed() <= 1 ) {
+			return "Speed not greater than 1!";
+		}
+		
+		// Double power, halve speed
+		setPower((int)Math.round(getPower() * 2.0));
+		setSpeed((int)Math.round(getSpeed() / 2.0));
+		increasePowerUpsUsed();
+		
+		return getName() + " uses Power Up" + (getPowerUpsUsed() > 1 ? " again. ":". ") + "It's successful, and " + getName() + " now has " 
+				+getSpeed() + " speed and " + getPower() + " power.";
+	}
+	
+	/*
+	 * Resets power, speed, and powerUpsUsed to original values
+	 */
+	public void resetAttributes() {
+		if (getPowerUpsUsed() > 0) {
+//			setPower(getPower() / (2*getPowerUpsUsed()));
+//			setSpeed(getSpeed() * (2*getPowerUpsUsed()));
+			setPower(getBasePower());
+			setSpeed(getBaseSpeed());
+			resetPowerUpsUsed();
+		}
+	}
+
 	@Override
 	public String toString() {
 		String playerStats = "";

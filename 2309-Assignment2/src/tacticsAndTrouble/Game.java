@@ -168,6 +168,27 @@ public class Game {
 	}
 	
 	/*
+	 * Revives another player
+	 * NOTE: revives are unlimited and have 100% chance of success
+	 * Probably should limit these in the future
+	 */
+	public String revive(Player reviver, Player playerToRevive) {
+		return reviver.revive(playerToRevive);
+	}
+	
+	/*
+	 * Attempts to powerUp the player
+	 */
+	public String powerUp(Player playerToPowerUp) {
+		// Roll for a 75% chance to powerUp
+		if (rollForChance(75)) {
+			return playerToPowerUp.powerUp();
+		} else {
+			return playerToPowerUp.getName() + " attempts to power up but fails!";
+		}
+	}
+	
+	/*
 	 * Picks a random number based on the percentage input
 	 * if 75% picks random number between 0 and 4 (3 in 4 chance)
 	 * if 50% picks random number between 0 and 2 (1 in 2 chance)

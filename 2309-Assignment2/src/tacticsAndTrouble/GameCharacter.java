@@ -17,7 +17,11 @@ public abstract class GameCharacter {
 	private int health;	// The health of the monster/player
 	private int turns;	// The number of turns of the monster/player 
 	
+	private int basePower; // The start value of power
+	private int baseSpeed; // The start value of speed
+	
 	private boolean isAlive = true;	// Weather the monster/player is alive
+	private int powerUpsUsed = 0; // Tracks the number of power ups used each turn, so they can be reset
 	
 	private PowerType powerType;
 	
@@ -29,6 +33,9 @@ public abstract class GameCharacter {
 		this.speed = speed;
 		this.health = life;
 		this.turns = speed;
+		
+		this.basePower = power;
+		this.baseSpeed = speed;
 		
 		this.powerType = new PowerType();
 	}
@@ -178,6 +185,26 @@ public abstract class GameCharacter {
 	
 	public void setPowerType(PowerType power) {
 		this.powerType = power;
+	}
+	
+	public void resetPowerUpsUsed() {
+		this.powerUpsUsed = 0; 
+	}
+	
+	public void increasePowerUpsUsed() {
+		this.powerUpsUsed++;
+	}
+	
+	public int getPowerUpsUsed() {
+		return this.powerUpsUsed;
+	}
+	
+	public int getBasePower() {
+		return this.basePower;
+	}
+	
+	public int getBaseSpeed() {
+		return this.baseSpeed;
 	}
 	
 	

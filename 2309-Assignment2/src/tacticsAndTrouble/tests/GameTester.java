@@ -234,12 +234,14 @@ public class GameTester {
 		Player player1 = new Player("Antoxx", 40, 20, 80, 2, new PowerType(PowerType.SPIRIT));
 		Player player2 = new Player("Crum", 70, 30, 35, 1, new PowerType(PowerType.LIGHTNING));
 
-		// Damage on player
+		// Damage player
 		player2.setHealth(10);
 		assertEquals(10, player2.getHealth());
 
+		// Heal a player
 		assertEquals("Antoxx heals Crum. " + "It's successful, healing up to 40 health. " + "Crum now has 35 health.",
 				player1.heal(player2));
+		
 
 		// Try to heal a dead player - need to use revive() instead
 		player2.setAlive(false);
@@ -247,18 +249,115 @@ public class GameTester {
 
 		// Try to heal a null character
 		player2 = null;
-		assertEquals("Null playerToHeal", player1.heal(player2));
+		assertEquals("Null playerToHeal", player1.heal(player2));		
+		
 	}
 
 	@Test
-	public void testRevicePlayer() {
+	public void testRevivePlayer() {
 		// Setup characters
 		Player player1 = new Player("Antoxx", 40, 20, 80, 2, new PowerType(PowerType.SPIRIT));
 		Player player2 = new Player("Crum", 70, 30, 35, 1, new PowerType(PowerType.LIGHTNING));
 
-		// Damage on player
-		player2.setHealth(10);
-		assertEquals("Antoxx revives Crum. " + "Crum now has 12 health but does not get a turn this round.",
+		// Kill player
+		player2.setHealth(0);
+		player2.setAlive(false);
+		
+		// Revive a player
+		assertEquals("Antoxx revives Crum. " + "Crum now has 10 health but does not get a turn this round.",
 				player1.revive(player2));
+		
+		// Kill player
+		player2.setHealth(0);
+		player2.setAlive(false);
+		
+		// Revive a player using Game class
+		assertEquals("Antoxx revives Crum. " + "Crum now has 10 health but does not get a turn this round.",
+				game.revive(player1, player2));
+		
+		// Try to revive a living player - need to use heal() instead
+		player2.setHealth(35);
+		player2.setAlive(true);
+		assertEquals("Can't revive a living player. Try heal instead.", player1.revive(player2));
+
+		// Try to heal a null character
+		player2 = null;
+		assertEquals("Null playerToRevive", player1.revive(player2));
+	}
+	
+	@Test
+	public void tetsPowerUp() {
+		// Setup characters
+		Player player1 = new Player("Breta", 20, 15, 53, 3, new PowerType(PowerType.SPIRIT));
+		Player player2 = new Player("Crum", 70, 30, 35, 4, new PowerType(PowerType.LIGHTNING));
+		Player player3 = new Player("Bilbo", 40, 20, 25, 1, new PowerType(PowerType.LIGHTNING));
+		
+		// Test powerUp on player 1
+		assertEquals("Breta uses Power Up. It's successful, and Breta now has 2 speed and 40 power.", player1.powerUp());
+		assertEquals(40, player1.getPower());
+		assertEquals(2, player1.getSpeed());
+		
+		// Test powerUp on player 2
+		assertEquals("Crum uses Power Up. It's successful, and Crum now has 2 speed and 140 power.",
+				player2.powerUp());
+		assertEquals(140, player2.getPower());
+		assertEquals(2, player2.getSpeed());
+		
+		// Test powerUp on player 3
+		assertEquals("Speed not greater than 1!", player3.powerUp());
+		assertEquals(40, player3.getPower());
+		assertEquals(1, player3.getSpeed());
+		
+		// Test another (stacked) power up on each player
+		assertEquals("Breta uses Power Up again. It's successful, and Breta now has 1 speed and 80 power.", player1.powerUp());
+		assertEquals(80, player1.getPower());
+		assertEquals(1, player1.getSpeed());
+		
+		assertEquals("Crum uses Power Up again. It's successful, and Crum now has 1 speed and 280 power.",
+				player2.powerUp());
+		assertEquals(280, player2.getPower());
+		assertEquals(1, player2.getSpeed());
+		
+		// Final tests - cannot power up again
+		assertEquals("Speed not greater than 1!", player1.powerUp());
+		assertEquals(80, player1.getPower());
+		assertEquals(1, player1.getSpeed());
+		
+		assertEquals("Speed not greater than 1!", player2.powerUp());
+		assertEquals(280, player2.getPower());
+		assertEquals(1, player2.getSpeed());
+	}
+	
+	@Test
+	public void tetsResetPowerUp() {
+		// Setup characters
+		Player player1 = new Player("Breta", 20, 15, 53, 3, new PowerType(PowerType.SPIRIT));
+		Player player2 = new Player("Crum", 70, 30, 35, 4, new PowerType(PowerType.LIGHTNING));
+		Player player3 = new Player("Bilbo", 40, 20, 25, 1, new PowerType(PowerType.LIGHTNING));
+		
+		// Test powerUp on player 1
+		assertEquals("Breta uses Power Up. It's successful, and Breta now has 2 speed and 40 power.", player1.powerUp());
+		assertEquals(40, player1.getPower());
+		assertEquals(2, player1.getSpeed());
+		
+		// Test powerUp on player 2
+		assertEquals("Crum uses Power Up. It's successful, and Crum now has 2 speed and 140 power.",
+				player2.powerUp());
+		assertEquals(140, player2.getPower());
+		assertEquals(2, player2.getSpeed());
+		
+		// Run resets
+		player1.resetAttributes();
+		player2.resetAttributes();
+		player3.resetAttributes();
+		
+		// Check everything reset
+		assertEquals(20, player1.getPower());
+		assertEquals(70, player2.getPower());
+		assertEquals(40, player3.getPower());
+		
+		assertEquals(3, player1.getSpeed());
+		assertEquals(4, player2.getSpeed());
+		assertEquals(1, player3.getSpeed());
 	}
 }
