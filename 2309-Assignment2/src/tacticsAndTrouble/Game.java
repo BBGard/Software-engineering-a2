@@ -25,11 +25,14 @@ public class Game {
 	
 	private static final int MAX_PLAYERS = 5; // Maximum number of players
 	private static final int MAX_MONSTERS = 5; // Maximum number of monsters
+	
+	private Random randomNumber = new Random();	// Used to generate a random number - dice rolls, choices etc
 
 	public Game() {
 		players = new ArrayList<GameCharacter>();
 		monsters = new ArrayList<GameCharacter>();		
 		turnList = new ArrayList<GameCharacter>();		
+		sinBin = new ArrayList<GameCharacter>();		
 	}
 	
 	/*
@@ -112,38 +115,76 @@ public class Game {
 		System.out.println("Starting game loop");
 		running = true;
 
-		// TODO revive all players in the sinBin
+		// revive all players in the sinBin
 		// set isAlive to true, remove from sin bin
+		for (GameCharacter revivedCharacter : sinBin) {
+			if (revivedCharacter instanceof Player) {
+				revivedCharacter.setAlive(true);
+				sinBin.remove(revivedCharacter);
+			}
+		}
 		
 		// Game loop
 		while (running) {
 			// Shuffle turns list
 			Collections.shuffle(turnList);
 
-//		System.out.println("turnList after: ");
-//		for (GameCharacter gameCharacter : turnList) {
-//			System.out.println(gameCharacter.getName());
-//		}
-
 			// Iterate through turns
 			for (GameCharacter gameCharacter : turnList) {
+				
 				// Check that the character is alive first
 				if (gameCharacter.isAlive()) {
+				
 					// Check if the character is a player or monster
 					if (gameCharacter instanceof Monster) {
+					
 						// Monster turn
-						System.out.println("Character is a monster");
+						System.out.println("Character is a monster: " + gameCharacter.getName());
+						runMonsterTurn(gameCharacter);
 					} else if (gameCharacter instanceof Player) {
+						
 						// Player turn
-						System.out.println("Character is a player");
+						System.out.println("Character is a player: " + gameCharacter.getName());
+						runPlayerTurn(gameCharacter);
 					}
 				}
 			}
+			
+			// End of turns?
+			// reset power and speed here?
+			for (GameCharacter gameCharacter : turnList) {
+				if (gameCharacter instanceof Player) {
+					((Player) gameCharacter).resetAttributes();
+				}
+			}
+			
+			System.out.println("Turns complete");
 			
 			running = false;
 		}
 		System.out.println("Game loop stopped");
 		
+	}
+	
+	/*
+	 * The logic for a monsters turn
+	 */
+	public void runMonsterTurn(GameCharacter monster) {
+		// Pick random player to attack	from players list	
+		GameCharacter playerToAttack = players.get(randomNumber.nextInt(players.size()));
+		
+		System.out.println("Random player to attack is: " + playerToAttack.getName());
+		
+		// attack that player, print result to console for debugging
+		String result = attack(monster, playerToAttack);
+		System.out.println(result);		
+	}
+	
+	/*
+	 * The logic for a players turn
+	 */
+	public void runPlayerTurn(GameCharacter player) {
+		// Await input
 	}
 	
 	/*
@@ -194,16 +235,15 @@ public class Game {
 	 * if 50% picks random number between 0 and 2 (1 in 2 chance)
 	 * checks the answer based on percentage
 	 */
-	public boolean rollForChance(int percentage) {
-		Random diceRoll = new Random();
+	public boolean rollForChance(int percentage) {		
 		int roll = 0;
 		
 		switch (percentage) {
 		case 75:
-			roll = diceRoll.nextInt(4);
+			roll = randomNumber.nextInt(4);
 			return roll == 0 || roll == 1 || roll == 2;
 		case 50:
-			roll = diceRoll.nextInt(2);
+			roll = randomNumber.nextInt(2);
 			return roll == 0 ;
 
 		default:

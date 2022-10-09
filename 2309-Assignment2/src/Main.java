@@ -11,18 +11,12 @@ import tacticsAndTrouble.UI.SplashScreen;
  *         - Tactics & Trouble
  */
 public class Main {
-//	private static Game theGame;
 
 	public static void main(String[] args) {
-//		startGame();
 		
 		SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run() {                                           
-//                Game game = new Game();
-//                GUI gui = new GUI("Tactics & Trouble"); 
-//                ControlClass controller = new ControlClass(game,gui);
-//                gui.begin(controller);
+            public void run() {       
             	
             	try {
             		Game game = new Game(); // The model
