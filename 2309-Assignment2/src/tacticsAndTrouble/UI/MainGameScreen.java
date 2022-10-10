@@ -14,9 +14,11 @@ public class MainGameScreen extends Screen{
 	
 	/**
 	 * Open the window.
+	 * @wbp.parser.entryPoint
 	 */
 	@Override
 	public void open(ControlClass controller) {
+	//public void open() {	
 		this.controller = controller;
 		
 		Display display = Display.getDefault();
@@ -40,7 +42,5 @@ public class MainGameScreen extends Screen{
 		shell = new Shell();
 		shell.setSize(800, 600);
 		shell.setText("Tactics & Trouble");
-
 	}
-
 }

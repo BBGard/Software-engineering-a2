@@ -50,17 +50,17 @@ public abstract class GameCharacter {
 
 		// For players vs monsters
 		if (this instanceof Player) {
-			result += getName() + " attacks the " + defender.getName() + ". " + getName() + "'s "
+			result += getName() + " attacks the " + defender.getName() + ".\n" + getName() + "'s "
 					+getPowerTypeString() + " weapon does " + this.powerType.getDamageString(defender.getPowerType())
 					+ " damage to " + defender.getPowerTypeString() + " monsters but is reduced by " + defender.getDefense()
-					+ " Defense so deals " + defender.applyDamage(this) + " damage. The " + defender.getName()
+					+ " Defense so deals " + defender.applyDamage(this) + " damage.\nThe " + defender.getName()
 					+ defender.getHealthStatus();
 		} 
 		// For monsters vs players
 		else if (this instanceof Monster) {
-			result += getName() + " attacks " + defender.getName() + ". It does "
-					+ getPower() + "-" + defender.getDefense() + "=" + defender.applyDamage(this)
-					+ " damage. " + defender.getName() + defender.getHealthStatus();
+			result += getName() + " attacks " + defender.getName() + ".\nIt does "
+					+ defender.applyDamage(this)
+					+ " damage.\n" + defender.getName() + defender.getHealthStatus();
 		}
 		
 		return result;

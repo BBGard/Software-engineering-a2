@@ -60,8 +60,8 @@ public class Player extends GameCharacter {
 		playerToHeal.addHealth(this.getPower());
 		
 		return this.getName() + " heals " + playerToHeal.getName()
-		+ ". It's successful, healing up to " + this.getPower() + " health."
-		+" Crum now has " + playerToHeal.getHealth() + " health.";
+		+ ".\nIt's successful, healing up to " + this.getPower() + " health.\n"
+		+playerToHeal.getName() + " now has " + playerToHeal.getHealth() + " health.";
 	}
 	
 	/*
@@ -78,7 +78,7 @@ public class Player extends GameCharacter {
 		
 		playerToRevive.bringBack();
 		
-		return getName() + " revives " + playerToRevive.getName() + ". " + playerToRevive.getName() + " now has "
+		return getName() + " revives " + playerToRevive.getName() + ".\n" + playerToRevive.getName() + " now has "
 				+ playerToRevive.getHealth() + " health but does not get a turn this round.";
 	}
 	
@@ -106,7 +106,7 @@ public class Player extends GameCharacter {
 		setSpeed((int)Math.round(getSpeed() / 2.0));
 		increasePowerUpsUsed();
 		
-		return getName() + " uses Power Up" + (getPowerUpsUsed() > 1 ? " again. ":". ") + "It's successful, and " + getName() + " now has " 
+		return getName() + " uses Power Up" + (getPowerUpsUsed() > 1 ? " again.\n":".\n") + "It's successful, and " + getName() + " now has " 
 				+getSpeed() + " speed and " + getPower() + " power.";
 	}
 	

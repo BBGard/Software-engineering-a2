@@ -27,6 +27,8 @@ public class Game {
 	private static final int MAX_MONSTERS = 5; // Maximum number of monsters
 	
 	private Random randomNumber = new Random();	// Used to generate a random number - dice rolls, choices etc
+	private int turnCounter = 0;		// Keeps track of the current turn
+	
 
 	public Game() {
 		players = new ArrayList<GameCharacter>();
@@ -108,15 +110,13 @@ public class Game {
 	}
 	
 	/*
-	 * Begins the game loop
+	 * Sets up the turns for each character
+	 * Called at the beginning of each game
 	 */
-	public void startGame() {
-
-		System.out.println("Starting game loop");
-		running = true;
-
-		// revive all players in the sinBin
-		// set isAlive to true, remove from sin bin
+	public GameCharacter setupTurns() {
+		System.out.println("Setup turns");
+				
+		// revive all players in the sinBin if any
 		for (GameCharacter revivedCharacter : sinBin) {
 			if (revivedCharacter instanceof Player) {
 				revivedCharacter.setAlive(true);
@@ -124,52 +124,100 @@ public class Game {
 			}
 		}
 		
-		// Game loop
-		while (running) {
-			// Shuffle turns list
-			Collections.shuffle(turnList);
-
-			// Iterate through turns
-			for (GameCharacter gameCharacter : turnList) {
-				
-				// Check that the character is alive first
-				if (gameCharacter.isAlive()) {
-				
-					// Check if the character is a player or monster
-					if (gameCharacter instanceof Monster) {
-					
-						// Monster turn
-						System.out.println("Character is a monster: " + gameCharacter.getName());
-						runMonsterTurn(gameCharacter);
-					} else if (gameCharacter instanceof Player) {
-						
-						// Player turn
-						System.out.println("Character is a player: " + gameCharacter.getName());
-						runPlayerTurn(gameCharacter);
-					}
-				}
-			}
-			
-			// End of turns?
-			// reset power and speed here?
-			for (GameCharacter gameCharacter : turnList) {
-				if (gameCharacter instanceof Player) {
-					((Player) gameCharacter).resetAttributes();
-				}
-			}
-			
-			System.out.println("Turns complete");
-			
-			running = false;
-		}
-		System.out.println("Game loop stopped");
+		// Shuffle turns list
+		Collections.shuffle(turnList);
 		
+		// Return the first player to have a turn
+		return turnList.get(0);
 	}
+	
+	public String playTurn() {
+		String output = "";
+		
+		if (turnCounter < turnList.size()) {
+			GameCharacter currentPlayer = turnList.get(turnCounter);
+			
+			// Check that the character is alive first
+			if (currentPlayer.isAlive()) {
+
+				if (currentPlayer instanceof Monster) {
+					System.out.println("Player is a monster: " + currentPlayer.getName());
+					output = runMonsterTurn(currentPlayer);
+					turnCounter++;
+				} else if (currentPlayer instanceof Player) {
+					System.out.println("Player is a player: " + currentPlayer.getName());
+					output = runPlayerTurn(currentPlayer);
+					turnCounter++;
+				}
+			}
+		}
+		return output;
+	}
+	
+	/*
+	 * Begins the game loop
+	 */
+//	public void startGame() {
+//
+//		System.out.println("Starting game loop");
+//		running = true;
+//
+//		// revive all players in the sinBin if any
+//		for (GameCharacter revivedCharacter : sinBin) {
+//			if (revivedCharacter instanceof Player) {
+//				revivedCharacter.setAlive(true);
+//				sinBin.remove(revivedCharacter);
+//			}
+//		}
+//		
+//		// Game loop
+//		while (running) {
+//			// Shuffle turns list
+//			Collections.shuffle(turnList);
+//
+//			// Iterate through turns
+//			for (GameCharacter gameCharacter : turnList) {
+//				
+//				// Check that the character is alive first
+//				if (gameCharacter.isAlive()) {
+//				
+//					// Check if the character is a player or monster
+//					if (gameCharacter instanceof Monster) {
+//					
+//						// Monster turn
+//						System.out.println("Character is a monster: " + gameCharacter.getName());						
+//						runMonsterTurn(gameCharacter);
+//					} else if (gameCharacter instanceof Player) {
+//						
+//						// Player turn
+//						System.out.println("Character is a player: " + gameCharacter.getName());
+//						runPlayerTurn(gameCharacter);
+//					}
+//				}
+//			}
+//			
+//			// End of turns?
+//			// reset power and speed here?
+//			for (GameCharacter gameCharacter : turnList) {
+//				if (gameCharacter instanceof Player) {
+//					((Player) gameCharacter).resetAttributes();
+//				}
+//			}
+//			
+//			System.out.println("Turns complete");
+//			
+//			running = false;
+//		}
+//		System.out.println("Game loop stopped");
+//		
+//	}
+	
+	
 	
 	/*
 	 * The logic for a monsters turn
 	 */
-	public void runMonsterTurn(GameCharacter monster) {
+	public String runMonsterTurn(GameCharacter monster) {
 		// Pick random player to attack	from players list	
 		GameCharacter playerToAttack = players.get(randomNumber.nextInt(players.size()));
 		
@@ -177,14 +225,20 @@ public class Game {
 		
 		// attack that player, print result to console for debugging
 		String result = attack(monster, playerToAttack);
-		System.out.println(result);		
+		System.out.println(result);	
+		
+		return result;
+		
 	}
 	
 	/*
 	 * The logic for a players turn
 	 */
-	public void runPlayerTurn(GameCharacter player) {
+	public String runPlayerTurn(GameCharacter player) {
 		// Await input
+		String result = "Player turn.";
+		
+		return result;
 	}
 	
 	/*
@@ -250,5 +304,6 @@ public class Game {
 			return false;
 		}
 	}
+
 	
 }

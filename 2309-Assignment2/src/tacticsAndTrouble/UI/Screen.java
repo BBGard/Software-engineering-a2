@@ -21,8 +21,8 @@ public abstract class Screen {
 	 * @wbp.parser.entryPoint
 	 */
 	public void open(ControlClass controller) {
-		this.controller = controller;
-
+		this.controller = controller;	
+		
 		Display display = Display.getDefault();
 		createContents();
 		shell.open();
@@ -35,5 +35,7 @@ public abstract class Screen {
 	}
 	
 	protected abstract void createContents();
+
+	public void setTurnText(String turnText) {};
 
 }

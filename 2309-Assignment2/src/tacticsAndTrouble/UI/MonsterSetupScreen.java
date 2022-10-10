@@ -22,38 +22,17 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class MonsterSetupScreen extends Screen{
 
-//	protected Shell shell;
-//	private ControlClass controller;
-
-	
-//
-//	/**
-//	 * Open the window.
-//	 * @wbp.parser.entryPoint
-//	 */
-//	public void open(ControlClass controller) {
-//		this.controller = controller;
-//		
-//		Display display = Display.getDefault();
-//		createContents();
-//		shell.open();
-//		shell.layout();
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch()) {
-//				display.sleep();
-//			}
-//		}
-//	}
 
 	/**
 	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
 	 */
 	protected void createContents() {
 		shell = new Shell();
 		shell.setSize(800, 600);
 		shell.setText("Monster Setup");
 
-shell.setLayout(new FormLayout());
+		shell.setLayout(new FormLayout());
 		
 		Label lblSetupTitle = new Label(shell, SWT.NONE);
 		FormData fd_lblSetupTitle = new FormData();
@@ -163,8 +142,9 @@ shell.setLayout(new FormLayout());
 				shell.close();
 				
 				// Start the main game screen
-				MainGameScreen mainGame = new MainGameScreen();
-				mainGame.open(controller);
+				//MainGameScreen mainGame = new MainGameScreen();
+				//mainGame.open(controller);
+				controller.startGame();
 			}
 		});
 	}

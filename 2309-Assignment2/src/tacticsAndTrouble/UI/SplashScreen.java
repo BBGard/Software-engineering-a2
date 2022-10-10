@@ -44,6 +44,7 @@ public class SplashScreen extends Screen{
 //			}
 //		}
 //	}
+	
 
 	/**
 	 * Create contents of the window.
@@ -73,7 +74,7 @@ public class SplashScreen extends Screen{
 				shell.close();
 
 				
-				// Create player setup screen
+				// Create and open player setup screen
 				PlayerSetupScreen playerSetup = new PlayerSetupScreen();
 				playerSetup.open(controller);
 			}

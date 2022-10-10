@@ -28,48 +28,32 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class PlayerSetupScreen extends Screen{
 
-	//protected Shell shell;
+	
 	private Text textName;
 	private Text textPower;
 	private Text textDefence;
 	private Text textLife;
 	private Text textSpeed;
 
-
+	protected Shell shell;	// TODO REMOVE ME
 	/**
-	 * Launch the application.
-	 * @param args
+	 * Open the window.
+	 * @wbp.parser.entryPoint
+	 * TODO REMOVE THIS
 	 */
-//	public void newScreen(ControlClass controller) {
-//		this.controller = controller;
-//		
-//
-//		try {
-//			PlayerSetupScreen window = new PlayerSetupScreen();
-//			window.open();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	/**
-//	 * Open the window.
-//	 * @wbp.parser.entryPoint
-//	 */
-//	public void open(ControlClass controller) {
-//		this.controller = controller;
-//		
-//		Display display = Display.getDefault();
-//		createContents();
-//		shell.open();
-//		shell.layout();
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch()) {
-//				display.sleep();
-//			}
-//		}
-//		
-//	}
+	public void open(ControlClass controller) {
+		this.controller = controller;
+
+		Display display = Display.getDefault();
+		createContents();
+		shell.open();
+		shell.layout();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}
+	}
 
 	/**
 	 * Create contents of the window.
@@ -224,14 +208,14 @@ public class PlayerSetupScreen extends Screen{
 		 * Button handlers here	
 		 */
 		
+		// Add player button
 		btnAddPlayer.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// Add player name to player list
 				listPlayers.add(textName.getText() + "\n");
 
-				// Add player to game
-				
+				// Add player to game				
 				controller.addPlayer(textName.getText(), textPower.getText(),
 				textDefence.getText(), textLife.getText(), textSpeed.getText(),
 				comboWeapon.getText());
@@ -248,13 +232,14 @@ public class PlayerSetupScreen extends Screen{
 			
 		});
 		
+		// Setup Monsters button
 		btnSetupMonsters.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// Show monster setup screen
 				shell.close();
 
-				// Create player setup screen
+				// Create and open monster setup screen
 				MonsterSetupScreen monsterSetup = new MonsterSetupScreen();
 				monsterSetup.open(controller);
 			}

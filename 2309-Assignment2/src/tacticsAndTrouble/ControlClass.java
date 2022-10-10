@@ -6,8 +6,10 @@ package tacticsAndTrouble;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import tacticsAndTrouble.UI.PlayerTurnScreen;
 import tacticsAndTrouble.UI.Screen;
 import tacticsAndTrouble.UI.SplashScreen;
+import tacticsAndTrouble.UI.TurnResultsScreen;
 
 /**
  * @author Benjamin Gardiner
@@ -20,6 +22,8 @@ public class ControlClass {
 	private Screen screen;	
 	
 	private MonsterFactory monsterMaker; // For creating monsters
+	
+	private boolean running = true;	// Controls if the game loop is running or not
 
 	
 	public ControlClass(Game game, Screen screen) {
@@ -78,6 +82,47 @@ public class ControlClass {
 	 * Begins the game loop
 	 */
 	public void startGame() {
-		game.startGame();
+		//game.startGame();
+		// Get the first player ready
+		GameCharacter firstPlayer =	game.setupTurns();
+		
+		System.out.println("First player is: "+ firstPlayer.getName());
+		
+		// Maybe add a start screen here?
+		
+//		if (firstPlayer instanceof Player) {
+//			//open player turn screen
+//			screen = new PlayerTurnScreen();
+//		}
+//		else if (firstPlayer instanceof Monster) {
+//			
+//			screen = new TurnResultsScreen("Tactics & Trouble");
+//		}
+		
+		screen = new TurnResultsScreen("Tactics & Trouble");
+		screen.open(this);			
+
+		
+//		System.out.println("Starting game loop");
+//		while (running) {
+//			game.playTurn();
+//		}
+			
+		
+	}
+	
+	
+	public void takeTurn() {
+		String turnResult = game.playTurn();
+		
+		if(!(turnResult.equalsIgnoreCase("Player turn."))) {
+			screen.setTurnText(game.playTurn());
+		}
+		else {
+			screen = new PlayerTurnScreen();
+			screen.open(this);
+		}
+		
+		
 	}
 }
