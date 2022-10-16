@@ -26,14 +26,24 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class PlayerSetupScreen extends Screen{
+public class SetupScreen extends Screen{
 
+	// UI elements
+	private Label lblSetupTitle;
+	private Combo comboChooser;
+	private Label lblCharacterList;
+	private List listCharacters;
+	private Label lblName;
+	private Button btnAddCharacter;
+	private Button btnNext;
 	
 	private Text textName;
 	private Text textPower;
 	private Text textDefence;
 	private Text textLife;
 	private Text textSpeed;
+	
+	private String setupState = "PLAYER"; 	// Tracks which setup screen is being displayed - player or monster
 
 	protected Shell shell;	// TODO REMOVE ME
 	/**
@@ -65,7 +75,8 @@ public class PlayerSetupScreen extends Screen{
 		shell.setText("Player Setup");
 		shell.setLayout(new FormLayout());
 		
-		Label lblSetupTitle = new Label(shell, SWT.NONE);
+		// Create Player Setup
+		lblSetupTitle = new Label(shell, SWT.NONE);
 		FormData fd_lblSetupTitle = new FormData();
 		fd_lblSetupTitle.right = new FormAttachment(0, 775);
 		fd_lblSetupTitle.top = new FormAttachment(0, 53);
@@ -88,7 +99,7 @@ public class PlayerSetupScreen extends Screen{
 		gl_groupInput.verticalSpacing = 15;
 		groupInput.setLayout(gl_groupInput);
 		
-		Label lblName = new Label(groupInput, SWT.NONE);
+		lblName = new Label(groupInput, SWT.NONE);
 		lblName.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		lblName.setAlignment(SWT.RIGHT);
 		lblName.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
@@ -156,51 +167,49 @@ public class PlayerSetupScreen extends Screen{
 		lblWeapon.setText("Weapon");
 		lblWeapon.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
-		final Combo comboWeapon = new Combo(groupInput, SWT.NONE);
-		comboWeapon.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		comboWeapon.setItems(new String[] {"Normal", "Lightning", "Wood", "Metal", "Void", "Spirit"});
-		comboWeapon.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		comboChooser = new Combo(groupInput, SWT.NONE);
+		comboChooser.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		comboChooser.setItems(new String[] {"Normal", "Lightning", "Wood", "Metal", "Void", "Spirit"});
+		comboChooser.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(groupInput, SWT.NONE);
 		
-		final Button btnAddPlayer = new Button(groupInput, SWT.CENTER);
+		btnAddCharacter = new Button(groupInput, SWT.CENTER);		
+		btnAddCharacter.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		btnAddCharacter.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
+		GridData gd_btnAddCharacter = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnAddCharacter.widthHint = 202;
+		btnAddCharacter.setLayoutData(gd_btnAddCharacter);
+		btnAddCharacter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnAddCharacter.setText("Add Player");
 		
-		btnAddPlayer.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnAddPlayer.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
-		GridData gd_btnAddPlayer = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_btnAddPlayer.widthHint = 202;
-		btnAddPlayer.setLayoutData(gd_btnAddPlayer);
-		btnAddPlayer.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnAddPlayer.setText("Add Player");
+		Group groupCharacterList = new Group(shell, SWT.NONE);
+		FormData fd_groupCharacterList = new FormData();
+		fd_groupCharacterList.bottom = new FormAttachment(groupInput, 0, SWT.BOTTOM);
+		fd_groupCharacterList.top = new FormAttachment(lblSetupTitle, 6);
+		fd_groupCharacterList.left = new FormAttachment(groupInput, 65);
+		fd_groupCharacterList.right = new FormAttachment(100, -99);
+		groupCharacterList.setLayoutData(fd_groupCharacterList);
 		
-		Group groupPlayerList = new Group(shell, SWT.NONE);
-		FormData fd_groupPlayerList = new FormData();
-		fd_groupPlayerList.bottom = new FormAttachment(groupInput, 0, SWT.BOTTOM);
-		fd_groupPlayerList.top = new FormAttachment(lblSetupTitle, 6);
-		fd_groupPlayerList.left = new FormAttachment(groupInput, 65);
-		fd_groupPlayerList.right = new FormAttachment(100, -99);
-		groupPlayerList.setLayoutData(fd_groupPlayerList);
+		lblCharacterList = new Label(groupCharacterList, SWT.NONE);
+		lblCharacterList.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
+		lblCharacterList.setAlignment(SWT.CENTER);
+		lblCharacterList.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
+		lblCharacterList.setBounds(10, 16, 218, 30);
+		lblCharacterList.setText("Players");
 		
-		Label lblPlayers = new Label(groupPlayerList, SWT.NONE);
-		lblPlayers.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
-		lblPlayers.setAlignment(SWT.CENTER);
-		lblPlayers.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
-		lblPlayers.setBounds(10, 16, 218, 30);
-		lblPlayers.setText("Players");
-		
-		Label seperator = new Label(groupPlayerList, SWT.SEPARATOR | SWT.HORIZONTAL);
+		Label seperator = new Label(groupCharacterList, SWT.SEPARATOR | SWT.HORIZONTAL);
 		seperator.setBounds(10, 57, 218, 16);
 		
-		final List listPlayers = new List(groupPlayerList, SWT.BORDER);
-		listPlayers.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
-		listPlayers.setBounds(10, 79, 218, 224);
+		listCharacters = new List(groupCharacterList, SWT.BORDER);
+		listCharacters.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		listCharacters.setBounds(10, 79, 218, 224);
 		
-		Button btnSetupMonsters = new Button(groupPlayerList, SWT.NONE);
-		
-		btnSetupMonsters.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnSetupMonsters.setBackground(SWTResourceManager.getColor(255, 102, 102));
-		btnSetupMonsters.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnSetupMonsters.setBounds(10, 324, 218, 67);
-		btnSetupMonsters.setText("Setup Monsters");
+		btnNext = new Button(groupCharacterList, SWT.NONE);		
+		btnNext.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnNext.setBackground(SWTResourceManager.getColor(255, 102, 102));
+		btnNext.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		btnNext.setBounds(10, 324, 218, 67);
+		btnNext.setText("Setup Monsters");
 		
 
 
@@ -209,42 +218,103 @@ public class PlayerSetupScreen extends Screen{
 		 */
 		
 		// Add player button
-		btnAddPlayer.addSelectionListener(new SelectionAdapter() {
+		btnAddCharacter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// Add player name to player list
-				listPlayers.add(textName.getText() + "\n");
-
-				// Add player to game				
-				controller.addPlayer(textName.getText(), textPower.getText(),
-				textDefence.getText(), textLife.getText(), textSpeed.getText(),
-				comboWeapon.getText());
-				
-								
-				// Reset textFields
-				textName.setText("");
-				textPower.setText("");
-				textDefence.setText("");
-				textLife.setText("");
-				textSpeed.setText("");
-			}
-
-			
+				addCharacter();
+			}			
 		});
 		
 		// Setup Monsters button
-		btnSetupMonsters.addSelectionListener(new SelectionAdapter() {
+		btnNext.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// Show monster setup screen
-				shell.close();
-
-				// Create and open monster setup screen
-				MonsterSetupScreen monsterSetup = new MonsterSetupScreen();
-				monsterSetup.open(controller);
+				// Dispose children
+				textName.dispose();
+				textDefence.dispose();
+				textLife.dispose();
+				textPower.dispose();
+				textSpeed.dispose();
+				lblDefence.dispose();
+				lblLife.dispose();
+				lblPower.dispose();
+				lblWeapon.dispose();
+				lblSpeed.dispose();
+				
+				listCharacters.removeAll();
+				
+				// Refresh layout
+				shell.layout(true, true);
+				
+				
+				// Handle the button click
+				nextButtonClicked();					
 			}
 		});
 	
+	}
+	
+	private void addCharacter() {		
+		// For players
+		if (setupState.equalsIgnoreCase("PLAYER")) {
+			// Add player name to character list
+			listCharacters.add(textName.getText() + "\n");
+			
+			// Add player to game
+			controller.addPlayer(textName.getText(), textPower.getText(), textDefence.getText(), textLife.getText(),
+					textSpeed.getText(), comboChooser.getText());
+
+			// Reset textFields
+			textName.setText("");
+			textPower.setText("");
+			textDefence.setText("");
+			textLife.setText("");
+			textSpeed.setText("");
+		}
+		// for monsters
+		else if (setupState.equalsIgnoreCase("MONSTER")) {
+			// Add monster name to character list
+			listCharacters.add(comboChooser.getText() + "\n");
+			
+			// Add monster to game				
+			controller.addMonster(comboChooser.getText());
+		}
+		
+	}
+	
+	/**
+	 * Handles the btnNext selected events
+	 */
+	private void nextButtonClicked() {
+		// Either show monster setup screen
+		if(setupState.equalsIgnoreCase("PLAYER")) {
+			monsterSetup();
+		}
+		// Or start the game
+		else {
+			shell.close();
+			nextScreen(new CombatScreen());
+		}
+		
+	}
+	
+	/*
+	 * Setup and display monster setup screen elements
+	 */
+	private void monsterSetup() {
+		setupState = "MONSTER";
+		
+		shell.setText("Monster Setup");
+		lblSetupTitle.setText("Monster Setup");			
+		lblName.setText("Monster");		
+		comboChooser.setItems(new String[] {"Baron of Hell", "Imp", "Zombie", "Mancu-Ben", "Gary Demon"});
+		btnAddCharacter.setText("Add Monster");	
+		btnNext.setText("Begin Game");
+		lblCharacterList.setText("Monsters");
+		
+		
+		// Refresh layout
+		shell.layout(true, true);
 	}
 	
 }

@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import tacticsAndTrouble.ControlClass;
 
-public class MainGameScreen extends Screen{
+public class CombatScreen extends Screen{
 
 //	protected Shell shell;
 //	private ControlClass controller;

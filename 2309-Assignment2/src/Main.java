@@ -4,7 +4,6 @@ import javax.swing.SwingUtilities;
 import tacticsAndTrouble.ControlClass;
 import tacticsAndTrouble.Game;
 import tacticsAndTrouble.UI.Screen;
-import tacticsAndTrouble.UI.SplashScreen;
 
 /**
  * @author Benjamin Gardiner This is the main class for ITECH 2309 Assignment 2
@@ -20,7 +19,7 @@ public class Main {
             	
             	try {
             		Game game = new Game(); // The model
-        			Screen screen = new SplashScreen(); // The view
+        			Screen screen = new Screen(); // The view
         			ControlClass controller = new ControlClass(game,screen); // The controller
         			controller.open();
         		} catch (Exception e) {

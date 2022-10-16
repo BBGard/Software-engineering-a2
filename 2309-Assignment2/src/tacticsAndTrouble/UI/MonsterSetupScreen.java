@@ -22,10 +22,29 @@ import org.eclipse.swt.events.SelectionEvent;
 
 public class MonsterSetupScreen extends Screen{
 
+	protected Shell shell;	// TODO REMOVE ME
+	/**
+	 * Open the window.
+	 * @wbp.parser.entryPoint
+	 * TODO REMOVE THIS
+	 */
+	public void open(ControlClass controller) {
+		this.controller = controller;
+
+		Display display = Display.getDefault();
+		createContents();
+		shell.open();
+		shell.layout();
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
+		}
+	}
 
 	/**
 	 * Create contents of the window.
-	 * @wbp.parser.entryPoint
+	 * 
 	 */
 	protected void createContents() {
 		shell = new Shell();
