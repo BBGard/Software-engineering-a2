@@ -58,6 +58,9 @@ public class SetupScreen extends Screen{
 		createContents();
 		shell.open();
 		shell.layout();
+		
+		controller.setScreen(this);
+		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -315,6 +318,12 @@ public class SetupScreen extends Screen{
 		
 		// Refresh layout
 		shell.layout(true, true);
+	}
+	
+	// TODO DELETE ME
+	@Override
+	public void debugScreen() {
+		System.out.println("I am a SETUP screen");
 	}
 	
 }

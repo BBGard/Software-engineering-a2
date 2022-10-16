@@ -6,9 +6,9 @@ package tacticsAndTrouble;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import tacticsAndTrouble.UI.PlayerTurnScreen;
+import tacticsAndTrouble.UI.CombatScreen;
 import tacticsAndTrouble.UI.Screen;
-import tacticsAndTrouble.UI.TurnResultsScreen;
+import tacticsAndTrouble.UI.PopupScreen;
 
 /**
  * @author Benjamin Gardiner
@@ -18,7 +18,7 @@ import tacticsAndTrouble.UI.TurnResultsScreen;
  */
 public class ControlClass {
 	private Game game;
-	private Screen screen;	
+	private Screen currentScreen;	
 	
 	private MonsterFactory monsterMaker; // For creating monsters
 	
@@ -27,7 +27,7 @@ public class ControlClass {
 	
 	public ControlClass(Game game, Screen screen) {
 		this.game = game;
-		this.screen = screen;
+		setScreen(screen);
 		
 		monsterMaker = new MonsterFactory();
 		
@@ -52,7 +52,7 @@ public class ControlClass {
 	 * Opens the splash screen to begin the program
 	 */
 	public void open() {
-		screen.open(this);
+		currentScreen.open(this);
 	}
 
 	/*
@@ -79,13 +79,16 @@ public class ControlClass {
 	
 	/*
 	 * Begins the game loop
-	 */
-	public void startGame() {
-		//game.startGame();
+	 */ 
+	public void beginCombat() {
+		
 		// Get the first player ready
 		GameCharacter firstPlayer =	game.setupTurns();
 		
 		System.out.println("First player is: "+ firstPlayer.getName());
+		//currentScreen.debugScreen();
+		
+		((CombatScreen) currentScreen).showStats(firstPlayer);
 		
 		// Maybe add a start screen here?
 		
@@ -98,8 +101,8 @@ public class ControlClass {
 //			screen = new TurnResultsScreen("Tactics & Trouble");
 //		}
 		
-		screen = new TurnResultsScreen("Tactics & Trouble");
-		screen.open(this);			
+		//screen = new PopupScreen("Tactics & Trouble");
+		//screen.open(this);			
 
 		
 //		System.out.println("Starting game loop");
@@ -115,13 +118,20 @@ public class ControlClass {
 		String turnResult = game.playTurn();
 		
 		if(!(turnResult.equalsIgnoreCase("Player turn."))) {
-			screen.setTurnText(game.playTurn());
+			((CombatScreen) currentScreen).setTurnText(game.playTurn());
 		}
 		else {
-			screen = new PlayerTurnScreen();
-			screen.open(this);
+			currentScreen = new CombatScreen();
+			currentScreen.open(this);
 		}
 		
 		
+	}
+	
+	/*
+	 * Sets the current screen being shown (tracks state of the game)
+	 */
+	public void setScreen(Screen currentScreen) {
+		this.currentScreen = currentScreen;
 	}
 }

@@ -33,6 +33,9 @@ public class Screen {
 		createContents();
 		shell.open();
 		shell.layout();
+		
+		controller.setScreen(this);
+		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -84,10 +87,15 @@ public class Screen {
 	 */
 	protected void nextScreen(Screen screen) {
 		// Close splash screen, open new screen
-		//shell.close();
-		screen.open(controller);		
+		screen.open(controller);			
 	}
+	
+	
+	
+	// TODO DELETE ME
 
-	public void setTurnText(String turnText) {};
+	public void debugScreen() {
+		System.out.println("I am a PARENT screen");
+	}
 
 }
