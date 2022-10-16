@@ -15,11 +15,11 @@ import java.util.Random;
  * in charge of all game logic and decisions
  */
 public class Game {
-	private List<GameCharacter> turnList; 	// List of all players and monsters added according to speed/turns
-	private List<GameCharacter> sinBin; 	// List of all players who have been revived, waiting for the next round
+	private ArrayList<GameCharacter> turnList; 	// List of all players and monsters added according to speed/turns
+	private ArrayList<GameCharacter> sinBin; 	// List of all players who have been revived, waiting for the next round
 	
-	private List<GameCharacter> players;	// List of all players
-	private List<GameCharacter> monsters;	// List of all monsters
+	private ArrayList<GameCharacter> players;	// List of all players
+	private ArrayList<GameCharacter> monsters;	// List of all monsters
 	
 	private boolean running = false;		// Controls the main game loop
 	
@@ -113,7 +113,7 @@ public class Game {
 	 * Sets up the turns for each character
 	 * Called at the beginning of each game
 	 */
-	public GameCharacter setupTurns() {
+	public void setupTurns() {
 		System.out.println("Setup turns");
 				
 		// revive all players in the sinBin if any
@@ -125,121 +125,65 @@ public class Game {
 		}
 		
 		// Shuffle turns list
-		Collections.shuffle(turnList);
-		
-		// Return the first player to have a turn
-		return turnList.get(0);
+		Collections.shuffle(turnList);		
 	}
 	
-	public String playTurn() {
-		String output = "";
-		
-		if (turnCounter < turnList.size()) {
-			GameCharacter currentPlayer = turnList.get(turnCounter);
-			
-			// Check that the character is alive first
-			if (currentPlayer.isAlive()) {
-
-				if (currentPlayer instanceof Monster) {
-					System.out.println("Player is a monster: " + currentPlayer.getName());
-					output = runMonsterTurn(currentPlayer);
-					turnCounter++;
-				} else if (currentPlayer instanceof Player) {
-					System.out.println("Player is a player: " + currentPlayer.getName());
-					output = runPlayerTurn(currentPlayer);
-					turnCounter++;
-				}
-			}
-		}
-		return output;
+	public GameCharacter getCurrentPlayer() {
+		return turnList.get(turnCounter);
 	}
 	
-	/*
-	 * Begins the game loop
-	 */
-//	public void startGame() {
-//
-//		System.out.println("Starting game loop");
-//		running = true;
-//
-//		// revive all players in the sinBin if any
-//		for (GameCharacter revivedCharacter : sinBin) {
-//			if (revivedCharacter instanceof Player) {
-//				revivedCharacter.setAlive(true);
-//				sinBin.remove(revivedCharacter);
-//			}
-//		}
+//	public String playTurn() {
+//		String output = "";
 //		
-//		// Game loop
-//		while (running) {
-//			// Shuffle turns list
-//			Collections.shuffle(turnList);
+//		if (turnCounter < turnList.size()) {
+//			GameCharacter currentPlayer = turnList.get(turnCounter);
+//			
+//			// Check that the character is alive first
+//			if (currentPlayer.isAlive()) {
 //
-//			// Iterate through turns
-//			for (GameCharacter gameCharacter : turnList) {
-//				
-//				// Check that the character is alive first
-//				if (gameCharacter.isAlive()) {
-//				
-//					// Check if the character is a player or monster
-//					if (gameCharacter instanceof Monster) {
-//					
-//						// Monster turn
-//						System.out.println("Character is a monster: " + gameCharacter.getName());						
-//						runMonsterTurn(gameCharacter);
-//					} else if (gameCharacter instanceof Player) {
-//						
-//						// Player turn
-//						System.out.println("Character is a player: " + gameCharacter.getName());
-//						runPlayerTurn(gameCharacter);
-//					}
+//				if (currentPlayer instanceof Monster) {
+//					System.out.println("Player is a monster: " + currentPlayer.getName());
+//					output = runMonsterTurn(currentPlayer);
+//					turnCounter++;
+//				} else if (currentPlayer instanceof Player) {
+//					System.out.println("Player is a player: " + currentPlayer.getName());
+//					output = runPlayerTurn(currentPlayer);
+//					turnCounter++;
 //				}
 //			}
-//			
-//			// End of turns?
-//			// reset power and speed here?
-//			for (GameCharacter gameCharacter : turnList) {
-//				if (gameCharacter instanceof Player) {
-//					((Player) gameCharacter).resetAttributes();
-//				}
-//			}
-//			
-//			System.out.println("Turns complete");
-//			
-//			running = false;
 //		}
-//		System.out.println("Game loop stopped");
-//		
+//		return output;
 //	}
 	
-	
-	
-	/*
-	 * The logic for a monsters turn
-	 */
-	public String runMonsterTurn(GameCharacter monster) {
-		// Pick random player to attack	from players list	
-		GameCharacter playerToAttack = players.get(randomNumber.nextInt(players.size()));
-		
-		System.out.println("Random player to attack is: " + playerToAttack.getName());
-		
-		// attack that player, print result to console for debugging
-		String result = attack(monster, playerToAttack);
-		System.out.println(result);	
-		
-		return result;
-		
-	}
-	
-	/*
-	 * The logic for a players turn
-	 */
-	public String runPlayerTurn(GameCharacter player) {
-		// Await input
-		String result = "Player turn.";
-		
-		return result;
-	}
+//	
+//	
+//	
+//	/*
+//	 * The logic for a monsters turn
+//	 */
+//	public String runMonsterTurn(GameCharacter monster) {
+//		// Pick random player to attack	from players list	
+//		GameCharacter playerToAttack = players.get(randomNumber.nextInt(players.size()));
+//		
+//		System.out.println("Random player to attack is: " + playerToAttack.getName());
+//		
+//		// attack that player, print result to console for debugging
+//		String result = attack(monster, playerToAttack);
+//		System.out.println(result);	
+//		
+//		return result;
+//		
+//	}
+//	
+//	/*
+//	 * The logic for a players turn
+//	 */
+//	public String runPlayerTurn(GameCharacter player) {
+//		// Await input
+//		String result = "Player turn.";
+//		
+//		return result;
+//	}
 	
 	/*
 	 * Calls the attack function on a character
@@ -304,6 +248,12 @@ public class Game {
 			return false;
 		}
 	}
-
 	
+	public ArrayList<GameCharacter> getPlayersList() {
+		return this.players;
+	}
+
+	public ArrayList<GameCharacter> getMonstersList() {
+		return this.monsters;
+	}
 }

@@ -81,52 +81,30 @@ public class ControlClass {
 	 * Begins the game loop
 	 */ 
 	public void beginCombat() {
-		
-		// Get the first player ready
-		GameCharacter firstPlayer =	game.setupTurns();
-		
-		System.out.println("First player is: "+ firstPlayer.getName());
-		//currentScreen.debugScreen();
-		
-		((CombatScreen) currentScreen).showStats(firstPlayer);
-		
-		// Maybe add a start screen here?
-		
-//		if (firstPlayer instanceof Player) {
-//			//open player turn screen
-//			screen = new PlayerTurnScreen();
-//		}
-//		else if (firstPlayer instanceof Monster) {
-//			
-//			screen = new TurnResultsScreen("Tactics & Trouble");
-//		}
-		
-		//screen = new PopupScreen("Tactics & Trouble");
-		//screen.open(this);			
-
-		
-//		System.out.println("Starting game loop");
-//		while (running) {
-//			game.playTurn();
-//		}
-			
-		
+		game.setupTurns();		
+		((CombatScreen) currentScreen).setupTurn(game.getCurrentPlayer(), game.getPlayersList(), game.getMonstersList());		
+	}
+	
+	public void attack(String characterName) {
+		System.out.println("Attack " + characterName);
+		//TODO getCharacterbyName method in game
+		// getCurrent Player in game
 	}
 	
 	
-	public void takeTurn() {
-		String turnResult = game.playTurn();
-		
-		if(!(turnResult.equalsIgnoreCase("Player turn."))) {
-			((CombatScreen) currentScreen).setTurnText(game.playTurn());
-		}
-		else {
-			currentScreen = new CombatScreen();
-			currentScreen.open(this);
-		}
-		
-		
-	}
+//	public void takeTurn() {
+//		String turnResult = game.playTurn();
+//		
+//		if(!(turnResult.equalsIgnoreCase("Player turn."))) {
+//			((CombatScreen) currentScreen).setTurnText(game.playTurn());
+//		}
+//		else {
+//			currentScreen = new CombatScreen();
+//			currentScreen.open(this);
+//		}
+//		
+//		
+//	}
 	
 	/*
 	 * Sets the current screen being shown (tracks state of the game)

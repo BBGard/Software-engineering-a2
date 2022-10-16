@@ -9,6 +9,9 @@ import tacticsAndTrouble.Monster;
 import tacticsAndTrouble.Player;
 
 import org.eclipse.swt.widgets.Group;
+
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -43,6 +46,13 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	private TabItem tbtmHeal;
 	private TabItem tbtmRevive;
 	private TabItem tbtmPowerUp;
+	
+	private List listCharactersToAttack;
+	private List listPlayersToHeal;
+	private List listPlayersToRevive;
+	
+	Group characterMovesGroup;
+	FormData fd_characterMovesGroup;
 	
 	protected Shell shell; // TODO REMOVE THIS
 
@@ -185,8 +195,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		shell.setSize(800, 600);
 		shell.setText("Tactics & Trouble");
 
-		Group characterMovesGroup = new Group(shell, SWT.NONE);
-		FormData fd_characterMovesGroup = new FormData();
+		characterMovesGroup = new Group(shell, SWT.NONE);
+		fd_characterMovesGroup = new FormData();
 		fd_characterMovesGroup.bottom = new FormAttachment(0, 555);
 		fd_characterMovesGroup.right = new FormAttachment(0, 777);
 		fd_characterMovesGroup.top = new FormAttachment(0, 10);
@@ -213,21 +223,164 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		Label seperator = new Label(groupPlayerListAttack, SWT.SEPARATOR | SWT.HORIZONTAL);
 		seperator.setBounds(10, 57, 453, 16);
 
-		List listMonstersToAttack = new List(groupPlayerListAttack, SWT.BORDER);
-		listMonstersToAttack.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
-		listMonstersToAttack.setBounds(10, 79, 453, 224);
+		listCharactersToAttack = new List(groupPlayerListAttack, SWT.BORDER);
+		listCharactersToAttack.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+		listCharactersToAttack.setBounds(10, 79, 453, 224);
 
-		Button btnAttack = new Button(groupPlayerListAttack, SWT.NONE);
-		btnAttack.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
+		Button btnAttack = new Button(groupPlayerListAttack, SWT.NONE);		
 		btnAttack.setText("Attack");
 		btnAttack.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnAttack.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		btnAttack.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
 		btnAttack.setBounds(245, 307, 218, 67);
+		
+		btnAttack.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				controller.attack(listCharactersToAttack.getSelection()[0]);
+			}
+		});
+		
+//
+//		tbtmHeal = new TabItem(movesFolder, 0);
+//		tbtmHeal.setText("Heal");
+//
+//		Group groupPlayerList = new Group(movesFolder, SWT.NONE);
+//		tbtmHeal.setControl(groupPlayerList);
+//
+//		Label lblTarget_1 = new Label(groupPlayerList, SWT.NONE);
+//		lblTarget_1.setText("Target");
+//		lblTarget_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
+//		lblTarget_1.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
+//		lblTarget_1.setAlignment(SWT.CENTER);
+//		lblTarget_1.setBounds(10, 16, 453, 33);
+//
+//		Label seperator_1 = new Label(groupPlayerList, SWT.SEPARATOR | SWT.HORIZONTAL);
+//		seperator_1.setBounds(10, 57, 453, 16);
+//
+//		List listPlayersToHeal = new List(groupPlayerList, SWT.BORDER);
+//		listPlayersToHeal.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+//		listPlayersToHeal.setBounds(10, 79, 453, 224);
+//
+//		Button btnHeal = new Button(groupPlayerList, SWT.NONE);
+//		btnHeal.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//			}
+//		});
+//		btnHeal.setText("Heal");
+//		btnHeal.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+//		btnHeal.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
+//		btnHeal.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
+//		btnHeal.setBounds(245, 307, 218, 67);
+//
+//		tbtmRevive = new TabItem(movesFolder, 0);
+//		tbtmRevive.setText("Revive");
+//
+//		Group groupPlayerList_1 = new Group(movesFolder, SWT.NONE);
+//		tbtmRevive.setControl(groupPlayerList_1);
+//
+//		Label lblTarget_1_1 = new Label(groupPlayerList_1, SWT.NONE);
+//		lblTarget_1_1.setText("Target");
+//		lblTarget_1_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
+//		lblTarget_1_1.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
+//		lblTarget_1_1.setAlignment(SWT.CENTER);
+//		lblTarget_1_1.setBounds(10, 16, 453, 33);
+//
+//		Label seperator_1_1 = new Label(groupPlayerList_1, SWT.SEPARATOR | SWT.HORIZONTAL);
+//		seperator_1_1.setBounds(10, 57, 453, 16);
+//
+//		List listPlayersToRevive = new List(groupPlayerList_1, SWT.BORDER);
+//		listPlayersToRevive.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
+//		listPlayersToRevive.setBounds(10, 79, 453, 224);
+//
+//		Button btnRevive = new Button(groupPlayerList_1, SWT.NONE);
+//		btnRevive.setText("Revive");
+//		btnRevive.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+//		btnRevive.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
+//		btnRevive.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
+//		btnRevive.setBounds(245, 307, 218, 67);
+//
+//		tbtmPowerUp = new TabItem(movesFolder, 0);
+//		tbtmPowerUp.setText("Power Up");
+//
+//		Group groupPlayerList_1_1 = new Group(movesFolder, SWT.NONE);
+//		tbtmPowerUp.setControl(groupPlayerList_1_1);
+//
+//		Button btnAttemptPowerUp = new Button(groupPlayerList_1_1, SWT.NONE);
+//		btnAttemptPowerUp.setText("Attempt Power Up");
+//		btnAttemptPowerUp.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+//		btnAttemptPowerUp.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
+//		btnAttemptPowerUp.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
+//		btnAttemptPowerUp.setBounds(129, 148, 218, 67);
+
+	}
+	
+	/*
+	 * Creates and shows a popup message
+	 */
+	private void showPopup(String windowTitle, String popupText) {
+		PopupScreen popup = new PopupScreen(windowTitle, popupText);
+		popup.open(controller);
+	}
+	
+	/*
+	 * Loads the current characters stats into the view
+	 */
+	@Override
+	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList ) {
+		currentCharacter = character;
+		
+		// For Players
+		if(currentCharacter instanceof Player) {
+			lblPowerType.setText("Weapon:");
+			setupPlayerTabs();
+			
+			// Populate the character lists for characters to attack/heal/revive
+			for (GameCharacter gameCharacter : monsterList) {
+				if(gameCharacter.isAlive()) {
+					listCharactersToAttack.add(gameCharacter.getName());
+				}
+			}
+			
+			for (GameCharacter gameCharacter : playerList) {
+				if(gameCharacter.isAlive()) {
+					listPlayersToHeal.add(gameCharacter.getName());
+				}
+				else if(!gameCharacter.isAlive()) {
+					listPlayersToRevive.add(gameCharacter.getName());
+				}
+			}
+			
+		}
+		// For monsters
+		else if (currentCharacter instanceof Monster) {
+			lblPowerType.setText("Type:");
+
+			for (GameCharacter gameCharacter : playerList) {
+				if (gameCharacter.isAlive()) {
+					listCharactersToAttack.add(gameCharacter.getName());
+				}
+			}
+		}
+
+		// Setup labels
+		lblCurrentCharacter.setText(currentCharacter.getName());
+		lblCharacterPower.setText(Integer.toString(currentCharacter.getPower()));
+		lblCharacterDefence.setText(Integer.toString(currentCharacter.getDefense()));
+		lblCharacterLife.setText(Integer.toString(currentCharacter.getLife()));
+		lblCharacterSpeed.setText(Integer.toString(currentCharacter.getSpeed()));
+		lblCharacterPowerType.setText(currentCharacter.getPowerTypeString());
+		lblCharacterHealth.setText(Integer.toString(currentCharacter.getHealth()));
+		
+	}
+	
+	
+	
+	/*
+	 * Creates extra move tabs for player characters (heal, revive, powerup)
+	 */
+	private void setupPlayerTabs() {
 
 		tbtmHeal = new TabItem(movesFolder, 0);
 		tbtmHeal.setText("Heal");
@@ -245,16 +398,12 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		Label seperator_1 = new Label(groupPlayerList, SWT.SEPARATOR | SWT.HORIZONTAL);
 		seperator_1.setBounds(10, 57, 453, 16);
 
-		List listPlayersToHeal = new List(groupPlayerList, SWT.BORDER);
+		listPlayersToHeal = new List(groupPlayerList, SWT.BORDER);
 		listPlayersToHeal.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
 		listPlayersToHeal.setBounds(10, 79, 453, 224);
 
 		Button btnHeal = new Button(groupPlayerList, SWT.NONE);
-		btnHeal.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
+
 		btnHeal.setText("Heal");
 		btnHeal.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnHeal.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
@@ -277,7 +426,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		Label seperator_1_1 = new Label(groupPlayerList_1, SWT.SEPARATOR | SWT.HORIZONTAL);
 		seperator_1_1.setBounds(10, 57, 453, 16);
 
-		List listPlayersToRevive = new List(groupPlayerList_1, SWT.BORDER);
+		listPlayersToRevive = new List(groupPlayerList_1, SWT.BORDER);
 		listPlayersToRevive.setFont(SWTResourceManager.getFont("Segoe UI Light", 16, SWT.NORMAL));
 		listPlayersToRevive.setBounds(10, 79, 453, 224);
 
@@ -301,44 +450,29 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		btnAttemptPowerUp.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
 		btnAttemptPowerUp.setBounds(129, 148, 218, 67);
 
-	}
-	
-	private void showPopup(String windowTitle, String popupText) {
-		PopupScreen popup = new PopupScreen(windowTitle, popupText);
-		popup.open(controller);
-	}
-	
-	
-	// TODO DELETE ME
-	@Override
-	public void debugScreen() {
-		System.out.println("I am a combat screen");
-	}
+		// TODO
+		// Button listeners
+		btnHeal.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 
-	@Override
-	public void showStats(GameCharacter character) {
-		currentCharacter = character;
-		
-		// For Players
-		if(currentCharacter instanceof Player) {
-			lblPowerType.setText("Weapon:");
-			// TODO setup player tabs and refresh
-		}
-		// For monsters
-		else if (currentCharacter instanceof Monster) {
-			lblPowerType.setText("Type:");
-			// TODO setup monster tabs and refresh
-		}
-		
-		// Setup labels
-		lblCurrentCharacter.setText(currentCharacter.getName());
-		lblCharacterPower.setText(Integer.toString(currentCharacter.getPower()));
-		lblCharacterDefence.setText(Integer.toString(currentCharacter.getDefense()));
-		lblCharacterLife.setText(Integer.toString(currentCharacter.getLife()));
-		lblCharacterSpeed.setText(Integer.toString(currentCharacter.getSpeed()));
-		lblCharacterPowerType.setText(currentCharacter.getPowerTypeString());
-		lblCharacterHealth.setText(Integer.toString(currentCharacter.getHealth()));
-		
+		btnRevive.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+
+		btnAttemptPowerUp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+
+		// Refresh layout
+		shell.layout(true, true);
+
 	}
 
 	@Override
@@ -351,4 +485,5 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		// TODO Auto-generated method stub
 		
 	}
+	
 }
