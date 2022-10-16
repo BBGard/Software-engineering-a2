@@ -31,6 +31,8 @@ public class PopupScreen extends Screen{
 	public static final String POPUP_TYPE_ATTACK = "Attack!";
 	public static final String POPUP_TYPE_HEAL = "Heal Player";
 	public static final String POPUP_TYPE_POWERUP = "Power Up!";
+	public static final String POPUP_WELCOME_MESSAGE = "Welcome to Tactics & Trouble!\n"
+			+ "Your brave party approaches the";
 	
 	
 	// Sets the text elements of the popup

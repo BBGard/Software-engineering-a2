@@ -62,7 +62,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		
 		controller.setScreen(this);
 		
-		showPopup(PopupScreen.POPUP_TYPE_WELCOME, "Let's start the game!");
+		showPopup(PopupScreen.POPUP_TYPE_WELCOME, PopupScreen.POPUP_WELCOME_MESSAGE);
 		
 		
 		while (!shell.isDisposed()) {
