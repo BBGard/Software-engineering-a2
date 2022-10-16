@@ -102,13 +102,12 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		characterStatsGroup.setLayout(gl_characterStatsGroup);
 
 		Label lblCurentTurn = new Label(characterStatsGroup, SWT.NONE);
-		lblCurentTurn.setAlignment(SWT.RIGHT);
 		GridData gd_lblCurentTurn = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblCurentTurn.heightHint = 29;
 		gd_lblCurentTurn.widthHint = 98;
 		lblCurentTurn.setLayoutData(gd_lblCurentTurn);
 		lblCurentTurn.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		lblCurentTurn.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
+		lblCurentTurn.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 		lblCurentTurn.setText("Curent Turn:");
 
 		lblCurrentCharacter = new Label(characterStatsGroup, SWT.NONE);
@@ -116,7 +115,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		gd_lblCurrentcharacter.heightHint = 35;
 		gd_lblCurrentcharacter.widthHint = 116;
 		lblCurrentCharacter.setLayoutData(gd_lblCurrentcharacter);
-		lblCurrentCharacter.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.BOLD));
+		lblCurrentCharacter.setFont(SWTResourceManager.getFont("Segoe UI Light", 14, SWT.BOLD));
 		lblCurrentCharacter.setText("currentPlayer");
 		new Label(characterStatsGroup, SWT.NONE);
 		new Label(characterStatsGroup, SWT.NONE);
@@ -125,9 +124,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		GridData gd_lblPower = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblPower.widthHint = 99;
 		lblPower.setLayoutData(gd_lblPower);
-		lblPower.setAlignment(SWT.RIGHT);
-		lblPower.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
-		lblPower.setText("Power");
+		lblPower.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
+		lblPower.setText("Power:");
 
 		lblCharacterPower = new Label(characterStatsGroup, SWT.NONE);
 		lblCharacterPower.setText("power");
@@ -137,9 +135,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		GridData gd_lblDefence = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblDefence.widthHint = 99;
 		lblDefence.setLayoutData(gd_lblDefence);
-		lblDefence.setText("Defence");
-		lblDefence.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
-		lblDefence.setAlignment(SWT.RIGHT);
+		lblDefence.setText("Defence:");
+		lblDefence.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterDefence = new Label(characterStatsGroup, SWT.NONE);
 		lblCharacterDefence.setText("defence");
@@ -149,9 +146,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		GridData gd_lblPLife = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblPLife.widthHint = 98;
 		lblPLife.setLayoutData(gd_lblPLife);
-		lblPLife.setText("Life");
-		lblPLife.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
-		lblPLife.setAlignment(SWT.RIGHT);
+		lblPLife.setText("Life:");
+		lblPLife.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterLife = new Label(characterStatsGroup, SWT.NONE);
 		lblCharacterLife.setText("life");
@@ -161,9 +157,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		GridData gd_lblSpeed = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblSpeed.widthHint = 99;
 		lblSpeed.setLayoutData(gd_lblSpeed);
-		lblSpeed.setText("Speed");
-		lblSpeed.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
-		lblSpeed.setAlignment(SWT.RIGHT);
+		lblSpeed.setText("Speed:");
+		lblSpeed.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterSpeed = new Label(characterStatsGroup, SWT.NONE);
 		lblCharacterSpeed.setText("speed");
@@ -173,9 +168,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		GridData gd_lblWeapon = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblWeapon.widthHint = 99;
 		lblPowerType.setLayoutData(gd_lblWeapon);
-		lblPowerType.setText("Weapon");
-		lblPowerType.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
-		lblPowerType.setAlignment(SWT.RIGHT);
+		lblPowerType.setText("Weapon:");
+		lblPowerType.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterPowerType = new Label(characterStatsGroup, SWT.NONE);
 		lblCharacterPowerType.setText("weapon");
@@ -185,9 +179,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		GridData gd_lblHealth = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblHealth.widthHint = 100;
 		lblHealth.setLayoutData(gd_lblHealth);
-		lblHealth.setText("Health");
-		lblHealth.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
-		lblHealth.setAlignment(SWT.RIGHT);
+		lblHealth.setText("Health:");
+		lblHealth.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterHealth = new Label(characterStatsGroup, SWT.NONE);
 		lblCharacterHealth.setText("health");
@@ -316,13 +309,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 
 	}
 	
-	/*
-	 * Creates and shows a popup message
-	 */
-	private void showPopup(String windowTitle, String popupText) {
-		PopupScreen popup = new PopupScreen(windowTitle, popupText);
-		popup.open(controller);
-	}
+	
 	
 	/*
 	 * Loads the current characters stats into the view
@@ -331,6 +318,8 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList ) {
 		currentCharacter = character;
 		
+		dumpLists();
+		
 		// For Players
 		if(currentCharacter instanceof Player) {
 			lblPowerType.setText("Weapon:");
@@ -338,7 +327,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 			
 			// Populate the character lists for characters to attack/heal/revive
 			for (GameCharacter gameCharacter : monsterList) {
-				if(gameCharacter.isAlive()) {
+				if(gameCharacter.isAlive()) {					
 					listCharactersToAttack.add(gameCharacter.getName());
 				}
 			}
@@ -373,6 +362,22 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		lblCharacterPowerType.setText(currentCharacter.getPowerTypeString());
 		lblCharacterHealth.setText(Integer.toString(currentCharacter.getHealth()));
 		
+	}
+	
+	/*
+	 * Removes all items from all lists,
+	 * So they can be repopulated
+	 */
+	private void dumpLists() {
+		if (listCharactersToAttack != null) {
+			listCharactersToAttack.removeAll();
+		}
+		if (listPlayersToHeal != null) {
+			listPlayersToHeal.removeAll();
+		}
+		if (listPlayersToRevive != null) {
+			listPlayersToRevive.removeAll();
+		}
 	}
 	
 	
@@ -484,6 +489,23 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	public void setTurnText(String turnText) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/*
+	 * Creates and shows a popup message
+	 */
+	private void showPopup(String windowTitle, String popupText) {
+		PopupScreen popup = new PopupScreen(windowTitle, popupText);
+		popup.open(controller);
+	}
+
+	/**
+	 * Displays the result of an action in a PopupScreen
+	 */
+	@Override
+	public void displayResult(String moveType, String resultText) {
+		PopupScreen popup = new PopupScreen(moveType, resultText);
+		popup.open(controller);		
 	}
 	
 }

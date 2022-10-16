@@ -125,66 +125,46 @@ public class Game {
 		}
 		
 		// Shuffle turns list
-		Collections.shuffle(turnList);		
+		Collections.shuffle(turnList);	
+		running = true;
+	}
+	
+	/*
+	 * Sets up the next turn by incrementing the turn counter 
+	 * and making sure characters are alive
+	 */
+	public void nextTurn() {
+		// increase turn counter
+		turnCounter++;
+		
+		// Check for turns remaining
+		if(turnCounter >= turnList.size()) {
+			running = false; // change to turns remain?
+			System.out.println("No more turns in this round");
+			// TODO
+			// repeat match if players remain (at least 1 monster and 1 player (alive or in sin bin)
+		}		
+		else {
+			while(!turnList.get(turnCounter).isAlive()) {
+				System.out.println("next player is dead....");
+				turnCounter++;
+			}
+			System.out.println("turn counter: "+turnCounter);
+		}
+		
 	}
 	
 	public GameCharacter getCurrentPlayer() {
-		return turnList.get(turnCounter);
+		if (running) {
+			return turnList.get(turnCounter);	
+		}
+		else {
+			System.out.println("Cant return player, game is not running");
+			return null;
+		}
+		
 	}
-	
-//	public String playTurn() {
-//		String output = "";
-//		
-//		if (turnCounter < turnList.size()) {
-//			GameCharacter currentPlayer = turnList.get(turnCounter);
-//			
-//			// Check that the character is alive first
-//			if (currentPlayer.isAlive()) {
-//
-//				if (currentPlayer instanceof Monster) {
-//					System.out.println("Player is a monster: " + currentPlayer.getName());
-//					output = runMonsterTurn(currentPlayer);
-//					turnCounter++;
-//				} else if (currentPlayer instanceof Player) {
-//					System.out.println("Player is a player: " + currentPlayer.getName());
-//					output = runPlayerTurn(currentPlayer);
-//					turnCounter++;
-//				}
-//			}
-//		}
-//		return output;
-//	}
-	
-//	
-//	
-//	
-//	/*
-//	 * The logic for a monsters turn
-//	 */
-//	public String runMonsterTurn(GameCharacter monster) {
-//		// Pick random player to attack	from players list	
-//		GameCharacter playerToAttack = players.get(randomNumber.nextInt(players.size()));
-//		
-//		System.out.println("Random player to attack is: " + playerToAttack.getName());
-//		
-//		// attack that player, print result to console for debugging
-//		String result = attack(monster, playerToAttack);
-//		System.out.println(result);	
-//		
-//		return result;
-//		
-//	}
-//	
-//	/*
-//	 * The logic for a players turn
-//	 */
-//	public String runPlayerTurn(GameCharacter player) {
-//		// Await input
-//		String result = "Player turn.";
-//		
-//		return result;
-//	}
-	
+		
 	/*
 	 * Calls the attack function on a character
 	 */
@@ -256,4 +236,76 @@ public class Game {
 	public ArrayList<GameCharacter> getMonstersList() {
 		return this.monsters;
 	}
+	
+	/**
+	 * Returns a character with matching name
+	 * @param characterName the name of the character to look for
+	 * @return the character with matching name
+	 */
+	public GameCharacter getCharacterByName(String characterName) {
+		// go through lists and look for character with matching name
+		for (GameCharacter gameCharacter : monsters) {
+			if(gameCharacter.getName().equalsIgnoreCase(characterName)) {
+				System.out.println("Character found, returning "+ gameCharacter.getName());
+				return gameCharacter;
+			}
+		}
+		for (GameCharacter gameCharacter : players) {
+			if(gameCharacter.getName().equalsIgnoreCase(characterName)) {
+				System.out.println("Character found, returning "+ gameCharacter.getName());
+				return gameCharacter;
+			}
+		}
+		
+		return null;
+	}
+
+	
+	/*
+	 * Returns the running state of the game loop
+	 */
+	public boolean isRunning() {
+		return this.running;
+	}
+
+	/*
+	 * Checks if a) characters remain alive, and b) characters are 
+	 * in the sin bin waiting to be revived, and c) at least
+	 * 1 player nad one monster remain.
+	 * This tells us whether we can keep playing the game
+	 */
+	public boolean playersRemain() {		
+		boolean playersInGame = false;
+		boolean monstersInGame = false;
+		
+		for (GameCharacter gameCharacter : monsters) {
+			if(gameCharacter.isAlive()) {
+				monstersInGame = true;
+				System.out.println("monster in game");
+				break;
+			}
+			break;
+		}
+		for (GameCharacter gameCharacter : players) {
+			if(gameCharacter.isAlive()) {
+				playersInGame = true;
+				System.out.println("player in game");
+				break;
+			}
+			break;
+		}
+		for (GameCharacter gameCharacter : sinBin) {
+			if(gameCharacter.isAlive()) {
+				playersInGame = true;
+				System.out.println("player to be revived");
+				break;
+			}
+			break;
+		}
+		
+		System.out.println("keep playing? "+ (playersInGame && monstersInGame));
+		return playersInGame && monstersInGame;
+	}
+
+	
 }
