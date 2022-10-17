@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import tacticsAndTrouble.UI.CombatScreen;
 import tacticsAndTrouble.UI.Screen;
+import tacticsAndTrouble.UI.ScreenInterface;
 import tacticsAndTrouble.UI.PopupScreen;
 
 /**
