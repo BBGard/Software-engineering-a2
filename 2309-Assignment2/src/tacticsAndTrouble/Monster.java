@@ -66,4 +66,10 @@ public class Monster extends GameCharacter {
 		return monsterStats;
 	}
 
+	@Override
+	protected void resetAttributes() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
