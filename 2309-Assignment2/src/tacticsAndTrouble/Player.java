@@ -76,22 +76,13 @@ public class Player extends GameCharacter {
 			return "Can't revive a living player. Try heal instead.";
 		}
 		
-		playerToRevive.bringBack();
+		playerToRevive.addHealth(getLife() * 30 / 100);
 		
 		return getName() + " revives " + playerToRevive.getName() + ".\n" + playerToRevive.getName() + " now has "
 				+ playerToRevive.getHealth() + " health but does not get a turn this round.";
 	}
 	
-	/*
-	 * Revives this player
-	 */
-	private void bringBack() {
-		// Sets health to 30% of life
-		addHealth(getLife() * 30 / 100);
-		
-		// Sets this player to alive
-		setAlive(true);
-	}
+	
 	
 	/*
 	 * Applies power up

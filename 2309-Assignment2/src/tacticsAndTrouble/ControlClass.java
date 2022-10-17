@@ -42,7 +42,7 @@ public class ControlClass {
 	private void setupFakeGame() {
 		addPlayer("Antoxx", "40", "20", "80", "2", "Spirit");
 		addPlayer("Breta", "20", "15", "53", "3", "Normal");
-		addPlayer("Crum", "70", "30", "35", "1", "Spirit");
+		addPlayer("Crum", "70", "30", "35", "1", "Spirit");		
 		addMonster("Zombie");
 		addMonster("Baron of Hell");
 
@@ -81,7 +81,7 @@ public class ControlClass {
 	/*
 	 * Begins the game loop
 	 */
-	public void beginCombat() {
+	public void beginCombat() { // rename nextRound??
 		game.setupTurns();
 		displayTurn();
 	}
@@ -95,14 +95,15 @@ public class ControlClass {
 		if (game.isRunning() && game.playersRemain()) {			
 			displayTurn();
 		}
-		else if (!game.isRunning() && game.playersRemain()){ // If the end of round is reached, but players remain alive/revived
-			// TODO display round over dialog, remaining players
-			// start next round by calling game.setupTurns()
+		else if (!game.isRunning() && game.playersRemain()){ 
+			// If the end of round is reached, but players remain alive/revived
+			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
+			
 		}
 		else {
 			System.out.println("End game here and return to setup.");
-			//TODO display end of game stats?  track these maybe
 			// restart the program to player setup screen
+			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_GAME, game.getSummary());
 		}
 	}
 	
@@ -117,13 +118,28 @@ public class ControlClass {
 	/**
 	 * Calls the attack function in game
 	 * 
-	 * @param characterName - the name of the character to attack
+	 * @param characterToAttack - the name of the character to attack
 	 */
-	public void attack(String characterName) {
-		System.out.println("Attack " + characterName);
-		String result = game.attack(game.getCurrentPlayer(), game.getCharacterByName(characterName));
+	public void attack(String characterToAttack) {
+		//System.out.println("Attack " + characterName);
+		String result = game.attack( game.getCurrentPlayer(), game.getCharacterByName(characterToAttack));
 
 		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_ATTACK, result);
+	}
+	
+	public void heal(String characterToHeal) {
+		String result = game.heal(((Player) game.getCurrentPlayer()), ((Player) game.getCharacterByName(characterToHeal)));
+		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_HEAL, result);
+	}
+	
+	public void revive(String characterToHeal) {
+		String result = game.revive(((Player) game.getCurrentPlayer()), ((Player) game.getCharacterByName(characterToHeal)));
+		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_REVIVE, result);
+	}
+	
+	public void powerUp() {
+		String result = game.powerUp(((Player) game.getCurrentPlayer()));
+		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_POWERUP, result);
 	}
 
 
@@ -133,4 +149,14 @@ public class ControlClass {
 	public void setScreen(Screen currentScreen) {
 		this.currentScreen = currentScreen;
 	}
+
+	/*
+	 * Quits the game and returns to the player setup menu
+	 */
+	public void quitGame() {
+		((CombatScreen) currentScreen).quit();
+		
+	}
+
+	
 }

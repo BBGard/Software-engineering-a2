@@ -16,7 +16,7 @@ public interface ScreenInterface {
 	
 	public void setWindowTitle(String windowTitle); 
 
-	public void setTurnText(String turnText);
-	
 	public void displayResult(String moveType, String resultText);
+	
+	public void quit();
 }

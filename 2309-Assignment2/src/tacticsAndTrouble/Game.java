@@ -28,6 +28,8 @@ public class Game {
 	
 	private Random randomNumber = new Random();	// Used to generate a random number - dice rolls, choices etc
 	private int turnCounter = 0;		// Keeps track of the current turn
+	private int roundCounter = 0;		// Tracks the number of rounds
+	private boolean gameOver = false;	// Tracks the state of game
 	
 
 	public Game() {
@@ -114,19 +116,44 @@ public class Game {
 	 * Called at the beginning of each game
 	 */
 	public void setupTurns() {
-		System.out.println("Setup turns");
+		System.out.println("\nSetup turns");
+		gameOver = false;
+		turnCounter = 0;
+		roundCounter++;
 				
-		// revive all players in the sinBin if any
+		// Revive all players in the sinBin if any
+		ArrayList<GameCharacter> charactersToRevive = new ArrayList<GameCharacter>();
+		
 		for (GameCharacter revivedCharacter : sinBin) {
 			if (revivedCharacter instanceof Player) {
 				revivedCharacter.setAlive(true);
-				sinBin.remove(revivedCharacter);
+				charactersToRevive.add(revivedCharacter);
+//				sinBin.remove(revivedCharacter);
+				for (int i=0; i< revivedCharacter.getSpeed(); i++) {
+					turnList.add(revivedCharacter);
+				}
+				
+				System.out.println("Revived: "+revivedCharacter.getName());
 			}
+		}
+		
+		sinBin.removeAll(charactersToRevive);
+		
+		// Remove any powerups
+		for (GameCharacter gameCharacter : players) {
+			gameCharacter.resetAttributes();
 		}
 		
 		// Shuffle turns list
 		Collections.shuffle(turnList);	
 		running = true;
+		
+		// Debug:
+//		System.out.println("Player Turn Roster: " );
+//
+//		for (GameCharacter gameCharacter : turnList) {
+//			System.out.println(gameCharacter.getName());
+//		}
 	}
 	
 	/*
@@ -139,17 +166,15 @@ public class Game {
 		
 		// Check for turns remaining
 		if(turnCounter >= turnList.size()) {
-			running = false; // change to turns remain?
-			System.out.println("No more turns in this round");
-			// TODO
-			// repeat match if players remain (at least 1 monster and 1 player (alive or in sin bin)
+			running = false; // change to turns remaining?
+//			System.out.println("No more turns in this round");			
 		}		
 		else {
-			while(!turnList.get(turnCounter).isAlive()) {
-				System.out.println("next player is dead....");
-				turnCounter++;
+			while(!turnList.get(turnCounter).isAlive() && (turnCounter < turnList.size()-2)) {
+				//System.out.println("next player is dead....");
+				turnCounter++;				
 			}
-			System.out.println("turn counter: "+turnCounter);
+			//System.out.println("turn counter: "+turnCounter);
 		}
 		
 	}
@@ -169,7 +194,35 @@ public class Game {
 	 * Calls the attack function on a character
 	 */
 	public String attack(GameCharacter attacker, GameCharacter defender) {
-		return attacker.attack(defender);
+		// Make the attack
+		String result = attacker.attack(defender);
+		
+		// Check if defender is now dead
+		if(!defender.isAlive()) {
+			removeDeadCharacter(defender);
+		}
+		
+		return result;
+	}
+
+	/*
+	 * Removes all instances of a dead character from the turnList
+	 */
+	private void removeDeadCharacter(GameCharacter character) {
+		ArrayList<GameCharacter> instancesToRemove = new ArrayList<GameCharacter>();
+		
+		for (GameCharacter gameCharacter : turnList) {
+			if(gameCharacter.equals(character)) {
+				instancesToRemove.add(gameCharacter);
+			}
+		}
+		
+		turnList.removeAll(instancesToRemove);
+		
+//		System.out.println("Player dead, new turnList: ");
+//		for (GameCharacter gameCharacter : turnList) {
+//			System.out.println(gameCharacter.getName());
+//		}
 	}
 	
 	/*
@@ -192,6 +245,8 @@ public class Game {
 	 * Probably should limit these in the future
 	 */
 	public String revive(Player reviver, Player playerToRevive) {
+		sinBin.add(playerToRevive);
+		
 		return reviver.revive(playerToRevive);
 	}
 	
@@ -246,13 +301,13 @@ public class Game {
 		// go through lists and look for character with matching name
 		for (GameCharacter gameCharacter : monsters) {
 			if(gameCharacter.getName().equalsIgnoreCase(characterName)) {
-				System.out.println("Character found, returning "+ gameCharacter.getName());
+				//System.out.println("Character found, returning "+ gameCharacter.getName());
 				return gameCharacter;
 			}
 		}
 		for (GameCharacter gameCharacter : players) {
 			if(gameCharacter.getName().equalsIgnoreCase(characterName)) {
-				System.out.println("Character found, returning "+ gameCharacter.getName());
+				//System.out.println("Character found, returning "+ gameCharacter.getName());
 				return gameCharacter;
 			}
 		}
@@ -278,33 +333,106 @@ public class Game {
 		boolean playersInGame = false;
 		boolean monstersInGame = false;
 		
+		//debug
+//		System.out.println("\n\n");
+//		for (GameCharacter gameCharacter : monsters) {
+//			System.out.println(gameCharacter.getName() + " alive: " + gameCharacter.isAlive());
+//		}
+//		for (GameCharacter gameCharacter : players) {
+//			System.out.println(gameCharacter.getName() + " alive: " + gameCharacter.isAlive());
+//		}
+//		System.out.println("\n\n");
+		
 		for (GameCharacter gameCharacter : monsters) {
 			if(gameCharacter.isAlive()) {
 				monstersInGame = true;
-				System.out.println("monster in game");
-				break;
-			}
-			break;
+//				System.out.println("monster in game");
+			}			
 		}
 		for (GameCharacter gameCharacter : players) {
 			if(gameCharacter.isAlive()) {
 				playersInGame = true;
-				System.out.println("player in game");
-				break;
+//				System.out.println("player in game");
 			}
-			break;
 		}
 		for (GameCharacter gameCharacter : sinBin) {
 			if(gameCharacter.isAlive()) {
 				playersInGame = true;
-				System.out.println("player to be revived");
-				break;
+//				System.out.println("player to be revived");
 			}
-			break;
 		}
 		
-		System.out.println("keep playing? "+ (playersInGame && monstersInGame));
+//		System.out.println("keep playing? "+ (playersInGame && monstersInGame));
+		
+		if(!playersInGame || !monstersInGame) {
+			gameOver = true;
+		}
+		
 		return playersInGame && monstersInGame;
+	}
+
+	/*
+	 * Generates a String summary of the current state of the game
+	 * remaining players, stats, etc
+	 */
+	public String getSummary() {
+		String summary = "The battle is over!";
+		
+		if(!gameOver ) {
+
+			summary = "The beasts retreat temporarily, allowing our players a brief moment to regroup."
+					+ "\n\nRemaining players: ";
+			
+			for (GameCharacter gameCharacter : players) {
+				if(gameCharacter.isAlive()) {
+					summary += ("\n" + gameCharacter.getName());
+				}
+			}
+			
+			summary += "\n\nRemaining Monsters:  ";
+			
+			for (GameCharacter gameCharacter : monsters) {
+				if(gameCharacter.isAlive()) {
+					summary += ("\n" + gameCharacter.getName());
+				}
+			}
+		}
+		else {
+			boolean playersInGame = false;
+			boolean monstersInGame = false;
+			// Refactor me!
+			for (GameCharacter gameCharacter : monsters) {
+				if (gameCharacter.isAlive()) {
+					monstersInGame = true;
+				}
+			}
+			for (GameCharacter gameCharacter : players) {
+				if (gameCharacter.isAlive()) {
+					playersInGame = true;
+				}
+			}
+			
+			if(playersInGame) {
+				summary += "\nThe brave party is victorious!!"
+						+ "\n\nReminaing players: ";
+				for (GameCharacter gameCharacter : players) {
+					if(gameCharacter.isAlive()) {
+						summary += ("\n" + gameCharacter.getName());
+					}
+				}
+			}
+			else if (monstersInGame) {
+				summary += "The brave party has been defeated!!"
+						+ "\nThe following beasts still roam: ";
+				for (GameCharacter gameCharacter : monsters) {
+					if(gameCharacter.isAlive()) {
+						summary += ("\n" + gameCharacter.getName());
+					}
+				}
+			}
+		}
+		
+		return summary;
 	}
 
 	

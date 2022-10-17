@@ -26,11 +26,14 @@ public class PopupScreen extends Screen{
 	private String popupText;
 	private Label lblPopupText;	// The text displayed by this popup window
 	
-	// Window titles
+	// Window titles/states
 	public static final String POPUP_TYPE_WELCOME = "Welcome";
 	public static final String POPUP_TYPE_ATTACK = "Attack!";
 	public static final String POPUP_TYPE_HEAL = "Heal Player";
+	public static final String POPUP_TYPE_REVIVE = "Revive Player";
 	public static final String POPUP_TYPE_POWERUP = "Power Up!";
+	public static final String POPUP_TYPE_END_OF_ROUND = "Round Over!";
+	public static final String POPUP_TYPE_END_OF_GAME = "Game Over!";
 	public static final String POPUP_WELCOME_MESSAGE = "Welcome to Tactics & Trouble!\n\n"
 			+ "After climbing down from the highest peak into the Valley of Despair, "
 			+ "your brave party approaches the fiery gates of hell."
@@ -69,25 +72,25 @@ public class PopupScreen extends Screen{
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(800, 400);
+		shell.setSize(800, 600);
 		shell.setText(windowTitle);
 		shell.setLayout(new FormLayout());
 		
-		lblPopupText = new Label(shell, SWT.NONE);
+		lblPopupText = new Label(shell, SWT.WRAP);
+		lblPopupText.setAlignment(SWT.CENTER);
 		FormData fd_lblPopupText = new FormData();
 		fd_lblPopupText.top = new FormAttachment(0, 45);
-		fd_lblPopupText.left = new FormAttachment(0, 172);
-		fd_lblPopupText.bottom = new FormAttachment(0, 276);
-		fd_lblPopupText.right = new FormAttachment(0, 631);
+		fd_lblPopupText.left = new FormAttachment(0, 62);
+		fd_lblPopupText.bottom = new FormAttachment(0, 462);
+		fd_lblPopupText.right = new FormAttachment(0, 734);
 		lblPopupText.setLayoutData(fd_lblPopupText);
 		lblPopupText.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
-		lblPopupText.setAlignment(SWT.CENTER);
 		lblPopupText.setText(popupText);
 		
 		Button btnContinue = new Button(shell, SWT.NONE);
 		FormData fd_btnContinue = new FormData();
-		fd_btnContinue.bottom = new FormAttachment(100, -13);
-		fd_btnContinue.top = new FormAttachment(lblPopupText, 23);
+		fd_btnContinue.top = new FormAttachment(lblPopupText, 20);
+		fd_btnContinue.bottom = new FormAttachment(100, -41);
 		fd_btnContinue.right = new FormAttachment(100, -256);
 		fd_btnContinue.left = new FormAttachment(0, 284);
 		btnContinue.setLayoutData(fd_btnContinue);
@@ -111,36 +114,45 @@ public class PopupScreen extends Screen{
 		switch (windowTitle) {
 		case POPUP_TYPE_WELCOME:		
 			// begin combat
+			shell.close();
 			controller.beginCombat();
 			break;
 			
-		case POPUP_TYPE_ATTACK:
-			System.out.println("next player turn here");
-			controller.nextTurn();
+		case POPUP_TYPE_END_OF_ROUND:
+			// Display end of round summary
+			//System.out.println("Start next round!");
+			shell.close();
+			controller.beginCombat();
 			break;
 			
-		case POPUP_TYPE_HEAL:
+		case POPUP_TYPE_END_OF_GAME:
+			// Display end of game summary, quit
+			shell.close();
+			controller.quitGame();
+			break;	
 			
-			break;
-			
-		case POPUP_TYPE_POWERUP:
-			
-			break;
+//		case POPUP_TYPE_ATTACK:
+//			shell.close();
+//			controller.nextTurn();
+//			break;
+//			
+//		case POPUP_TYPE_HEAL:
+//			shell.close();
+//			controller.nextTurn();
+//			break;
+//			
+//		case POPUP_TYPE_POWERUP:
+//			shell.close();
+//			controller.nextTurn();
+//			break;
 		
 
 		default:
+			shell.close();
+			controller.nextTurn();
 			break;
-		}
+		}		
 		
-		
-		// Close this window
-		shell.close();
-	}
-	
-	// TODO DELETE ME
-	@Override
-	public void debugScreen() {
-		System.out.println("I am a POPUP screen");
 	}
 
 }

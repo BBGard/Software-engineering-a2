@@ -206,6 +206,9 @@ public abstract class GameCharacter {
 	public int getBaseSpeed() {
 		return this.baseSpeed;
 	}
+
+	protected abstract void resetAttributes();
+
 	
 	
 }
