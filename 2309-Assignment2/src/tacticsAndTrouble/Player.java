@@ -76,7 +76,8 @@ public class Player extends GameCharacter {
 			return "Can't revive a living player. Try heal instead.";
 		}
 		
-		playerToRevive.addHealth(getLife() * 30 / 100);
+		// Set revived players health to 30% of their life
+		playerToRevive.setHealth(playerToRevive.getLife() * 30 / 100);
 		
 		return getName() + " revives " + playerToRevive.getName() + ".\n" + playerToRevive.getName() + " now has "
 				+ playerToRevive.getHealth() + " health but does not get a turn this round.";

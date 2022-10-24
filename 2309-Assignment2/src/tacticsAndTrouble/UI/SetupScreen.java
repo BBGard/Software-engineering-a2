@@ -325,31 +325,43 @@ public class SetupScreen extends Screen{
 		// For players
 		if (setupState.equalsIgnoreCase("PLAYER") && verifyInputs()) {			
 			
-			// Add player name to character list			
-			listCharacters.add(textName.getText() + "\n");
 			
 			
-			// Add player to game
-			controller.addPlayer(textName.getText(), textPower.getText(), textDefence.getText(), textLife.getText(),
+			// Try to add player to game
+			boolean playerAdded = controller.addPlayer(textName.getText(), textPower.getText(), textDefence.getText(), textLife.getText(),
 					textSpeed.getText(), comboChooser.getText());
-
-			// Reset textFields
-			textName.setText("");
-			textPower.setText("40");
-			textDefence.setText("20");
-			textLife.setText("80");
-			textSpeed.setText("2");
 			
-			lblErrorMessage.setText("");
-			btnNext.setEnabled(true);
+			if (playerAdded) {
+
+				// Add player name to character list
+				listCharacters.add(textName.getText() + "\n");
+
+				// Reset textFields
+				textName.setText("");
+				textPower.setText("40");
+				textDefence.setText("20");
+				textLife.setText("80");
+				textSpeed.setText("2");
+
+				lblErrorMessage.setText("");
+				btnNext.setEnabled(true);
+			}
+			else {
+				 lblErrorMessage.setText("Maximum players reached.");
+			}
 		}
 		// for monsters
 		else if (setupState.equalsIgnoreCase("MONSTER")) {
-			// Add monster name to character list
-			listCharacters.add(comboChooser.getText() + "\n");
-			
-			// Add monster to game				
-			controller.addMonster(comboChooser.getText());
+			// Try to add monster to game	
+			boolean monsterAdded =	controller.addMonster(comboChooser.getText());		
+						
+			if (monsterAdded) {
+				// Add monster name to character list
+				listCharacters.add(comboChooser.getText() + "\n");
+			}
+			else {
+				 lblErrorMessage.setText("Maximum monsters reached.");
+			}
 		}
 		
 	}

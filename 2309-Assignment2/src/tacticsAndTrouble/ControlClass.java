@@ -56,33 +56,35 @@ public class ControlClass {
 	}
 
 	/*
-	 * Converts inputs to appropriate types, creates a new GameCharacter and adds it
-	 * to the Game
+	 * Check if we can add a player
+	 * If so, creates a new Player GameCharacter and adds it to the game
+	 * returning the result
 	 */
-	public void addPlayer(String name, String power, String defense, String life, String speed, String weapon) {
+	public boolean addPlayer(String name, String power, String defense, String life, String speed, String weapon) {
 
 		if (game.canAddPlayers()) {
 			GameCharacter player = new Player(name, Integer.parseInt(power), Integer.parseInt(defense),
 					Integer.parseInt(life), Integer.parseInt(speed), new PowerType(weapon));
-			game.addGameCharacter(player);
+			return game.addGameCharacter(player);
 		}
 		else {
-			System.out.println("MAX Players");
+			return false;
 		}
 
 	}
 
 	/*
-	 * Adds a monster to the game Uses the MonsterFactory class to create the
-	 * monster
+	 * Check if we can add a monster
+	 * If so, uses the monster factory to create a new monster and adds it to the game
+	 * returning the result
 	 */
-	public void addMonster(String type) {
+	public boolean addMonster(String type) {
 		
 		if (game.canAddMonsters()) {
 			Monster monster = monsterMaker.createMonster(type);
-			game.addGameCharacter(monster);
+			return game.addGameCharacter(monster);
 		} else {
-			System.out.println("MAX monsters");
+			return false;
 		}
 	}
 
@@ -95,20 +97,21 @@ public class ControlClass {
 	}
 	
 	/**
-	 * Starts the next turn
+	 * Runs the next turn
+	 * Then displays results depending on the satte of the game
 	 */
 	public void nextTurn() {
 		game.nextTurn();
 		// If the game is running AND enough players remain alive/revived
-		if (game.isRunning() && game.canPlay()) {			
+		if (game.isRunning() && game.canPlay()) {		// STATE 1	- play the turn
 			displayTurn();
 		}
-		else if (!game.isRunning() && game.canPlay()){ 
+		else if (!game.isRunning() && game.canPlay()){  // STATE 2 - end of round, show results
 			// If the end of round is reached, but players remain alive/revived
 			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
 			
 		}
-		else {
+		else { // STATE 3 - end of game, show summary
 			System.out.println("End game here and return to setup.");
 			// restart the program to player setup screen
 			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_GAME, game.getSummary());
@@ -116,17 +119,15 @@ public class ControlClass {
 	}
 	
 	/*
-	 * calls on the current screen to display the next turns data
+	 * Calls on the current screen to display the next turns data
 	 */
 	public void displayTurn() {
 		((CombatScreen) currentScreen).setupTurn(game.getCurrentPlayer(), game.getPlayersList(),
 				game.getMonstersList());
 	}
 
-	/**
-	 * Calls the attack function in game
-	 * 
-	 * @param characterToAttack - the name of the character to attack
+	/*
+	 * Carries out an attack move
 	 */
 	public void attack(String characterToAttack) {
 		//System.out.println("Attack " + characterName);
@@ -135,16 +136,25 @@ public class ControlClass {
 		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_ATTACK, result);
 	}
 	
+	/*
+	 * Carries out a heal move
+	 */
 	public void heal(String characterToHeal) {
 		String result = game.heal(((Player) game.getCurrentPlayer()), ((Player) game.getCharacterByName(characterToHeal)));
 		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_HEAL, result);
 	}
 	
+	/*
+	 * Carries out a revive move
+	 */
 	public void revive(String characterToHeal) {
 		String result = game.revive(((Player) game.getCurrentPlayer()), ((Player) game.getCharacterByName(characterToHeal)));
 		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_REVIVE, result);
 	}
 	
+	/*
+	 * Carries out a powerup move
+	 */
 	public void powerUp() {
 		String result = game.powerUp(((Player) game.getCurrentPlayer()));
 		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_POWERUP, result);
@@ -152,7 +162,7 @@ public class ControlClass {
 
 
 	/*
-	 * Sets the current screen being shown (tracks state of the game)
+	 * Sets the current screen being shown - changes according to state of the game
 	 */
 	public void setScreen(Screen currentScreen) {
 		this.currentScreen = currentScreen;
@@ -162,8 +172,7 @@ public class ControlClass {
 	 * Quits the game and returns to the player setup menu
 	 */
 	public void quitGame() {
-		((CombatScreen) currentScreen).quit();
-		
+		((CombatScreen) currentScreen).quit();		
 	}
 
 	

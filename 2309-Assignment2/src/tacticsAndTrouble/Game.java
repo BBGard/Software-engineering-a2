@@ -44,7 +44,7 @@ public class Game {
 	 * Determines if the character is a player or monster 
 	 * and adds to the appropriate list
 	 */
-	public String addGameCharacter(GameCharacter character) {
+	public boolean addGameCharacter(GameCharacter character) {
 		if(character != null) {
 			if(character instanceof Player) {
 				players.add(character); // Add player to the player list
@@ -57,10 +57,10 @@ public class Game {
 			for (int i = 0; i < character.getSpeed(); i++) {
 				turnList.add(character);
 			}
-			return "Character added!";
+			return true;
 		}
 		
-		return "Could not add character!";
+		return false;
 	}
 	
 	/*

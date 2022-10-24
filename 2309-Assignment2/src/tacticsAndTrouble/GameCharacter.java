@@ -63,6 +63,7 @@ public abstract class GameCharacter {
 					+ " damage.\n" + defender.getName() + defender.getHealthStatus();
 		}
 		
+		
 		return result;
 	}
 

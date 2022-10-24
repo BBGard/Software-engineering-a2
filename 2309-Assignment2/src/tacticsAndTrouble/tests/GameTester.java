@@ -68,14 +68,14 @@ public class GameTester {
 
 	@Test
 	public void testAddPlayer() {
-		assertEquals("Player added!", game.addPlayer(player1));
+		assertTrue(game.addGameCharacter(player1));
 
-		assertEquals(1, game.getPlayerCount());
+		assertEquals(1, game.getPlayersList().size());
 	}
 
 	@Test
 	public void testAddNullPlayer() {
-		assertEquals("Could not add player!", game.addPlayer(null));
+		assertFalse(game.addGameCharacter(null));
 	}
 
 	@Test
@@ -84,18 +84,18 @@ public class GameTester {
 		GameCharacter player3 = new Player("Bob", 33, 10, 23, 1);
 		GameCharacter player4 = new Player("Bree", 44, 50, 12, 5);
 
-		assertEquals("Player added!", game.addPlayer(player2));
-		assertEquals("Player added!", game.addPlayer(player3));
-		assertEquals("Player added!", game.addPlayer(player4));
+		assertTrue(game.addGameCharacter(player2));
+		assertTrue(game.addGameCharacter(player3));
+		assertTrue(game.addGameCharacter(player4));
 
-		assertEquals(3, game.getPlayerCount());
+		assertEquals(3, game.getPlayersList().size());
 	}
 
 	@Test
 	public void addPlayerWithWeapon() {
 		GameCharacter player = new Player("Ben", 35, 44, 12, 2, new PowerType(PowerType.LIGHTNING));
-		assertEquals("Player added!", game.addPlayer(player));
-		assertEquals(1, game.getPlayerCount());
+		assertTrue(game.addGameCharacter(player));
+		assertEquals(1, game.getPlayersList().size());
 	}
 
 	@Test
@@ -126,13 +126,13 @@ public class GameTester {
 	public void testAddMonster() {
 		GameCharacter monster = new Monster(Monster.BARON_OF_HELL, 23, 44, 55, 12, new PowerType(PowerType.SPIRIT));
 
-		assertEquals("Monster added!", game.addMonster(monster));
-		assertEquals(1, game.getMonsterCount());
+		assertTrue(game.addGameCharacter(monster));
+		assertEquals(1, game.getMonstersList().size());
 	}
 
 	@Test
 	public void testAddNullMonster() {
-		game.addMonster(null);
+		game.addGameCharacter(null);
 	}
 
 	@Test
