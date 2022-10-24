@@ -23,7 +23,7 @@ public class ControlClass {
 
 	private MonsterFactory monsterMaker; // For creating monsters
 
-	private boolean running = true; // Controls if the game loop is running or not
+	//private boolean running = true; // Controls if the game loop is running or not
 
 	public ControlClass(Game game, Screen screen) {
 		this.game = game;
@@ -33,20 +33,20 @@ public class ControlClass {
 
 		// FOR TESTING ONLY
 		// DELETE ME
-		setupFakeGame();
+		//setupFakeGame();
 	}
 
 	/*
 	 * TESTING PURPOSES ONLY - DELETE
 	 */
-	private void setupFakeGame() {
-		addPlayer("Antoxx", "40", "20", "80", "2", "Spirit");
-		addPlayer("Breta", "20", "15", "53", "3", "Normal");
-		addPlayer("Crum", "70", "30", "35", "1", "Spirit");		
-		addMonster("Zombie");
-		addMonster("Baron of Hell");
-
-	}
+//	private void setupFakeGame() {
+//		addPlayer("Antoxx", "40", "20", "80", "2", "Spirit");
+//		addPlayer("Breta", "20", "15", "53", "3", "Normal");
+//		addPlayer("Crum", "70", "30", "35", "1", "Spirit");		
+//		addMonster("Zombie");
+//		addMonster("Baron of Hell");
+//
+//	}
 
 	/*
 	 * Opens the splash screen to begin the program
@@ -56,7 +56,7 @@ public class ControlClass {
 	}
 
 	/*
-	 * Converts input to appropiate types, creates a new GameCharacter and adds it
+	 * Converts inputs to appropriate types, creates a new GameCharacter and adds it
 	 * to the Game
 	 */
 	public void addPlayer(String name, String power, String defense, String life, String speed, String weapon) {
@@ -64,7 +64,10 @@ public class ControlClass {
 		if (game.canAddPlayers()) {
 			GameCharacter player = new Player(name, Integer.parseInt(power), Integer.parseInt(defense),
 					Integer.parseInt(life), Integer.parseInt(speed), new PowerType(weapon));
-			game.addPlayer(player);
+			game.addGameCharacter(player);
+		}
+		else {
+			System.out.println("MAX Players");
 		}
 
 	}
@@ -74,28 +77,33 @@ public class ControlClass {
 	 * monster
 	 */
 	public void addMonster(String type) {
-		Monster monster = monsterMaker.createMonster(type);
-		game.addMonster(monster);
+		
+		if (game.canAddMonsters()) {
+			Monster monster = monsterMaker.createMonster(type);
+			game.addGameCharacter(monster);
+		} else {
+			System.out.println("MAX monsters");
+		}
 	}
 
 	/*
-	 * Begins the game loop
+	 * Starts a new round
 	 */
-	public void beginCombat() { // rename nextRound??
+	public void nextRound() {
 		game.setupTurns();
 		displayTurn();
 	}
 	
 	/**
-	 * Calls setup the next turn
+	 * Starts the next turn
 	 */
 	public void nextTurn() {
 		game.nextTurn();
 		// If the game is running AND enough players remain alive/revived
-		if (game.isRunning() && game.playersRemain()) {			
+		if (game.isRunning() && game.canPlay()) {			
 			displayTurn();
 		}
-		else if (!game.isRunning() && game.playersRemain()){ 
+		else if (!game.isRunning() && game.canPlay()){ 
 			// If the end of round is reached, but players remain alive/revived
 			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
 			

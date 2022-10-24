@@ -8,6 +8,7 @@ package tacticsAndTrouble;
  * This class represents power types in the game Tactics and Trouble
  * For players this is the weapon power
  * For monsters this is the monster type
+ * Methods are available for interactions between power types (multipliers)
  */
 public class PowerType {
 	public static final String NORMAL = "Normal";

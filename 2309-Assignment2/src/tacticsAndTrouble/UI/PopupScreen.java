@@ -115,14 +115,14 @@ public class PopupScreen extends Screen{
 		case POPUP_TYPE_WELCOME:		
 			// begin combat
 			shell.close();
-			controller.beginCombat();
+			controller.nextRound();
 			break;
 			
 		case POPUP_TYPE_END_OF_ROUND:
 			// Display end of round summary
 			//System.out.println("Start next round!");
 			shell.close();
-			controller.beginCombat();
+			controller.nextRound();
 			break;
 			
 		case POPUP_TYPE_END_OF_GAME:

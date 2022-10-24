@@ -209,14 +209,14 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	
 	/*
 	 * Loads the current characters stats into the view
+	 * Should probably move this to the control class....if I can be bothered
 	 */
 	@Override
 	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList ) {
 		currentCharacter = character;
 		
 		destroyTabs();	// Remove tabs so they can be setup again
-		//dumpLists(); // Remove anything that is currently in the lists
-		setupTabs();
+		setupTabs();	// Setup the tabs
 		
 		// For Players
 		if(currentCharacter instanceof Player) {
@@ -262,22 +262,6 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	}
 	
 	/*
-	 * Removes all items from all lists,
-	 * So they can be re-populated
-	 */
-//	private void dumpLists() {
-//		if (listCharactersToAttack != null) {
-//			listCharactersToAttack.removeAll();
-//		}
-//		if (listPlayersToHeal != null) {
-//			listPlayersToHeal.removeAll();
-//		}
-//		if (listPlayersToRevive != null) {
-//			listPlayersToRevive.removeAll();
-//		}
-//	}
-	
-	/*
 	 * Removes all move tabs so they can be setup new
 	 */
 	private void destroyTabs() {
@@ -301,7 +285,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	 * Creates extra move tabs for player characters (heal, revive, powerup)
 	 */
 	private void setupTabs() {
-		System.out.println("Setup tabs");
+		//System.out.println("Setup tabs");
 		/***********************************************************************
 		 * Attack Tab for Players and Monsters
 		 */
@@ -335,7 +319,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		btnAttack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Attack pressed in CombatScreen!");
+				//System.out.println("Attack pressed in CombatScreen!");
 				controller.attack(listCharactersToAttack.getSelection()[0]);
 			}
 		});
@@ -404,7 +388,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 			btnHeal.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					System.out.println("Heal pressed in CombatScreen!");
+					//System.out.println("Heal pressed in CombatScreen!");
 					controller.heal(listPlayersToHeal.getSelection()[0]);
 				}
 			});
@@ -412,7 +396,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 			btnRevive.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					System.out.println("Revive pressed in CombatScreen!");
+					//System.out.println("Revive pressed in CombatScreen!");
 					controller.revive(listPlayersToRevive.getSelection()[0]);
 				}
 			});
@@ -434,7 +418,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 				btnAttemptPowerUp.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						System.out.println("PowerUp pressed in CombatScreen!");
+						//System.out.println("PowerUp pressed in CombatScreen!");
 						controller.powerUp();
 					}
 				});
@@ -473,6 +457,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	/*
 	 * Disposes this screen and all contents
 	 * Creates new Setup screen
+	 * Called at the end of the game, win/lose, returns game to setup screen
 	 */
 	@Override
 	public void quit() {

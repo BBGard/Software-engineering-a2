@@ -10,26 +10,26 @@ import java.util.Random;
 
 /**
  * @author Benjamin Gardiner
- * This class represents the game tactics and trouble
- * Within the game, this class is essentially the "Tactician"
- * in charge of all game logic and decisions
+ * This is the main game class for the game tactics and trouble
+ * This class holds all gameplay related data and methods
+ * This is the "model" in the model-view-controller design pattern
  */
 public class Game {
-	private ArrayList<GameCharacter> turnList; 	// List of all players and monsters added according to speed/turns
-	private ArrayList<GameCharacter> sinBin; 	// List of all players who have been revived, waiting for the next round
+	private ArrayList<GameCharacter> turnList; 	// List of all players and monsters in order of their turns
+	private ArrayList<GameCharacter> sinBin; 	// List of all players who have been revived, waiting for the next round, not currently in play	
+	private ArrayList<GameCharacter> players;	// List of all players in the game
+	private ArrayList<GameCharacter> monsters;	// List of all monsters in the game
 	
-	private ArrayList<GameCharacter> players;	// List of all players
-	private ArrayList<GameCharacter> monsters;	// List of all monsters
-	
-	private boolean running = false;		// Controls the main game loop
+	private boolean turnsRemaining = false;		// Controls the turns in each round - true if turns remain
+	private boolean gameOver = false;			// Controls the game - false if players and monsters remain alive
 	
 	private static final int MAX_PLAYERS = 5; // Maximum number of players
 	private static final int MAX_MONSTERS = 5; // Maximum number of monsters
 	
 	private Random randomNumber = new Random();	// Used to generate a random number - dice rolls, choices etc
+	
 	private int turnCounter = 0;		// Keeps track of the current turn
 	private int roundCounter = 0;		// Tracks the number of rounds
-	private boolean gameOver = false;	// Tracks the state of game
 	
 
 	public Game() {
@@ -40,75 +40,27 @@ public class Game {
 	}
 	
 	/*
-	 * Add a player to the game
+	 * Adds a GameCharacter to the game
+	 * Determines if the character is a player or monster 
+	 * and adds to the appropriate list
 	 */
-	public String addPlayer(GameCharacter player) {
-		
-		if (players.size() == MAX_PLAYERS) {
-			
-			return "Reached player limit!";
-			//throw new Exception("Reached player limit");
-		}
-		
-		if(player != null) {
-			players.add(player);
-			
-			for (int i=0; i< player.getSpeed(); i++) {
-				turnList.add(player);
+	public String addGameCharacter(GameCharacter character) {
+		if(character != null) {
+			if(character instanceof Player) {
+				players.add(character); // Add player to the player list
 			}
-			return "Player added!";
-		}
-		
-		return "Could not add player!";
-		//throw new Exception("Could not add player!");
-	}
-	
-	/*
-	 * Add a monster to the game
-	 */
-	public String addMonster(GameCharacter monster) {
-		if(monsters.size() == MAX_MONSTERS) {
-			return "Reached monster limit!";
-		}
-		
-		if(monster != null) {
-			monsters.add(monster);
-			
-			for (int i=0; i< monster.getSpeed(); i++) {
-				turnList.add(monster);
+			else if (character instanceof Monster) {
+				monsters.add(character); // add monster to the monster list
 			}
-			return "Monster added!";
+			
+			// Add character to the turns list according to their speed/number of turns
+			for (int i = 0; i < character.getSpeed(); i++) {
+				turnList.add(character);
+			}
+			return "Character added!";
 		}
 		
-		return "Could not add monster!"; 
-	}
-	
-	/*
-	 * Returns the number of players in the game
-	 */
-	public int getPlayerCount() {
-		return players.size();
-	}
-	
-	/*
-	 * Returns the number of monsters in the game
-	 */
-	public int getMonsterCount() {
-		return monsters.size();
-	}
-	
-	/*
-	 * Returns true if players.size < MAX_PLAYERS
-	 */
-	public boolean canAddPlayers() {
-		return getPlayerCount() < MAX_PLAYERS;
-	}
-	
-	/*
-	 * Returns true if monsters.size < MAX_MONSTERS
-	 */
-	public boolean canAddMonsters() {
-		return getPlayerCount() < MAX_PLAYERS;
+		return "Could not add character!";
 	}
 	
 	/*
@@ -116,27 +68,25 @@ public class Game {
 	 * Called at the beginning of each game
 	 */
 	public void setupTurns() {
-		System.out.println("\nSetup turns");
 		gameOver = false;
 		turnCounter = 0;
 		roundCounter++;
-				
-		// Revive all players in the sinBin if any
+						
 		ArrayList<GameCharacter> charactersToRevive = new ArrayList<GameCharacter>();
 		
+		// Revive all players in the sinBin if any
 		for (GameCharacter revivedCharacter : sinBin) {
 			if (revivedCharacter instanceof Player) {
 				revivedCharacter.setAlive(true);
 				charactersToRevive.add(revivedCharacter);
-//				sinBin.remove(revivedCharacter);
+				
 				for (int i=0; i< revivedCharacter.getSpeed(); i++) {
 					turnList.add(revivedCharacter);
-				}
-				
-				System.out.println("Revived: "+revivedCharacter.getName());
+				}				
 			}
 		}
 		
+		// Clear the sinBin
 		sinBin.removeAll(charactersToRevive);
 		
 		// Remove any powerups
@@ -144,16 +94,9 @@ public class Game {
 			gameCharacter.resetAttributes();
 		}
 		
-		// Shuffle turns list
+		// Shuffle turns list and begin the game
 		Collections.shuffle(turnList);	
-		running = true;
-		
-		// Debug:
-//		System.out.println("Player Turn Roster: " );
-//
-//		for (GameCharacter gameCharacter : turnList) {
-//			System.out.println(gameCharacter.getName());
-//		}
+		turnsRemaining = true;		
 	}
 	
 	/*
@@ -166,32 +109,33 @@ public class Game {
 		
 		// Check for turns remaining
 		if(turnCounter >= turnList.size()) {
-			running = false; // change to turns remaining?
-//			System.out.println("No more turns in this round");			
+			turnsRemaining = false;
 		}		
 		else {
+			// If the next character in the turn list is dead, move on
 			while(!turnList.get(turnCounter).isAlive() && (turnCounter < turnList.size()-2)) {
-				//System.out.println("next player is dead....");
 				turnCounter++;				
 			}
-			//System.out.println("turn counter: "+turnCounter);
-		}
-		
+		}		
 	}
 	
+	/*
+	 * Who's turn is it currently?
+	 * Returns the current character at the turnCounter position of the turn list
+	 */
 	public GameCharacter getCurrentPlayer() {
-		if (running) {
+		if (turnsRemaining) {
 			return turnList.get(turnCounter);	
 		}
 		else {
 			System.out.println("Cant return player, game is not running");
 			return null;
-		}
-		
+		}		
 	}
-		
+	
 	/*
 	 * Calls the attack function on a character
+	 * Attacker attacks the defender
 	 */
 	public String attack(GameCharacter attacker, GameCharacter defender) {
 		// Make the attack
@@ -205,28 +149,11 @@ public class Game {
 		return result;
 	}
 
-	/*
-	 * Removes all instances of a dead character from the turnList
-	 */
-	private void removeDeadCharacter(GameCharacter character) {
-		ArrayList<GameCharacter> instancesToRemove = new ArrayList<GameCharacter>();
-		
-		for (GameCharacter gameCharacter : turnList) {
-			if(gameCharacter.equals(character)) {
-				instancesToRemove.add(gameCharacter);
-			}
-		}
-		
-		turnList.removeAll(instancesToRemove);
-		
-//		System.out.println("Player dead, new turnList: ");
-//		for (GameCharacter gameCharacter : turnList) {
-//			System.out.println(gameCharacter.getName());
-//		}
-	}
+	
 	
 	/*
 	 * Attempts to heal another player
+	 * healer heals playerToHeal
 	 */
 	public String heal(Player healer, Player playerToHeal) {
 		// Roll for a 50% chance to heal
@@ -242,7 +169,8 @@ public class Game {
 	/*
 	 * Revives another player
 	 * NOTE: revives are unlimited and have 100% chance of success
-	 * Probably should limit these in the future
+	 * Maybe limit these in the future?
+	 * reviver revives the playerToRevive
 	 */
 	public String revive(Player reviver, Player playerToRevive) {
 		sinBin.add(playerToRevive);
@@ -266,7 +194,6 @@ public class Game {
 	 * Picks a random number based on the percentage input
 	 * if 75% picks random number between 0 and 4 (3 in 4 chance)
 	 * if 50% picks random number between 0 and 2 (1 in 2 chance)
-	 * checks the answer based on percentage
 	 */
 	public boolean rollForChance(int percentage) {		
 		int roll = 0;
@@ -284,30 +211,48 @@ public class Game {
 		}
 	}
 	
+	/*
+	 * Removes all instances of a dead character from the turnList
+	 */
+	private void removeDeadCharacter(GameCharacter character) {
+		ArrayList<GameCharacter> instancesToRemove = new ArrayList<GameCharacter>();
+		
+		for (GameCharacter gameCharacter : turnList) {
+			if(gameCharacter.equals(character)) {
+				instancesToRemove.add(gameCharacter);
+			}
+		}
+		
+		turnList.removeAll(instancesToRemove);		
+	}
+	
+	/*
+	 * Returns a list of all Players in the game
+	 */
 	public ArrayList<GameCharacter> getPlayersList() {
 		return this.players;
 	}
 
+	/*
+	 * Returns a list of all Monsters in the game
+	 */
 	public ArrayList<GameCharacter> getMonstersList() {
 		return this.monsters;
 	}
 	
 	/**
-	 * Returns a character with matching name
-	 * @param characterName the name of the character to look for
-	 * @return the character with matching name
+	 * Looks for a particular character based on the provided name
+	 * Returns the GameCharacter if found
 	 */
 	public GameCharacter getCharacterByName(String characterName) {
 		// go through lists and look for character with matching name
 		for (GameCharacter gameCharacter : monsters) {
 			if(gameCharacter.getName().equalsIgnoreCase(characterName)) {
-				//System.out.println("Character found, returning "+ gameCharacter.getName());
 				return gameCharacter;
 			}
 		}
 		for (GameCharacter gameCharacter : players) {
 			if(gameCharacter.getName().equalsIgnoreCase(characterName)) {
-				//System.out.println("Character found, returning "+ gameCharacter.getName());
 				return gameCharacter;
 			}
 		}
@@ -317,58 +262,64 @@ public class Game {
 
 	
 	/*
-	 * Returns the running state of the game loop
+	 * Returns the state of the game - turns remaining
 	 */
 	public boolean isRunning() {
-		return this.running;
+		return this.turnsRemaining;
 	}
 
 	/*
-	 * Checks if a) characters remain alive, and b) characters are 
-	 * in the sin bin waiting to be revived, and c) at least
-	 * 1 player nad one monster remain.
-	 * This tells us whether we can keep playing the game
+	 * Checks whether we can keep playing
+	 * Need at least 1 monster and 1 player to continue playing
 	 */
-	public boolean playersRemain() {		
-		boolean playersInGame = false;
-		boolean monstersInGame = false;
+	public boolean canPlay() {	
+		System.out.println("Checking canPlay"
+				+"\n--------------------"
+				+"\nplayersRemain() " +playersRemain()
+				+"\nmonstersRemain() " +monstersRemain());
 		
-		//debug
-//		System.out.println("\n\n");
-//		for (GameCharacter gameCharacter : monsters) {
-//			System.out.println(gameCharacter.getName() + " alive: " + gameCharacter.isAlive());
-//		}
-//		for (GameCharacter gameCharacter : players) {
-//			System.out.println(gameCharacter.getName() + " alive: " + gameCharacter.isAlive());
-//		}
-//		System.out.println("\n\n");
-		
-		for (GameCharacter gameCharacter : monsters) {
-			if(gameCharacter.isAlive()) {
-				monstersInGame = true;
-//				System.out.println("monster in game");
-			}			
+		if(playersRemain() && monstersRemain()) {
+			return true;
 		}
-		for (GameCharacter gameCharacter : players) {
-			if(gameCharacter.isAlive()) {
-				playersInGame = true;
-//				System.out.println("player in game");
-			}
-		}
-		for (GameCharacter gameCharacter : sinBin) {
-			if(gameCharacter.isAlive()) {
-				playersInGame = true;
-//				System.out.println("player to be revived");
-			}
-		}
-		
-//		System.out.println("keep playing? "+ (playersInGame && monstersInGame));
-		
-		if(!playersInGame || !monstersInGame) {
+		else {
 			gameOver = true;
+			return false;
+		}
+	}
+	
+	/*
+	 * Checks if at least one monster remains in the game
+	 */
+	private boolean monstersRemain() {
+		// Looks for at least 1 monster
+		for (GameCharacter gameCharacter : monsters) {
+			if (gameCharacter.isAlive()) {
+				return true;
+			}
 		}
 		
-		return playersInGame && monstersInGame;
+		return false;
+	}
+	
+	/*
+	 * Determines if there is at least one player left in the game
+	 */
+	private boolean playersRemain() {
+		// Looks for at least 1 player
+		for (GameCharacter gameCharacter : players) {
+			if (gameCharacter.isAlive()) {
+				return true;
+			}
+		}
+
+		// Looks for any players waiting to be revived on the next turn
+		for (GameCharacter gameCharacter : sinBin) {
+			if (gameCharacter.isAlive()) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	/*
@@ -378,6 +329,8 @@ public class Game {
 	public String getSummary() {
 		String summary = "The battle is over!";
 		
+		
+		// End of round
 		if(!gameOver ) {
 
 			summary = "The beasts retreat temporarily, allowing our players a brief moment to regroup."
@@ -398,22 +351,10 @@ public class Game {
 			}
 		}
 		else {
-			boolean playersInGame = false;
-			boolean monstersInGame = false;
-			// Refactor me!
-			for (GameCharacter gameCharacter : monsters) {
-				if (gameCharacter.isAlive()) {
-					monstersInGame = true;
-				}
-			}
-			for (GameCharacter gameCharacter : players) {
-				if (gameCharacter.isAlive()) {
-					playersInGame = true;
-				}
-			}
-			
-			if(playersInGame) {
+			// Players won!!
+			if(playersRemain()) {
 				summary += "\nThe brave party is victorious!!"
+						+ "\nIt took the warriors " + roundCounter + " round(s) to win."
 						+ "\n\nReminaing players: ";
 				for (GameCharacter gameCharacter : players) {
 					if(gameCharacter.isAlive()) {
@@ -421,8 +362,10 @@ public class Game {
 					}
 				}
 			}
-			else if (monstersInGame) {
+			// Monsters won!!
+			else if (monstersRemain()) {
 				summary += "The brave party has been defeated!!"
+						+ "\nIt took the monsters " + roundCounter + " round(s) to win."
 						+ "\nThe following beasts still roam: ";
 				for (GameCharacter gameCharacter : monsters) {
 					if(gameCharacter.isAlive()) {
@@ -432,8 +375,37 @@ public class Game {
 			}
 		}
 		
+		// reset everything here
+		endGame();		
 		return summary;
 	}
-
+	
+	/*
+	 * Checks if player limit has been reached
+	 */
+	public boolean canAddPlayers() {
+		return players.size() < MAX_PLAYERS;
+	}
+	
+	/*
+	 * Check is monster limit has been reached
+	 */
+	public boolean canAddMonsters() {
+		return monsters.size() < MAX_MONSTERS;
+	}
+	
+	/*
+	 * Game Over
+	 * Reset anything that needs to be reset here 
+	 */
+	private void endGame() {
+		roundCounter = 0;
+		turnCounter = 0;
+		turnList.clear();
+		sinBin.clear(); 	
+		players.clear();
+		monsters.clear();		
+		turnsRemaining = false;
+	}
 	
 }
