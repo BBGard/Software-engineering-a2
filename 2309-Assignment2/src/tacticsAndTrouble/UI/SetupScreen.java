@@ -7,6 +7,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import tacticsAndTrouble.ControlClass;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,8 +24,12 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 
 public class SetupScreen extends Screen{
 
@@ -36,6 +41,7 @@ public class SetupScreen extends Screen{
 	private Label lblName;
 	private Button btnAddCharacter;
 	private Button btnNext;
+	private Label lblErrorMessage;
 	
 	private Text textName;
 	private Text textPower;
@@ -44,6 +50,7 @@ public class SetupScreen extends Screen{
 	private Text textSpeed;
 	
 	private String setupState = "PLAYER"; 	// Tracks which setup screen is being displayed - player or monster
+	private boolean validName = false;		// Used to check if a valid name has been input
 
 	protected Shell shell;	// TODO REMOVE ME
 	/**
@@ -111,6 +118,7 @@ public class SetupScreen extends Screen{
 		lblName.setLayoutData(gd_lblName);
 		lblName.setText("Name");
 		
+		
 		textName = new Text(groupInput, SWT.BORDER);
 		textName.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -125,6 +133,7 @@ public class SetupScreen extends Screen{
 		lblPower.setText("Power");
 		
 		textPower = new Text(groupInput, SWT.BORDER);
+		textPower.setText("40");
 		textPower.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textPower.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -136,6 +145,7 @@ public class SetupScreen extends Screen{
 		lblDefence.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
 		textDefence = new Text(groupInput, SWT.BORDER);
+		textDefence.setText("20");
 		textDefence.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textDefence.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -147,6 +157,7 @@ public class SetupScreen extends Screen{
 		lblLife.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
 		textLife = new Text(groupInput, SWT.BORDER);
+		textLife.setText("80");
 		textLife.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textLife.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -158,6 +169,7 @@ public class SetupScreen extends Screen{
 		lblSpeed.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
 		textSpeed = new Text(groupInput, SWT.BORDER);
+		textSpeed.setText("2");
 		textSpeed.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		textSpeed.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -170,10 +182,11 @@ public class SetupScreen extends Screen{
 		lblWeapon.setText("Weapon");
 		lblWeapon.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.NORMAL));
 		
-		comboChooser = new Combo(groupInput, SWT.NONE);
+		comboChooser = new Combo(groupInput, SWT.READ_ONLY);
 		comboChooser.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		comboChooser.setItems(new String[] {"Normal", "Lightning", "Wood", "Metal", "Void", "Spirit"});
 		comboChooser.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		comboChooser.setText("Normal");
 		new Label(groupInput, SWT.NONE);
 		
 		btnAddCharacter = new Button(groupInput, SWT.CENTER);		
@@ -184,6 +197,9 @@ public class SetupScreen extends Screen{
 		btnAddCharacter.setLayoutData(gd_btnAddCharacter);
 		btnAddCharacter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnAddCharacter.setText("Add Player");
+		
+		// Disable the button until player has input data
+		//btnAddCharacter.setEnabled(false);
 		
 		Group groupCharacterList = new Group(shell, SWT.NONE);
 		FormData fd_groupCharacterList = new FormData();
@@ -213,6 +229,20 @@ public class SetupScreen extends Screen{
 		btnNext.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnNext.setBounds(10, 324, 218, 67);
 		btnNext.setText("Setup Monsters");
+		
+		// Disable button until at least 1 player has been added
+		btnNext.setEnabled(false);
+		
+		lblErrorMessage = new Label(shell, SWT.NONE);
+		FormData fd_lblErrorMessage = new FormData();
+		fd_lblErrorMessage.right = new FormAttachment(groupInput, 0, SWT.RIGHT);
+		fd_lblErrorMessage.bottom = new FormAttachment(groupInput, 37, SWT.BOTTOM);
+		fd_lblErrorMessage.top = new FormAttachment(groupInput, 6);
+		fd_lblErrorMessage.left = new FormAttachment(groupInput, 10, SWT.LEFT);
+		lblErrorMessage.setLayoutData(fd_lblErrorMessage);
+		lblErrorMessage.setText("");
+		lblErrorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		lblErrorMessage.setFont(SWTResourceManager.getFont("Segoe UI Black", 10, SWT.NORMAL));
 		
 
 
@@ -255,13 +285,49 @@ public class SetupScreen extends Screen{
 			}
 		});
 	
+		// Listen for changes to the name text field
+		textName.addModifyListener(new ModifyListener() {
+			
+			@Override
+			public void modifyText(ModifyEvent arg0) {	
+				validName = false;
+				
+				// check name has characters
+				if (textName.getText().trim().length() > 0) {
+					
+					// Check if there is already names in the list
+					if(listCharacters.getItems().length > 0) {
+						validName = true;
+						
+						// Go through names, if a matching name is found, don't allow adding name
+						for (String name : listCharacters.getItems()) {							
+							if(name.trim().equalsIgnoreCase(textName.getText().trim()) && textName.getText().trim().length() > 0) {
+								validName = false;	
+								lblErrorMessage.setText("Name already used, please enter a new name.");
+							}
+						}
+					}
+					else {
+						validName = true;
+					}
+				}
+				else {
+					lblErrorMessage.setText("Please enter a name.");
+					validName = false;
+				}
+			}
+		});
+		
 	}
 	
+	// Attempts to add a character to the game
 	private void addCharacter() {		
 		// For players
-		if (setupState.equalsIgnoreCase("PLAYER")) {
-			// Add player name to character list
+		if (setupState.equalsIgnoreCase("PLAYER") && verifyInputs()) {			
+			
+			// Add player name to character list			
 			listCharacters.add(textName.getText() + "\n");
+			
 			
 			// Add player to game
 			controller.addPlayer(textName.getText(), textPower.getText(), textDefence.getText(), textLife.getText(),
@@ -269,10 +335,13 @@ public class SetupScreen extends Screen{
 
 			// Reset textFields
 			textName.setText("");
-			textPower.setText("");
-			textDefence.setText("");
-			textLife.setText("");
-			textSpeed.setText("");
+			textPower.setText("40");
+			textDefence.setText("20");
+			textLife.setText("80");
+			textSpeed.setText("2");
+			
+			lblErrorMessage.setText("");
+			btnNext.setEnabled(true);
 		}
 		// for monsters
 		else if (setupState.equalsIgnoreCase("MONSTER")) {
@@ -284,6 +353,45 @@ public class SetupScreen extends Screen{
 		}
 		
 	}
+	
+	// Verifies all of the input text fields before allowing a character to be added
+	private boolean verifyInputs() {
+		String illegalChars = "[a-zA-Z]+";
+		
+		// Build an array of text fields to test
+		String[] textFields = new String[4];
+		textFields[0] = textPower.getText();
+		textFields[1] = textDefence.getText();
+		textFields[2] = textLife.getText();
+		textFields[3] = textSpeed.getText();
+		
+		// iterate through the list and check for valid characters
+		for (int i = 0; i < 4;) {
+			if(Pattern.matches(illegalChars, textFields[i]) == false && textFields[i].length() > 0) {
+				if(Integer.parseInt(textFields[i]) > 0) {
+					i++;
+				}
+				else {
+					lblErrorMessage.setText("Invalid input. Stats must be greater than zero.");
+					return false;
+				}
+			}
+			else {
+				lblErrorMessage.setText("Invalid input. Stats must be numbers.");
+				
+				return false;
+			}
+		}
+		// only reaches this if all checks were valid
+		if(validName) {
+			return true;
+		} else {
+			//lblErrorMessage.setText("Please enter a valid name.");
+		}
+		
+		return false;
+	}
+	
 	
 	/**
 	 * Handles the btnNext selected events
@@ -311,6 +419,7 @@ public class SetupScreen extends Screen{
 		lblSetupTitle.setText("Monster Setup");			
 		lblName.setText("Monster");		
 		comboChooser.setItems(new String[] {"Baron of Hell", "Imp", "Zombie", "Mancu-Ben", "Gary Demon"});
+		comboChooser.setText("Mancu-Ben");
 		btnAddCharacter.setText("Add Monster");	
 		btnNext.setText("Begin Game");
 		lblCharacterList.setText("Monsters");
@@ -325,5 +434,4 @@ public class SetupScreen extends Screen{
 	public void debugScreen() {
 		System.out.println("I am a SETUP screen");
 	}
-	
 }
