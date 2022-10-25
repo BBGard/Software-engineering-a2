@@ -20,9 +20,9 @@ import org.eclipse.swt.layout.FormAttachment;
 
 public class PopupScreen extends Screen{
 
-	protected Shell shell;
+//	protected Shell shell;
 	
-	private String windowTitle;
+	private String moveType;
 	private String popupText;
 	private Label lblPopupText;	// The text displayed by this popup window
 	
@@ -42,9 +42,10 @@ public class PopupScreen extends Screen{
 	
 	
 	// Sets the text elements of the popup
-	public PopupScreen(String windowTitle, String popupText) {
+	public PopupScreen(String moveType, String popupText, View view) {
+		super(view);
 		this.popupText = popupText;
-		this.windowTitle = windowTitle;
+		this.moveType = moveType;
 	}	
 
 	/**
@@ -70,10 +71,10 @@ public class PopupScreen extends Screen{
 	 * Create contents of the window.
 	 * @wbp.parser.entryPoint
 	 */
-	protected void createContents() {
+	public void createContents() {
 		shell = new Shell();
 		shell.setSize(800, 600);
-		shell.setText(windowTitle);
+		shell.setText(moveType);
 		shell.setLayout(new FormLayout());
 		
 		lblPopupText = new Label(shell, SWT.WRAP);
@@ -111,22 +112,24 @@ public class PopupScreen extends Screen{
 	 */
 	private void continueAction() {
 		
-		switch (windowTitle) {
+		switch (moveType) {
 		case POPUP_TYPE_WELCOME:		
 			// begin combat
+			System.out.println("Start combat now");
 			shell.close();
 			controller.nextRound();
 			break;
 			
 		case POPUP_TYPE_END_OF_ROUND:
 			// Display end of round summary
-			//System.out.println("Start next round!");
+			System.out.println("Start next round!");
 			shell.close();
 			controller.nextRound();
 			break;
 			
 		case POPUP_TYPE_END_OF_GAME:
 			// Display end of game summary, quit
+			System.out.println("Display end of game summary");
 			shell.close();
 			controller.quitGame();
 			break;	
@@ -148,6 +151,7 @@ public class PopupScreen extends Screen{
 		
 
 		default:
+			System.out.println("Setup next turn");
 			shell.close();
 			controller.nextTurn();
 			break;

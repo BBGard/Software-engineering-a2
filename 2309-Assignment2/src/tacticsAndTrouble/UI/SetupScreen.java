@@ -5,6 +5,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import tacticsAndTrouble.ControlClass;
+import tacticsAndTrouble.Monster;
+import tacticsAndTrouble.MonsterFactory;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -33,6 +35,10 @@ import org.eclipse.swt.events.VerifyListener;
 
 public class SetupScreen extends Screen{
 
+	public SetupScreen(View view) {
+		super(view);
+	}
+
 	// UI elements
 	private Label lblSetupTitle;
 	private Combo comboChooser;
@@ -52,34 +58,34 @@ public class SetupScreen extends Screen{
 	private String setupState = "PLAYER"; 	// Tracks which setup screen is being displayed - player or monster
 	private boolean validName = false;		// Used to check if a valid name has been input
 
-	protected Shell shell;	// TODO REMOVE ME
-	/**
-	 * Open the window.
-	 * @wbp.parser.entryPoint
-	 * TODO REMOVE THIS
-	 */
-	public void open(ControlClass controller) {
-		this.controller = controller;
-
-		Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		shell.layout();
-		
-		controller.setScreen(this);
-		
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
+//	protected Shell shell;	// TODO REMOVE ME
+//	/**
+//	 * Open the window.
+//	 * @wbp.parser.entryPoint
+//	 * TODO REMOVE THIS
+//	 */
+//	public void open(ControlClass controller) {
+//		this.controller = controller;
+//
+//		Display display = Display.getDefault();
+//		createContents();
+//		shell.open();
+//		shell.layout();
+//		
+//		//controller.setScreen(this);
+//		
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch()) {
+//				display.sleep();
+//			}
+//		}
+//	}
 
 	/**
 	 * Create contents of the window.
 	 */
 	@Override
-	protected void createContents() {
+	public void createContents() {
 		shell = new Shell();
 		shell.setSize(800, 600);
 		shell.setText("Player Setup");
@@ -198,9 +204,7 @@ public class SetupScreen extends Screen{
 		btnAddCharacter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnAddCharacter.setText("Add Player");
 		
-		// Disable the button until player has input data
-		//btnAddCharacter.setEnabled(false);
-		
+				
 		Group groupCharacterList = new Group(shell, SWT.NONE);
 		FormData fd_groupCharacterList = new FormData();
 		fd_groupCharacterList.bottom = new FormAttachment(groupInput, 0, SWT.BOTTOM);
@@ -273,6 +277,7 @@ public class SetupScreen extends Screen{
 				lblPower.dispose();
 				lblWeapon.dispose();
 				lblSpeed.dispose();
+				
 				
 				listCharacters.removeAll();
 				
@@ -416,7 +421,7 @@ public class SetupScreen extends Screen{
 		// Or start the game
 		else {
 			shell.close();
-			nextScreen(new CombatScreen());
+			nextScreen(new CombatScreen(view));
 		}
 		
 	}
@@ -431,19 +436,17 @@ public class SetupScreen extends Screen{
 		lblSetupTitle.setText("Monster Setup");			
 		lblName.setText("Monster");		
 		comboChooser.setItems(new String[] {"Baron of Hell", "Imp", "Zombie", "Mancu-Ben", "Gary Demon"});
-		comboChooser.setText("Mancu-Ben");
+		comboChooser.setText("Mancu-Ben");					
+		
 		btnAddCharacter.setText("Add Monster");	
 		btnNext.setText("Begin Game");
 		lblCharacterList.setText("Monsters");
-		
+			
 		
 		// Refresh layout
 		shell.layout(true, true);
 	}
+
 	
-	// TODO DELETE ME
-	@Override
-	public void debugScreen() {
-		System.out.println("I am a SETUP screen");
-	}
+	
 }

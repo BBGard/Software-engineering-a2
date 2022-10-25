@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 import tacticsAndTrouble.ControlClass;
 import tacticsAndTrouble.Game;
 import tacticsAndTrouble.UI.Screen;
+import tacticsAndTrouble.UI.View;
 
 /**
  * @author Benjamin Gardiner This is the main class for ITECH 2309 Assignment 2
@@ -20,8 +21,9 @@ public class Main {
             	try {
             		// Setup th MVC components and start the program
             		Game game = new Game(); // The model
-        			Screen screen = new Screen(); // The view
-        			ControlClass controller = new ControlClass(game,screen); // The controller
+        			//Screen screen = new Screen(); // The view
+            		View theView = new View();	// The view
+        			ControlClass controller = new ControlClass(game,theView); // The controller
         			controller.open();
         			
         		} catch (Exception e) {

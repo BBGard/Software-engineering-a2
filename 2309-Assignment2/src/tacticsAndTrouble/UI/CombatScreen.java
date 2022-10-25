@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class CombatScreen extends Screen implements ScreenInterface{
+public class CombatScreen extends Screen implements ICombatInterface{
 
 	private GameCharacter currentCharacter;
 	
@@ -54,7 +54,14 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	Group characterMovesGroup;
 	FormData fd_characterMovesGroup;
 	
-	protected Shell shell; // TODO REMOVE THIS
+	//protected Shell shell; // TODO REMOVE THIS
+
+	
+	
+	
+	public CombatScreen(View view) {
+		super(view);
+	}
 
 	/**
 	 * Open the window.
@@ -70,10 +77,11 @@ public class CombatScreen extends Screen implements ScreenInterface{
 		shell.open();
 		shell.layout();
 		
-		controller.setScreen(this);
+		// Tells the view that the state has changed
+		view.setScreen(this);
 		
-		showPopup(PopupScreen.POPUP_TYPE_WELCOME, PopupScreen.POPUP_WELCOME_MESSAGE);
-		
+		// Displays the game start text
+		displayResult(PopupScreen.POPUP_TYPE_WELCOME, PopupScreen.POPUP_WELCOME_MESSAGE);		
 		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -81,12 +89,14 @@ public class CombatScreen extends Screen implements ScreenInterface{
 			}
 		}
 	}
-
+	
 	/**
 	 * Create contents of the window.
 	 */
-	protected void createContents() {
+	public void createContents() {
 		System.out.println("Create contents");
+
+		
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
 
@@ -431,26 +441,17 @@ public class CombatScreen extends Screen implements ScreenInterface{
 
 	}
 
-	@Override
-	public void setWindowTitle(String windowTitle) {		
-		shell.setText(windowTitle);				
-	}
-
-			
-	/*
-	 * Creates and shows a popup message
-	 */
-	private void showPopup(String windowTitle, String popupText) {
-		PopupScreen popup = new PopupScreen(windowTitle, popupText);
-		popup.open(controller);
-	}
+//	@Override
+//	public void setWindowTitle(String windowTitle) {		
+//		shell.setText(windowTitle);				
+//	}
 
 	/**
 	 * Displays the result of an action in a PopupScreen
 	 */
 	@Override
 	public void displayResult(String moveType, String resultText) {
-		PopupScreen popup = new PopupScreen(moveType, resultText);
+		PopupScreen popup = new PopupScreen(moveType, resultText, view);
 		popup.open(controller);		
 	}
 	
@@ -462,7 +463,7 @@ public class CombatScreen extends Screen implements ScreenInterface{
 	@Override
 	public void quit() {
 		shell.close();
-		nextScreen(new SetupScreen());
+		nextScreen(new SetupScreen(view));
 	}
 	
 }

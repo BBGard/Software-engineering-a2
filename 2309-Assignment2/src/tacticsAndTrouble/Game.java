@@ -5,7 +5,6 @@ package tacticsAndTrouble;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -273,10 +272,6 @@ public class Game {
 	 * Need at least 1 monster and 1 player to continue playing
 	 */
 	public boolean canPlay() {	
-		System.out.println("Checking canPlay"
-				+"\n--------------------"
-				+"\nplayersRemain() " +playersRemain()
-				+"\nmonstersRemain() " +monstersRemain());
 		
 		if(playersRemain() && monstersRemain()) {
 			return true;
@@ -373,10 +368,11 @@ public class Game {
 					}
 				}
 			}
+			// reset everything here
+			endGame();	
 		}
 		
-		// reset everything here
-		endGame();		
+			
 		return summary;
 	}
 	
@@ -399,6 +395,7 @@ public class Game {
 	 * Reset anything that needs to be reset here 
 	 */
 	private void endGame() {
+		System.out.println("\nEnd of game. Resetting");
 		roundCounter = 0;
 		turnCounter = 0;
 		turnList.clear();

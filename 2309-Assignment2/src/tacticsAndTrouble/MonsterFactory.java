@@ -4,6 +4,7 @@ public class MonsterFactory {
 
 	public Monster createMonster(String type) {
 		
+		
 		switch (type) {
 		case Monster.BARON_OF_HELL: 			
 			return new Monster(type, 70, 40, 150, 1, new PowerType(PowerType.LIGHTNING));

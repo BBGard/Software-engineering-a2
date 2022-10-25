@@ -9,7 +9,8 @@ import java.awt.event.ActionListener;
 
 import tacticsAndTrouble.UI.CombatScreen;
 import tacticsAndTrouble.UI.Screen;
-import tacticsAndTrouble.UI.ScreenInterface;
+import tacticsAndTrouble.UI.ICombatInterface;
+import tacticsAndTrouble.UI.View;
 import tacticsAndTrouble.UI.PopupScreen;
 
 /**
@@ -19,15 +20,17 @@ import tacticsAndTrouble.UI.PopupScreen;
  */
 public class ControlClass {
 	private Game game;
-	private Screen currentScreen;
+	//private Screen currentScreen;
+	private View view;
 
 	private MonsterFactory monsterMaker; // For creating monsters
 
 	//private boolean running = true; // Controls if the game loop is running or not
 
-	public ControlClass(Game game, Screen screen) {
+	public ControlClass(Game game, View view) {
 		this.game = game;
-		setScreen(screen);
+		this.view = view;
+		//setScreen(screen);
 
 		monsterMaker = new MonsterFactory();
 
@@ -52,7 +55,8 @@ public class ControlClass {
 	 * Opens the splash screen to begin the program
 	 */
 	public void open() {
-		currentScreen.open(this);
+		//currentScreen.open(this);
+		view.openScreen(this);
 	}
 
 	/*
@@ -101,20 +105,26 @@ public class ControlClass {
 	 * Then displays results depending on the satte of the game
 	 */
 	public void nextTurn() {
+		System.out.println("Next turn");
 		game.nextTurn();
 		// If the game is running AND enough players remain alive/revived
 		if (game.isRunning() && game.canPlay()) {		// STATE 1	- play the turn
+			System.out.println("Regular turn");
 			displayTurn();
 		}
 		else if (!game.isRunning() && game.canPlay()){  // STATE 2 - end of round, show results
 			// If the end of round is reached, but players remain alive/revived
-			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
+//			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
+			System.out.println("End of round.");
+			view.displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
 			
 		}
 		else { // STATE 3 - end of game, show summary
 			System.out.println("End game here and return to setup.");
 			// restart the program to player setup screen
-			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_GAME, game.getSummary());
+//			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_GAME, game.getSummary());
+			System.out.println("End of game");
+			view.displayResult(PopupScreen.POPUP_TYPE_END_OF_GAME, game.getSummary());
 		}
 	}
 	
@@ -122,8 +132,9 @@ public class ControlClass {
 	 * Calls on the current screen to display the next turns data
 	 */
 	public void displayTurn() {
-		((CombatScreen) currentScreen).setupTurn(game.getCurrentPlayer(), game.getPlayersList(),
-				game.getMonstersList());
+//		((CombatScreen) currentScreen).setupTurn(game.getCurrentPlayer(), game.getPlayersList(),
+//				game.getMonstersList());
+		view.setupTurn(game.getCurrentPlayer(), game.getPlayersList(), game.getMonstersList());
 	}
 
 	/*
@@ -133,23 +144,26 @@ public class ControlClass {
 		//System.out.println("Attack " + characterName);
 		String result = game.attack( game.getCurrentPlayer(), game.getCharacterByName(characterToAttack));
 
-		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_ATTACK, result);
+//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_ATTACK, result);
+		view.displayResult(PopupScreen.POPUP_TYPE_ATTACK, result);
 	}
 	
 	/*
 	 * Carries out a heal move
 	 */
 	public void heal(String characterToHeal) {
-		String result = game.heal(((Player) game.getCurrentPlayer()), ((Player) game.getCharacterByName(characterToHeal)));
-		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_HEAL, result);
+		String result = game.heal(((Player) game.getCurrentPlayer()), ((Player) getCharacterByName(characterToHeal)));
+//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_HEAL, result);
+		view.displayResult(PopupScreen.POPUP_TYPE_HEAL, result);
 	}
 	
 	/*
 	 * Carries out a revive move
 	 */
 	public void revive(String characterToHeal) {
-		String result = game.revive(((Player) game.getCurrentPlayer()), ((Player) game.getCharacterByName(characterToHeal)));
-		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_REVIVE, result);
+		String result = game.revive(((Player) game.getCurrentPlayer()), ((Player) getCharacterByName(characterToHeal)));
+//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_REVIVE, result);
+		view.displayResult(PopupScreen.POPUP_TYPE_REVIVE, result);
 	}
 	
 	/*
@@ -157,22 +171,31 @@ public class ControlClass {
 	 */
 	public void powerUp() {
 		String result = game.powerUp(((Player) game.getCurrentPlayer()));
-		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_POWERUP, result);
+//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_POWERUP, result);
+		view.displayResult(PopupScreen.POPUP_TYPE_POWERUP, result);
+	}
+	
+	/*
+	 * Gets a GameCharacter by their name
+	 */
+	public GameCharacter getCharacterByName(String name) {
+		return game.getCharacterByName(name);
 	}
 
 
 	/*
 	 * Sets the current screen being shown - changes according to state of the game
 	 */
-	public void setScreen(Screen currentScreen) {
-		this.currentScreen = currentScreen;
-	}
+//	public void setScreen(Screen currentScreen) {
+//		this.currentScreen = currentScreen;
+//	}
 
 	/*
 	 * Quits the game and returns to the player setup menu
 	 */
 	public void quitGame() {
-		((CombatScreen) currentScreen).quit();		
+//		((CombatScreen) currentScreen).quit();		
+		view.quit();		
 	}
 
 	
