@@ -248,11 +248,6 @@ public class SetupScreen extends Screen{
 		lblErrorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblErrorMessage.setFont(SWTResourceManager.getFont("Segoe UI Black", 10, SWT.NORMAL));
 		
-
-
-		/*
-		 * Button handlers here	
-		 */
 		
 		// Add player button
 		btnAddCharacter.addSelectionListener(new SelectionAdapter() {
@@ -329,9 +324,7 @@ public class SetupScreen extends Screen{
 	private void addCharacter() {		
 		// For players
 		if (setupState.equalsIgnoreCase("PLAYER") && verifyInputs()) {			
-			
-			
-			
+						
 			// Try to add player to game
 			boolean playerAdded = controller.addPlayer(textName.getText(), textPower.getText(), textDefence.getText(), textLife.getText(),
 					textSpeed.getText(), comboChooser.getText());
@@ -363,6 +356,7 @@ public class SetupScreen extends Screen{
 			if (monsterAdded) {
 				// Add monster name to character list
 				listCharacters.add(comboChooser.getText() + "\n");
+				btnNext.setEnabled(true);
 			}
 			else {
 				 lblErrorMessage.setText("Maximum monsters reached.");
@@ -402,8 +396,6 @@ public class SetupScreen extends Screen{
 		// only reaches this if all checks were valid
 		if(validName) {
 			return true;
-		} else {
-			//lblErrorMessage.setText("Please enter a valid name.");
 		}
 		
 		return false;
@@ -440,6 +432,7 @@ public class SetupScreen extends Screen{
 		
 		btnAddCharacter.setText("Add Monster");	
 		btnNext.setText("Begin Game");
+		btnNext.setEnabled(false);
 		lblCharacterList.setText("Monsters");
 			
 		

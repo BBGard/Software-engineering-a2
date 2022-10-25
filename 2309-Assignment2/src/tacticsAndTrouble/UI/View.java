@@ -14,7 +14,7 @@ import tacticsAndTrouble.GameCharacter;
  * of Tactics & Trouble
  */
 public class View {
-	private Screen state;
+	private Screen state;	// The current state of the UI
 	
 	public View() {
 		// Set the initial state
@@ -35,6 +35,10 @@ public class View {
 		state.open(controller);
 	}
 	
+	/*
+	 * If the current state is CombatScreen, tells the screen to setup a turn
+	 * Otherwise, should probably throw an exception....
+	 */
 	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList) {
 		if(state instanceof CombatScreen) {
 			((CombatScreen) state).setupTurn(character, playerList, monsterList);
@@ -45,7 +49,8 @@ public class View {
 	}
 	
 	/*
-	 * Displays result text
+	 * If the current state is CombatScreen, tells the screen to display results of a turn
+	 * Otherwise, should probably throw an exception....
 	 */
 	public void displayResult(String moveType, String resultText) {
 		if(state instanceof CombatScreen) {
@@ -56,6 +61,9 @@ public class View {
 		}
 	}
 	
+	/*
+	 * Tells the current screen to close
+	 */
 	public void quit() {
 		state.quit();
 	}

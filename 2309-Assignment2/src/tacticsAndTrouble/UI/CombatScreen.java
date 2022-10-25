@@ -1,6 +1,7 @@
 package tacticsAndTrouble.UI;
 
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import tacticsAndTrouble.ControlClass;
@@ -23,14 +24,19 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 
 public class CombatScreen extends Screen implements ICombatInterface{
 
-	private GameCharacter currentCharacter;
+	private GameCharacter currentCharacter; // A reference to the current game character
 	
+	// Interface components	
 	private Label lblCurrentCharacter;
 	private Label lblCharacterPower;
 	private Label lblCharacterDefence;
@@ -52,20 +58,15 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	private List listPlayersToRevive;
 	
 	Group characterMovesGroup;
-	FormData fd_characterMovesGroup;
-	
-	//protected Shell shell; // TODO REMOVE THIS
+	FormData fd_characterMovesGroup;	
 
-	
-	
-	
+	// Constructor
 	public CombatScreen(View view) {
 		super(view);
 	}
 
 	/**
 	 * Open the window.
-	 * 
 	 * @wbp.parser.entryPoint TODO REMOVE THIS
 	 */
 	// @Override
@@ -93,10 +94,10 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	/**
 	 * Create contents of the window.
 	 */
+	@Override
 	public void createContents() {
-		System.out.println("Create contents");
-
 		
+		// Setup all the interface components
 		shell = new Shell();
 		shell.setLayout(new FormLayout());
 
@@ -209,17 +210,15 @@ public class CombatScreen extends Screen implements ICombatInterface{
 		characterMovesGroup.setText("");
 
 		movesFolder = new TabFolder(characterMovesGroup, SWT.NONE);
-		movesFolder.setBounds(10, 123, 481, 412);
-		
-		
-		
+		movesFolder.setBounds(10, 123, 481, 412);		
 	}
 	
 	
 	
 	/*
-	 * Loads the current characters stats into the view
+	 * Loads the current characters attributes into the view
 	 * Should probably move this to the control class....if I can be bothered
+	 * Refactor-Refactor-Refactor-Refactor-Refactor-Refactor-RefactorRefactor
 	 */
 	@Override
 	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList ) {
@@ -243,7 +242,8 @@ public class CombatScreen extends Screen implements ICombatInterface{
 				if(gameCharacter.isAlive() && gameCharacter.getHealth() < gameCharacter.getLife()) {
 					listPlayersToHeal.add(gameCharacter.getName());
 				}
-				else if(!gameCharacter.isAlive()) {
+				// Make sure they are dead AND have no health (in SinBin)
+				else if(!gameCharacter.isAlive() && !(gameCharacter.getHealth() > 0)) {
 					listPlayersToRevive.add(gameCharacter.getName());
 				}
 			}
@@ -272,7 +272,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	}
 	
 	/*
-	 * Removes all move tabs so they can be setup new
+	 * Removes all move tabs so they can be setup fresh
 	 */
 	private void destroyTabs() {
 		if (tbtmAttack != null) {
@@ -295,7 +295,6 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	 * Creates extra move tabs for player characters (heal, revive, powerup)
 	 */
 	private void setupTabs() {
-		//System.out.println("Setup tabs");
 		/***********************************************************************
 		 * Attack Tab for Players and Monsters
 		 */
@@ -326,13 +325,29 @@ public class CombatScreen extends Screen implements ICombatInterface{
 		btnAttack.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
 		btnAttack.setBounds(245, 307, 218, 67);
 		
+		// Disable button until a character has been selected to attack
+		btnAttack.setEnabled(false);
+		
+		// Attack button listener
 		btnAttack.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//System.out.println("Attack pressed in CombatScreen!");
 				controller.attack(listCharactersToAttack.getSelection()[0]);
 			}
 		});
+		
+		// Character to attack selection listener		
+		listCharactersToAttack.addListener(SWT.Selection, new Listener() {			
+			@Override
+			public void handleEvent(Event arg0) {
+				// Only enable attack button if a selection has been made
+				if(listCharactersToAttack.getSelectionIndex() != -1) {
+					btnAttack.setEnabled(true);							
+				}
+			}
+		});
+		
+		
 
 		/**************************************************************************************************
 		 * Tabs for Player only
@@ -359,6 +374,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 			listPlayersToHeal.setBounds(10, 79, 453, 224);
 
 			Button btnHeal = new Button(groupPlayerList, SWT.NONE);
+			btnHeal.setEnabled(false);
 
 			btnHeal.setText("Heal");
 			btnHeal.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -392,6 +408,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 			btnRevive.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 			btnRevive.setBackground(SWTResourceManager.getColor(SWT.COLOR_LIST_SELECTION));
 			btnRevive.setBounds(245, 307, 218, 67);
+			btnRevive.setEnabled(false);
 	
 
 			// Button listeners
@@ -411,6 +428,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 				}
 			});
 
+			// Only show power up tab if character can powerup
 			if(currentCharacter.getSpeed() > 1) {
 				tbtmPowerUp = new TabItem(movesFolder, 0);
 				tbtmPowerUp.setText("Power Up");
@@ -434,17 +452,33 @@ public class CombatScreen extends Screen implements ICombatInterface{
 				});
 			}
 			
+			// Selection listeners		
+			listPlayersToHeal.addListener(SWT.Selection, new Listener() {			
+				@Override
+				public void handleEvent(Event arg0) {
+					// Only enable attack button if a selection has been made
+					if(listPlayersToHeal.getSelectionIndex() != -1) {
+						btnHeal.setEnabled(true);							
+					}
+				}
+			});
+			
+			listPlayersToRevive.addListener(SWT.Selection, new Listener() {			
+				@Override
+				public void handleEvent(Event arg0) {
+					// Only enable attack button if a selection has been made
+					if(listPlayersToRevive.getSelectionIndex() != -1) {
+						btnRevive.setEnabled(true);							
+					}
+				}
+			});
+			
 		}
 
 		// Refresh layout
 		shell.layout(true, true);
 
 	}
-
-//	@Override
-//	public void setWindowTitle(String windowTitle) {		
-//		shell.setText(windowTitle);				
-//	}
 
 	/**
 	 * Displays the result of an action in a PopupScreen

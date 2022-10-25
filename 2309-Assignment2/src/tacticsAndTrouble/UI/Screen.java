@@ -42,7 +42,6 @@ public abstract class Screen  {
 		shell.open();
 		shell.layout();
 		
-		//controller.setScreen(this);
 		// Tells the view that the state has changed
 		view.setScreen(this);
 		

@@ -11,11 +11,10 @@ import tacticsAndTrouble.GameCharacter;
  */
 public interface ICombatInterface {
 
+	// Setup the user interface to display the current characters turn
 	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList);	
-	
-//	public void setWindowTitle(String windowTitle); 
 
+	// Display the results of a turn
 	public void displayResult(String moveType, String resultText);
 	
-	public void quit();
 }

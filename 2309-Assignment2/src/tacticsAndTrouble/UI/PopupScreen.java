@@ -115,43 +115,23 @@ public class PopupScreen extends Screen{
 		switch (moveType) {
 		case POPUP_TYPE_WELCOME:		
 			// begin combat
-			System.out.println("Start combat now");
 			shell.close();
 			controller.nextRound();
 			break;
 			
 		case POPUP_TYPE_END_OF_ROUND:
 			// Display end of round summary
-			System.out.println("Start next round!");
 			shell.close();
 			controller.nextRound();
 			break;
 			
 		case POPUP_TYPE_END_OF_GAME:
 			// Display end of game summary, quit
-			System.out.println("Display end of game summary");
 			shell.close();
 			controller.quitGame();
-			break;	
-			
-//		case POPUP_TYPE_ATTACK:
-//			shell.close();
-//			controller.nextTurn();
-//			break;
-//			
-//		case POPUP_TYPE_HEAL:
-//			shell.close();
-//			controller.nextTurn();
-//			break;
-//			
-//		case POPUP_TYPE_POWERUP:
-//			shell.close();
-//			controller.nextTurn();
-//			break;
-		
+			break;			
 
 		default:
-			System.out.println("Setup next turn");
 			shell.close();
 			controller.nextTurn();
 			break;

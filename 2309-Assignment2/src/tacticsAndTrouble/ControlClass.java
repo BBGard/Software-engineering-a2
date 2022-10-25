@@ -109,21 +109,15 @@ public class ControlClass {
 		game.nextTurn();
 		// If the game is running AND enough players remain alive/revived
 		if (game.isRunning() && game.canPlay()) {		// STATE 1	- play the turn
-			System.out.println("Regular turn");
 			displayTurn();
 		}
 		else if (!game.isRunning() && game.canPlay()){  // STATE 2 - end of round, show results
 			// If the end of round is reached, but players remain alive/revived
-//			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
-			System.out.println("End of round.");
 			view.displayResult(PopupScreen.POPUP_TYPE_END_OF_ROUND, game.getSummary());
 			
 		}
 		else { // STATE 3 - end of game, show summary
-			System.out.println("End game here and return to setup.");
 			// restart the program to player setup screen
-//			((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_END_OF_GAME, game.getSummary());
-			System.out.println("End of game");
 			view.displayResult(PopupScreen.POPUP_TYPE_END_OF_GAME, game.getSummary());
 		}
 	}
@@ -132,8 +126,6 @@ public class ControlClass {
 	 * Calls on the current screen to display the next turns data
 	 */
 	public void displayTurn() {
-//		((CombatScreen) currentScreen).setupTurn(game.getCurrentPlayer(), game.getPlayersList(),
-//				game.getMonstersList());
 		view.setupTurn(game.getCurrentPlayer(), game.getPlayersList(), game.getMonstersList());
 	}
 
@@ -141,10 +133,8 @@ public class ControlClass {
 	 * Carries out an attack move
 	 */
 	public void attack(String characterToAttack) {
-		//System.out.println("Attack " + characterName);
 		String result = game.attack( game.getCurrentPlayer(), game.getCharacterByName(characterToAttack));
 
-//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_ATTACK, result);
 		view.displayResult(PopupScreen.POPUP_TYPE_ATTACK, result);
 	}
 	
@@ -153,7 +143,6 @@ public class ControlClass {
 	 */
 	public void heal(String characterToHeal) {
 		String result = game.heal(((Player) game.getCurrentPlayer()), ((Player) getCharacterByName(characterToHeal)));
-//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_HEAL, result);
 		view.displayResult(PopupScreen.POPUP_TYPE_HEAL, result);
 	}
 	
@@ -162,7 +151,6 @@ public class ControlClass {
 	 */
 	public void revive(String characterToHeal) {
 		String result = game.revive(((Player) game.getCurrentPlayer()), ((Player) getCharacterByName(characterToHeal)));
-//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_REVIVE, result);
 		view.displayResult(PopupScreen.POPUP_TYPE_REVIVE, result);
 	}
 	
@@ -171,7 +159,6 @@ public class ControlClass {
 	 */
 	public void powerUp() {
 		String result = game.powerUp(((Player) game.getCurrentPlayer()));
-//		((CombatScreen) currentScreen).displayResult(PopupScreen.POPUP_TYPE_POWERUP, result);
 		view.displayResult(PopupScreen.POPUP_TYPE_POWERUP, result);
 	}
 	
@@ -181,14 +168,6 @@ public class ControlClass {
 	public GameCharacter getCharacterByName(String name) {
 		return game.getCharacterByName(name);
 	}
-
-
-	/*
-	 * Sets the current screen being shown - changes according to state of the game
-	 */
-//	public void setScreen(Screen currentScreen) {
-//		this.currentScreen = currentScreen;
-//	}
 
 	/*
 	 * Quits the game and returns to the player setup menu
