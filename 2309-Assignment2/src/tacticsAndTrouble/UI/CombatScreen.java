@@ -62,7 +62,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	Group characterMovesGroup;
 	FormData fd_characterMovesGroup;	
 	/////////////////////////////////////////////////
-	//protected Shell shell;			   //REMOVE
+	protected Shell shell;			   //REMOVE
 
 	// Constructor
 	public CombatScreen(View view) {
@@ -131,7 +131,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 
 		lblCurrentCharacter = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblCurrentcharacter = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblCurrentcharacter.widthHint = 116;
+		gd_lblCurrentcharacter.widthHint = 150;
 		lblCurrentCharacter.setLayoutData(gd_lblCurrentcharacter);
 		lblCurrentCharacter.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.BOLD));
 		lblCurrentCharacter.setText("name");
