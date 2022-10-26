@@ -40,11 +40,12 @@ public class SplashScreen extends Screen {
 		// Setup elements 
 		final Label lblSplashTitle = new Label(shell, SWT.NONE);
 		lblSplashTitle.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		lblSplashTitle.setFont(SWTResourceManager.getFont("Franklin Gothic Heavy", 38, SWT.BOLD));
+		lblSplashTitle.setFont(SWTResourceManager.getFont("Franklin Gothic Heavy", 58, SWT.BOLD));
 		lblSplashTitle.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblSplashTitle.setAlignment(SWT.CENTER);
-		lblSplashTitle.setBounds(100, 100, 600, 150);
-		lblSplashTitle.setText("Tactics and Trouble");
+		lblSplashTitle.setBounds(50, 150, 700, 200);
+		lblSplashTitle.setText("Tactics && Trouble");
+		
 		
 		final Button btnSplashStart = new Button(shell, SWT.NONE);		
 		btnSplashStart.setFont(SWTResourceManager.getFont("Segoe UI", 25, SWT.NORMAL));

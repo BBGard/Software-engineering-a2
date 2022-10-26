@@ -98,7 +98,7 @@ public class Player extends GameCharacter {
 		setSpeed((int)Math.round(getSpeed() / 2.0));
 		increasePowerUpsUsed();
 		
-		return getName() + " uses Power Up" + (getPowerUpsUsed() > 1 ? " again.\n":".\n") + "It's successful, and " + getName() + " now has " 
+		return getName() + " uses Power Up" + (getPowerUpsUsed() > 1 ? " again.\n":".\n") + "\nIt's successful, and " + getName() + " now has " 
 				+getSpeed() + " speed and " + getPower() + " power.";
 	}
 	

@@ -35,8 +35,9 @@ public class PopupScreen extends Screen{
 	public static final String POPUP_TYPE_END_OF_ROUND = "Round Over!";
 	public static final String POPUP_TYPE_END_OF_GAME = "Game Over!";
 	public static final String POPUP_WELCOME_MESSAGE = "Welcome to Tactics & Trouble!\n\n"
-			+ "After climbing down from the highest peak into the Valley of Despair, "
-			+ "your brave party approaches the fiery gates of hell."
+			+ "The world is in turmoil. Dark forces roam the land. "
+			+ "\nA brave team has gathered to take on the evil."
+			+ "\n\nYour party approaches the fiery gates of hell."
 			+ "\nThe ferocious screeches of nightmarish creatures echo throughout the valley."
 			+ "\n\nThe battle begins...";
 	
@@ -93,7 +94,7 @@ public class PopupScreen extends Screen{
 		fd_lblPopupText.right = new FormAttachment(0, 734);
 		lblPopupText.setLayoutData(fd_lblPopupText);
 		lblPopupText.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
-		lblPopupText.setText(popupText);
+		lblPopupText.setText("\n\n\n\n" + popupText);
 		
 		Button btnContinue = new Button(shell, SWT.NONE);
 		FormData fd_btnContinue = new FormData();
