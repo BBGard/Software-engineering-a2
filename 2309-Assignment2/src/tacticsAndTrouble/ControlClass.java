@@ -59,12 +59,9 @@ public class ControlClass {
 	 */
 	public boolean addMonster(String type) {
 		
-		if (game.canAddMonsters()) {
-			Monster monster = monsterMaker.createMonster(type);
-			return game.addGameCharacter(monster);
-		} else {
-			return false;
-		}
+		Monster monster = monsterMaker.createMonster(type);
+			
+		return game.addGameCharacter(monster);
 	}
 
 	/*

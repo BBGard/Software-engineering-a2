@@ -305,7 +305,7 @@ public class GameTester {
 		player2.setAlive(false);
 		
 		// Revive a player
-		assertEquals("Antoxx revives Crum.\n" + "Crum now has 10 health but does not get a turn this round.",
+		assertEquals("Antoxx revives Crum.\n\n" + "Crum now has 10 health but does not get a turn this round.",
 				player1.revive(player2));
 		
 		// Kill player
@@ -313,7 +313,7 @@ public class GameTester {
 		player2.setAlive(false);
 		
 		// Revive a player using Game class
-		assertEquals("Antoxx revives Crum.\n" + "Crum now has 10 health but does not get a turn this round.",
+		assertEquals("Antoxx revives Crum.\n\n" + "Crum now has 10 health but does not get a turn this round.",
 				game.revive(player1, player2));
 		
 		// Try to revive a living player - need to use heal() instead

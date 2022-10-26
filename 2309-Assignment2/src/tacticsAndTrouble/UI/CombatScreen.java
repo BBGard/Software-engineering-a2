@@ -37,7 +37,6 @@ import org.eclipse.swt.events.SelectionEvent;
  */
 public class CombatScreen extends Screen implements ICombatInterface{
 
-	private GameCharacter currentCharacter; // A reference to the current game character
 	
 	// Interface components	
 	private Label lblCurrentCharacter;
@@ -227,12 +226,12 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	 * Refactor-Refactor-Refactor-Refactor-Refactor-Refactor-RefactorRefactor
 	 */
 	@Override
-	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList ) {
+	public void setupTurn(GameCharacter currentCharacter, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList ) {
 		
-		currentCharacter = character;
+		//currentCharacter = character;
 		
 		destroyTabs();	// Remove tabs so they can be setup again
-		setupTabs();	// Setup the tabs
+		setupTabs(currentCharacter);	// Setup the tabs
 		
 		// For Players
 		if(currentCharacter instanceof Player) {
@@ -300,7 +299,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	/*
 	 * Creates extra move tabs for player characters (heal, revive, powerup)
 	 */
-	private void setupTabs() {
+	private void setupTabs(GameCharacter currentCharacter) {
 		/***********************************************************************
 		 * Attack Tab for Players and Monsters
 		 */

@@ -305,14 +305,11 @@ public class Game {
 	 */
 	private boolean playersRemain() {
 		// Looks for at least 1 player
-		for (GameCharacter gameCharacter : players) {
-			if (gameCharacter.isAlive()) {
-				return true;
-			}
+		if(sinBin.size() > 0) {
+			return true;
 		}
-
-		// Looks for any players waiting to be revived on the next turn
-		for (GameCharacter gameCharacter : sinBin) {
+		
+		for (GameCharacter gameCharacter : players) {
 			if (gameCharacter.isAlive()) {
 				return true;
 			}
@@ -340,6 +337,9 @@ public class Game {
 					summary += ("\n" + gameCharacter.getName());
 				}
 			}
+			for (GameCharacter gameCharacter : sinBin) {
+				summary += ("\n" + gameCharacter.getName());				
+			}
 			
 			summary += "\n\nRemaining Monsters:  ";
 			
@@ -353,7 +353,7 @@ public class Game {
 			// Players won!!
 			if(playersRemain()) {
 				summary += "\nThe brave party is victorious!!"
-						+ "\nIt took the warriors " + roundCounter + " round(s) to win."
+						+ "\n\nIt took the warriors " + roundCounter + " round(s) to win."
 						+ "\n\nReminaing players: ";
 				for (GameCharacter gameCharacter : players) {
 					if(gameCharacter.isAlive()) {
@@ -364,8 +364,8 @@ public class Game {
 			// Monsters won!!
 			else if (monstersRemain()) {
 				summary += "The brave party has been defeated!!"
-						+ "\nIt took the monsters " + roundCounter + " round(s) to win."
-						+ "\nThe following beasts still roam: ";
+						+ "\n\nIt took the monsters " + roundCounter + " round(s) to win."
+						+ "\n\nThe following beasts still roam: ";
 				for (GameCharacter gameCharacter : monsters) {
 					if(gameCharacter.isAlive()) {
 						summary += ("\n" + gameCharacter.getName());

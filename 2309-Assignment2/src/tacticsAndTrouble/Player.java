@@ -79,7 +79,7 @@ public class Player extends GameCharacter {
 		// Set revived players health to 30% of their life
 		playerToRevive.setHealth(playerToRevive.getLife() * 30 / 100);
 		
-		return getName() + " revives " + playerToRevive.getName() + ".\n" + playerToRevive.getName() + " now has "
+		return getName() + " revives " + playerToRevive.getName() + ".\n\n" + playerToRevive.getName() + " now has "
 				+ playerToRevive.getHealth() + " health but does not get a turn this round.";
 	}
 	
