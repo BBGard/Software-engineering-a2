@@ -1,28 +1,16 @@
 package tacticsAndTrouble.UI;
 
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
-
-import tacticsAndTrouble.ControlClass;
-import tacticsAndTrouble.Monster;
-import tacticsAndTrouble.MonsterFactory;
-
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.List;
@@ -33,11 +21,14 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 
-public class SetupScreen extends Screen{
 
-	public SetupScreen(View view) {
-		super(view);
-	}
+/**
+ * @author Benjamin Gardiner
+ * This is the SetupScreen for the game Tactics & Trouble
+ * This screen has two states - PlayerSetup and MonsterSetup
+ * Transitions to the CombatScreen - the main game when setup is complete
+ */
+public class SetupScreen extends Screen{
 
 	// UI elements
 	private Label lblSetupTitle;
@@ -57,29 +48,10 @@ public class SetupScreen extends Screen{
 	
 	private String setupState = "PLAYER"; 	// Tracks which setup screen is being displayed - player or monster
 	private boolean validName = false;		// Used to check if a valid name has been input
-
-//	protected Shell shell;	// TODO REMOVE ME
-//	/**
-//	 * Open the window.
-//	 * @wbp.parser.entryPoint
-//	 * TODO REMOVE THIS
-//	 */
-//	public void open(ControlClass controller) {
-//		this.controller = controller;
-//
-//		Display display = Display.getDefault();
-//		createContents();
-//		shell.open();
-//		shell.layout();
-//		
-//		//controller.setScreen(this);
-//		
-//		while (!shell.isDisposed()) {
-//			if (!display.readAndDispatch()) {
-//				display.sleep();
-//			}
-//		}
-//	}
+	
+	public SetupScreen(View view) {
+		super(view);
+	}
 
 	/**
 	 * Create contents of the window.
@@ -249,7 +221,7 @@ public class SetupScreen extends Screen{
 		lblErrorMessage.setFont(SWTResourceManager.getFont("Segoe UI Black", 10, SWT.NORMAL));
 		
 		
-		// Add player button
+		// Add player button listener
 		btnAddCharacter.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -257,11 +229,11 @@ public class SetupScreen extends Screen{
 			}			
 		});
 		
-		// Setup Monsters button
+		// Setup Monsters button listener
 		btnNext.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// Dispose children
+				// Dispose children so we can setup the monster screen
 				textName.dispose();
 				textDefence.dispose();
 				textLife.dispose();
@@ -271,50 +243,51 @@ public class SetupScreen extends Screen{
 				lblLife.dispose();
 				lblPower.dispose();
 				lblWeapon.dispose();
-				lblSpeed.dispose();
-				
+				lblSpeed.dispose();				
 				
 				listCharacters.removeAll();
 				
 				// Refresh layout
-				shell.layout(true, true);
+				shell.layout(true, true);				
 				
-				
-				// Handle the button click
+				// Handle the button click /display monster setup
 				nextButtonClicked();					
 			}
 		});
 	
-		// Listen for changes to the name text field
-		textName.addModifyListener(new ModifyListener() {
-			
+		// Listen for changes to the name text field and validate
+		textName.addModifyListener(new ModifyListener() {			
 			@Override
 			public void modifyText(ModifyEvent arg0) {	
-				validName = false;
-				
-				// check name has characters
-				if (textName.getText().trim().length() > 0) {
-					
-					// Check if there is already names in the list
-					if(listCharacters.getItems().length > 0) {
-						validName = true;
-						
-						// Go through names, if a matching name is found, don't allow adding name
-						for (String name : listCharacters.getItems()) {							
-							if(name.trim().equalsIgnoreCase(textName.getText().trim()) && textName.getText().trim().length() > 0) {
-								validName = false;	
-								lblErrorMessage.setText("Name already used, please enter a new name.");
-							}
-						}
-					}
-					else {
-						validName = true;
-					}
-				}
-				else {
-					lblErrorMessage.setText("Please enter a name.");
-					validName = false;
-				}
+				checkForValidName();
+			}			
+		});
+		
+		// Verify the attributes fields
+		
+		// Attach a listener to the input fields
+		textPower.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				verifyIntegerField(e, textPower);
+			}
+		});
+		textDefence.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				verifyIntegerField(e, textDefence);
+			}
+		});
+		textLife.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				verifyIntegerField(e, textLife);
+			}
+		});
+		textSpeed.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				verifyIntegerField(e, textSpeed);
 			}
 		});
 		
@@ -323,7 +296,7 @@ public class SetupScreen extends Screen{
 	// Attempts to add a character to the game
 	private void addCharacter() {		
 		// For players
-		if (setupState.equalsIgnoreCase("PLAYER") && verifyInputs()) {			
+		if (setupState.equalsIgnoreCase("PLAYER") && (textName.getText().length() > 0) && validName) {			
 						
 			// Try to add player to game
 			boolean playerAdded = controller.addPlayer(textName.getText(), textPower.getText(), textDefence.getText(), textLife.getText(),
@@ -348,7 +321,7 @@ public class SetupScreen extends Screen{
 				 lblErrorMessage.setText("Maximum players reached.");
 			}
 		}
-		// for monsters
+		// For monsters
 		else if (setupState.equalsIgnoreCase("MONSTER")) {
 			// Try to add monster to game	
 			boolean monsterAdded =	controller.addMonster(comboChooser.getText());		
@@ -362,45 +335,79 @@ public class SetupScreen extends Screen{
 				 lblErrorMessage.setText("Maximum monsters reached.");
 			}
 		}
+		else {
+			lblErrorMessage.setText("Please enter a name.");
+		}
 		
 	}
 	
-	// Verifies all of the input text fields before allowing a character to be added
-	private boolean verifyInputs() {
-		String illegalChars = "[a-zA-Z]+";
+	/*
+	 * Checks the name input field for illegal characters or duplicate names
+	 * Alerts the user using the lblErrorMessage
+	 */
+	private void checkForValidName() {
+		lblErrorMessage.setText("");
+		validName = false;
 		
-		// Build an array of text fields to test
-		String[] textFields = new String[4];
-		textFields[0] = textPower.getText();
-		textFields[1] = textDefence.getText();
-		textFields[2] = textLife.getText();
-		textFields[3] = textSpeed.getText();
-		
-		// iterate through the list and check for valid characters
-		for (int i = 0; i < 4;) {
-			if(Pattern.matches(illegalChars, textFields[i]) == false && textFields[i].length() > 0) {
-				if(Integer.parseInt(textFields[i]) > 0) {
-					i++;
-				}
-				else {
-					lblErrorMessage.setText("Invalid input. Stats must be greater than zero.");
-					return false;
+		// check name has characters
+		if (textName.getText().trim().length() > 0) {
+			
+			// Check if there is already names in the list
+			if(listCharacters.getItems().length > 0) {
+				validName = true;
+				
+				// Go through names, if a matching name is found, don't allow adding name
+				for (String name : listCharacters.getItems()) {							
+					if(name.trim().equalsIgnoreCase(textName.getText().trim()) && textName.getText().trim().length() > 0) {
+						validName = false;	
+						lblErrorMessage.setText("Name already used, please enter a new name.");
+					}
 				}
 			}
 			else {
-				lblErrorMessage.setText("Invalid input. Stats must be numbers.");
-				
-				return false;
+				validName = true;
 			}
 		}
-		// only reaches this if all checks were valid
-		if(validName) {
-			return true;
+		else {
+			lblErrorMessage.setText("Please enter a name.");
+			validName = false;
 		}
-		
-		return false;
 	}
 	
+	/*
+	 * Verifies that the character attribute fields only contain integers
+	 * Code adapted from: https://stackoverflow.com/questions/4346002/prevent-user-from-entering-characters-in-a-text-field-in-swt
+	 */
+	private void verifyIntegerField(VerifyEvent e, Text textField) {
+		
+		// Verify that first digit is not zero
+		if(textField.getText().length() == 0 && e.keyCode == '0') {
+			e.doit = false;
+			lblErrorMessage.setText("Value must be greater than 0!");			
+		} 
+		// Allow arrow keys and delete/backspace
+		else if (e.keyCode == SWT.ARROW_LEFT || e.keyCode == SWT.ARROW_RIGHT || e.keyCode == SWT.BS || e.keyCode == SWT.DEL) {
+			e.doit = true;
+		} else {			
+			boolean allow = false;
+			for (int i = 0; i < e.text.length(); i++) {
+				char c = e.text.charAt(i);
+				
+				// Check for a digit
+				allow = Character.isDigit(c);				
+				
+				if(!allow) {
+					lblErrorMessage.setText("Please enter a valid number.");
+					break;
+				}
+				else {
+					lblErrorMessage.setText("");
+				}
+			}
+			e.doit = allow;
+		}
+	}
+		
 	
 	/**
 	 * Handles the btnNext selected events
@@ -433,13 +440,11 @@ public class SetupScreen extends Screen{
 		btnAddCharacter.setText("Add Monster");	
 		btnNext.setText("Begin Game");
 		btnNext.setEnabled(false);
-		lblCharacterList.setText("Monsters");
-			
+		lblCharacterList.setText("Monsters");			
 		
 		// Refresh layout
 		shell.layout(true, true);
 	}
-
 	
 	
 }

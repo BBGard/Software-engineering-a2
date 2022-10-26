@@ -39,7 +39,7 @@ public class Game {
 	}
 	
 	/*
-	 * Adds a GameCharacter to the game
+	 * Attempts to add a GameCharacter to the game
 	 * Determines if the character is a player or monster 
 	 * and adds to the appropriate list
 	 */
@@ -63,10 +63,11 @@ public class Game {
 	}
 	
 	/*
-	 * Sets up the turns for each character
-	 * Called at the beginning of each game
+	 * Sets up a new round for the game
+	 * Called at the beginning of each game/each new round
+	 * Revives players, removes powerups, shuffles turns
 	 */
-	public void setupTurns() {
+	public void setupRound() {
 		gameOver = false;
 		turnCounter = 0;
 		roundCounter++;
@@ -140,7 +141,7 @@ public class Game {
 		// Make the attack
 		String result = attacker.attack(defender);
 		
-		// Check if defender is now dead
+		// Check if defender is now dead, if so, remove from turn list
 		if(!defender.isAlive()) {
 			removeDeadCharacter(defender);
 		}
@@ -297,7 +298,7 @@ public class Game {
 	}
 	
 	/*
-	 * Determines if there is at least one player left in the game
+	 * Determines if there is at least one player left in the game -alive or revived
 	 */
 	private boolean playersRemain() {
 		// Looks for at least 1 player

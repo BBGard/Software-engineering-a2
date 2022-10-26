@@ -15,47 +15,28 @@ import tacticsAndTrouble.UI.PopupScreen;
 
 /**
  * @author Benjamin Gardiner This is the controller class for the Tactics and
- *         Trouble game This class handles player input/output This is the
- *         middle class between Game and GUI in the MVC design pattern.
+ *         Trouble game.
+ *         This class handles communication between the game and the GUI 
+ *         This is the middle class between Game and View in the MVC design pattern.
  */
 public class ControlClass {
-	private Game game;
-	//private Screen currentScreen;
-	private View view;
+	private Game game;	// Reference to the Game
+	private View view;	// Reference to the View
 
 	private MonsterFactory monsterMaker; // For creating monsters
 
-	//private boolean running = true; // Controls if the game loop is running or not
-
+	
 	public ControlClass(Game game, View view) {
 		this.game = game;
 		this.view = view;
-		//setScreen(screen);
 
 		monsterMaker = new MonsterFactory();
-
-		// FOR TESTING ONLY
-		// DELETE ME
-		//setupFakeGame();
 	}
-
-	/*
-	 * TESTING PURPOSES ONLY - DELETE
-	 */
-//	private void setupFakeGame() {
-//		addPlayer("Antoxx", "40", "20", "80", "2", "Spirit");
-//		addPlayer("Breta", "20", "15", "53", "3", "Normal");
-//		addPlayer("Crum", "70", "30", "35", "1", "Spirit");		
-//		addMonster("Zombie");
-//		addMonster("Baron of Hell");
-//
-//	}
 
 	/*
 	 * Opens the splash screen to begin the program
 	 */
 	public void open() {
-		//currentScreen.open(this);
 		view.openScreen(this);
 	}
 
@@ -96,17 +77,17 @@ public class ControlClass {
 	 * Starts a new round
 	 */
 	public void nextRound() {
-		game.setupTurns();
+		game.setupRound();
 		displayTurn();
 	}
 	
 	/**
 	 * Runs the next turn
-	 * Then displays results depending on the satte of the game
+	 * Then displays results depending on the STATE of the game
 	 */
 	public void nextTurn() {
-		System.out.println("Next turn");
 		game.nextTurn();
+		
 		// If the game is running AND enough players remain alive/revived
 		if (game.isRunning() && game.canPlay()) {		// STATE 1	- play the turn
 			displayTurn();
@@ -123,14 +104,14 @@ public class ControlClass {
 	}
 	
 	/*
-	 * Calls on the current screen to display the next turns data
+	 * Calls on the current view to display the next turns data
 	 */
 	public void displayTurn() {
 		view.setupTurn(game.getCurrentPlayer(), game.getPlayersList(), game.getMonstersList());
 	}
 
 	/*
-	 * Carries out an attack move
+	 * Carries out an attack move, tells view to display result
 	 */
 	public void attack(String characterToAttack) {
 		String result = game.attack( game.getCurrentPlayer(), game.getCharacterByName(characterToAttack));
@@ -139,7 +120,7 @@ public class ControlClass {
 	}
 	
 	/*
-	 * Carries out a heal move
+	 * Carries out a heal move, tells view to display result
 	 */
 	public void heal(String characterToHeal) {
 		String result = game.heal(((Player) game.getCurrentPlayer()), ((Player) getCharacterByName(characterToHeal)));
@@ -147,7 +128,7 @@ public class ControlClass {
 	}
 	
 	/*
-	 * Carries out a revive move
+	 * Carries out a revive move, tells view to display result
 	 */
 	public void revive(String characterToHeal) {
 		String result = game.revive(((Player) game.getCurrentPlayer()), ((Player) getCharacterByName(characterToHeal)));
@@ -155,7 +136,7 @@ public class ControlClass {
 	}
 	
 	/*
-	 * Carries out a powerup move
+	 * Carries out a powerup move, tells view to display result
 	 */
 	public void powerUp() {
 		String result = game.powerUp(((Player) game.getCurrentPlayer()));
@@ -163,17 +144,16 @@ public class ControlClass {
 	}
 	
 	/*
-	 * Gets a GameCharacter by their name
+	 * Asks game to retrieve a GameCharacter by their name
 	 */
 	public GameCharacter getCharacterByName(String name) {
 		return game.getCharacterByName(name);
 	}
 
 	/*
-	 * Quits the game and returns to the player setup menu
+	 * Tells View to quit the game and return to the player setup menu
 	 */
 	public void quitGame() {
-//		((CombatScreen) currentScreen).quit();		
 		view.quit();		
 	}
 

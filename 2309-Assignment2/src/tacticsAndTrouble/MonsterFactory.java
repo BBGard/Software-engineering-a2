@@ -1,5 +1,10 @@
 package tacticsAndTrouble;
 
+/**
+ * The monster maker
+ * @author Benjamin Gardiner
+ * Creates and returns a new monster based on a given type 
+ */
 public class MonsterFactory {
 
 	public Monster createMonster(String type) {

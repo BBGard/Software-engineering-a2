@@ -5,7 +5,7 @@ package tacticsAndTrouble;
 
 /**
  * @author Benjamin Gardiner
- *
+ * This class represents a Monster character for the game Tactics and Trouble
  */
 public class Monster extends GameCharacter {
 	// Monsters
@@ -51,25 +51,6 @@ public class Monster extends GameCharacter {
 		return damage;
 	}
 
-	@Override
-	public String toString() {
-		String monsterStats = "";
-		
-		monsterStats = "Name: " + getName() + "\n" +
-				"Power: " + getPower() + "\n" +
-				"Defense: " + getDefense() + "\n" +
-				"Life: " + getLife() + "\n" +
-				"Speed: " + getSpeed() + "\n" +
-				"Health: " + getHealth() + "\n" +
-				"Type: " + getPowerTypeString() + "\n";
-		
-		return monsterStats;
-	}
-
-	@Override
-	protected void resetAttributes() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }

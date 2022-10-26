@@ -10,20 +10,20 @@ package tacticsAndTrouble;
  */
 public abstract class GameCharacter {
 	private String name;	// The name of the monster/player
-	private int power;	// The power of the monster/player
+	private int power;		// The power of the monster/player
 	private int defense;	// The defense of the monster/player
 	private int life;		// The life of the monster/player ie the max health
-	private int speed;	// The speed of the monster/player
-	private int health;	// The health of the monster/player
-	private int turns;	// The number of turns of the monster/player 
+	private int speed;		// The speed of the monster/player
+	private int health;		// The health of the monster/player
+	private int turns;		// The number of turns of the monster/player 
 	
 	private int basePower; // The start value of power
 	private int baseSpeed; // The start value of speed
 	
-	private boolean isAlive = true;	// Weather the monster/player is alive
-	private int powerUpsUsed = 0; // Tracks the number of power ups used each turn, so they can be reset
+	private boolean isAlive = true;	// Whether the monster/player is alive
+	private int powerUpsUsed = 0; 	// Tracks the number of power ups used each turn, so they can be reset
 	
-	private PowerType powerType;
+	private PowerType powerType;	// The type of weapon/monster power
 	
 	public GameCharacter(String name, int power, int defense, int life, int speed) {
 		this.name = name;
@@ -91,7 +91,7 @@ public abstract class GameCharacter {
 	}
 	
 	/*
-	 * Adds the specified mount of health to the character
+	 * Adds the specified amount of health to the character
 	 */
 	public void addHealth(int amount) {
 		this.health += amount;
@@ -102,6 +102,9 @@ public abstract class GameCharacter {
 		}
 	}
 	
+	/*
+	 * Returns a String status of the character after a move 
+	 */
 	private String getHealthStatus() {
 		String status = " now has " + getHealth() + " health.";
 		
@@ -111,7 +114,22 @@ public abstract class GameCharacter {
 		
 		return status;
 	}
+	
+	/*
+	 * Resets power, speed, and powerUpsUsed to original values
+	 * This only applies to Player characters, but could be used for monsters
+	 * in a more fleshed out game, so I'm leaving it here.
+	 */
+	public void resetAttributes() {
+		if (getPowerUpsUsed() > 0) {
+			setPower(getBasePower());
+			setSpeed(getBaseSpeed());
+			resetPowerUpsUsed();
+		}
+	}
 
+	
+	// Getters, setters, and misc methods
 	public String getName() {
 		return name;
 	}
@@ -207,9 +225,5 @@ public abstract class GameCharacter {
 	public int getBaseSpeed() {
 		return this.baseSpeed;
 	}
-
-	protected abstract void resetAttributes();
-
-	
 	
 }

@@ -23,6 +23,7 @@ public class View {
 	
 	/*
 	 * Sets the state to the current Screen state
+	 * Each screen calls this when they open/transition states
 	 */
 	public void setScreen(Screen state) {
 		this.state = state;

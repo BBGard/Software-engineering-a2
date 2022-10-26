@@ -26,12 +26,15 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 
+
+/**
+ * @author Benjamin Gardiner
+  * This is the gameplay screen for the game Tactics and Trouble
+  * Needs some refactoring love...
+ */
 public class CombatScreen extends Screen implements ICombatInterface{
 
 	private GameCharacter currentCharacter; // A reference to the current game character
@@ -66,8 +69,8 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	}
 
 	/**
-	 * Open the window.
-	 * @wbp.parser.entryPoint TODO REMOVE THIS
+	 * Open the window and display a popup message.
+	 * @wbp.parser.entryPoint
 	 */
 	// @Override
 	public void open(ControlClass controller) {
@@ -75,6 +78,9 @@ public class CombatScreen extends Screen implements ICombatInterface{
 
 		Display display = Display.getDefault();
 		createContents();
+		
+		centreShell(display);
+		
 		shell.open();
 		shell.layout();
 		
@@ -222,6 +228,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	 */
 	@Override
 	public void setupTurn(GameCharacter character, ArrayList<GameCharacter> playerList, ArrayList<GameCharacter> monsterList ) {
+		
 		currentCharacter = character;
 		
 		destroyTabs();	// Remove tabs so they can be setup again
@@ -288,8 +295,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 			tbtmRevive.dispose();
 		}
 	}
-	
-	
+		
 	
 	/*
 	 * Creates extra move tabs for player characters (heal, revive, powerup)
@@ -415,7 +421,6 @@ public class CombatScreen extends Screen implements ICombatInterface{
 			btnHeal.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					//System.out.println("Heal pressed in CombatScreen!");
 					controller.heal(listPlayersToHeal.getSelection()[0]);
 				}
 			});
@@ -423,7 +428,6 @@ public class CombatScreen extends Screen implements ICombatInterface{
 			btnRevive.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					//System.out.println("Revive pressed in CombatScreen!");
 					controller.revive(listPlayersToRevive.getSelection()[0]);
 				}
 			});
@@ -446,7 +450,6 @@ public class CombatScreen extends Screen implements ICombatInterface{
 				btnAttemptPowerUp.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						//System.out.println("PowerUp pressed in CombatScreen!");
 						controller.powerUp();
 					}
 				});

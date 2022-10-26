@@ -19,11 +19,12 @@ public class Main {
             public void run() {       
             	
             	try {
-            		// Setup th MVC components and start the program
+            		// Setup the MVC components and start the program
             		Game game = new Game(); // The model
-        			//Screen screen = new Screen(); // The view
             		View theView = new View();	// The view
         			ControlClass controller = new ControlClass(game,theView); // The controller
+        			
+        			// Open the program
         			controller.open();
         			
         		} catch (Exception e) {

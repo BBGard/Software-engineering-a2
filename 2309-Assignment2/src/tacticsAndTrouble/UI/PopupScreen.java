@@ -4,27 +4,27 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import tacticsAndTrouble.ControlClass;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 
+/**
+ * @author Benjamin Gardiner
+  * This is a PopupScreen that displays the results of a turn
+  * This should really be a dialog - MessageBox NOT a child of Screen, but I'm being lazy
+ */
 public class PopupScreen extends Screen{
 
-//	protected Shell shell;
 	
-	private String moveType;
-	private String popupText;
-	private Label lblPopupText;	// The text displayed by this popup window
+	private String moveType;	// Used to set the title of the window
+	private String popupText;	// The text displayed by this popup window
+	private Label lblPopupText;	// The UI element to display the text on
 	
 	// Window titles/states
 	public static final String POPUP_TYPE_WELCOME = "Welcome";
@@ -57,6 +57,13 @@ public class PopupScreen extends Screen{
 		
 		Display display = Display.getDefault();
 		createContents();
+		
+		centreShell(display);
+		
+		// NOTE: we don't tell view that the state has changed here,
+		//		as the state is still CombatScreen (in game)
+		// 		and this should not be a Screen, it should be a MessageBox!
+		
 		shell.open();
 		shell.layout();
 		
@@ -72,7 +79,7 @@ public class PopupScreen extends Screen{
 	 * @wbp.parser.entryPoint
 	 */
 	public void createContents() {
-		shell = new Shell();
+		shell = new Shell(SWT.NO_TRIM); // Hide the minimise/expand/close buttons
 		shell.setSize(800, 600);
 		shell.setText(moveType);
 		shell.setLayout(new FormLayout());

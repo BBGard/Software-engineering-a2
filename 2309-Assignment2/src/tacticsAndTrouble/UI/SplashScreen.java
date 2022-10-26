@@ -3,7 +3,6 @@
  */
 package tacticsAndTrouble.UI;
 
-import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -13,11 +12,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import tacticsAndTrouble.GameCharacter;
 
 /**
  * @author Benjamin Gardiner
- *
+ * This is the SplashScreen / Title Screen for the game Tactics & Trouble
+ * Contains a button which when pressed transitions to the SetupScreen
  */
 public class SplashScreen extends Screen {
 

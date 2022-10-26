@@ -3,28 +3,21 @@
  */
 package tacticsAndTrouble.UI;
 
-import java.util.ArrayList;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wb.swt.SWTResourceManager;
-
 import tacticsAndTrouble.ControlClass;
-import tacticsAndTrouble.GameCharacter;
 
 /**
  * @author Benjamin Gardiner
- * This class represents all windows/screens for the game Trouble and Tactics
+ * This abstract class represents all windows/screens for the game Trouble and Tactics
  */
 public abstract class Screen  {
 	protected ControlClass controller; // A reference to the controller class
-	protected Shell shell;
-	protected View view;
+	protected Shell shell;			   // The shell is the Window
+	protected View view;				// Reference to the view, for changing states
 
 	public Screen(View view) {
 		this.view = view;
@@ -37,8 +30,12 @@ public abstract class Screen  {
 	public void open(ControlClass controller) {
 		this.controller = controller;	
 		
+		// Setup screen
 		Display display = Display.getDefault();
 		createContents();
+		
+		centreShell(display);
+		
 		shell.open();
 		shell.layout();
 		
@@ -50,6 +47,19 @@ public abstract class Screen  {
 				display.sleep();
 			}
 		}
+	}
+
+	/*
+	 * Centres the shell in the middle of the primary display
+	 * Code from: https://www.admfactory.com/swt-centre-a-shell-in-the-middle-of-the-screen/
+	 */
+	protected void centreShell(Display display) {	
+		Monitor primary = display.getPrimaryMonitor();
+		Rectangle bounds = primary.getBounds();
+		Rectangle rect = shell.getBounds();
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		shell.setLocation(x, y);
 	}
 	
 	/**
@@ -65,9 +75,8 @@ public abstract class Screen  {
 		shell.close();
 	}
 	
-	// Abstract Methods //
 	
-	// Setup the contents of the screen	 
+	// Setup the contents of the screen	 - each screen does this differently
 	public abstract void createContents();
 	
 	

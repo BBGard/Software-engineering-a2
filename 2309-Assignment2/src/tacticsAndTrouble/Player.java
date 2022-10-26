@@ -5,7 +5,7 @@ package tacticsAndTrouble;
 
 /**
  * @author Benjamin Gardiner
- * This class represents a player character in the game Tactics andd Trouble
+ * This class represents a player character in the game Tactics and Trouble
  */
 public class Player extends GameCharacter {
 	
@@ -65,7 +65,7 @@ public class Player extends GameCharacter {
 	}
 	
 	/*
-	 * Revives a player
+	 * This player revives another player
 	 */
 	public String revive(Player playerToRevive) {
 		if (playerToRevive == null) {
@@ -86,7 +86,7 @@ public class Player extends GameCharacter {
 	
 	
 	/*
-	 * Applies power up
+	 * Applies power up to this player
 	 */
 	public String powerUp() {
 		if(getSpeed() <= 1 ) {
@@ -102,33 +102,6 @@ public class Player extends GameCharacter {
 				+getSpeed() + " speed and " + getPower() + " power.";
 	}
 	
-	/*
-	 * Resets power, speed, and powerUpsUsed to original values
-	 */
-	public void resetAttributes() {
-		if (getPowerUpsUsed() > 0) {
-//			setPower(getPower() / (2*getPowerUpsUsed()));
-//			setSpeed(getSpeed() * (2*getPowerUpsUsed()));
-			setPower(getBasePower());
-			setSpeed(getBaseSpeed());
-			resetPowerUpsUsed();
-		}
-	}
-
-	@Override
-	public String toString() {
-		String playerStats = "";
-		
-		playerStats = "Name: " + getName() + "\n" +
-				"Power: " + getPower() + "\n" +
-				"Defense: " + getDefense() + "\n" +
-				"Life: " + getLife() + "\n" +
-				"Speed: " + getSpeed() + "\n" +
-				"Health: " + getHealth() + "\n" +
-				"Weapon: " + getPowerTypeString() + "\n";
-		
-		return playerStats;
-	}
-
+	
 	
 }
