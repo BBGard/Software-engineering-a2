@@ -41,21 +41,15 @@ public class ControlClass {
 	}
 
 	/*
-	 * Check if we can add a player
-	 * If so, creates a new Player GameCharacter and adds it to the game
+	 * Creates a new Player GameCharacter and tries to add it to the game
 	 * returning the result
 	 */
 	public boolean addPlayer(String name, String power, String defense, String life, String speed, String weapon) {
 
-		if (game.canAddPlayers()) {
-			GameCharacter player = new Player(name, Integer.parseInt(power), Integer.parseInt(defense),
-					Integer.parseInt(life), Integer.parseInt(speed), new PowerType(weapon));
-			return game.addGameCharacter(player);
-		}
-		else {
-			return false;
-		}
-
+		GameCharacter player = new Player(name, Integer.parseInt(power), Integer.parseInt(defense),
+				Integer.parseInt(life), Integer.parseInt(speed), new PowerType(weapon));
+		
+		return game.addGameCharacter(player);
 	}
 
 	/*

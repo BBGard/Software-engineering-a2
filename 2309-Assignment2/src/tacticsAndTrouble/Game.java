@@ -44,11 +44,14 @@ public class Game {
 	 * and adds to the appropriate list
 	 */
 	public boolean addGameCharacter(GameCharacter character) {
+		
 		if(character != null) {
 			if(character instanceof Player) {
-				players.add(character); // Add player to the player list
+				if(!canAddPlayers()) { return false; }				
+				players.add(character); // Add player to the player list				
 			}
 			else if (character instanceof Monster) {
+				if(!canAddMonsters()) { return false; }	
 				monsters.add(character); // add monster to the monster list
 			}
 			
