@@ -61,6 +61,8 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	
 	Group characterMovesGroup;
 	FormData fd_characterMovesGroup;	
+	/////////////////////////////////////////////////
+	//protected Shell shell;			   //REMOVE
 
 	// Constructor
 	public CombatScreen(View view) {
@@ -120,86 +122,101 @@ public class CombatScreen extends Screen implements ICombatInterface{
 
 		Label lblCurentTurn = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblCurentTurn = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblCurentTurn.heightHint = 29;
-		gd_lblCurentTurn.widthHint = 98;
+		//gd_lblCurentTurn.heightHint = 0;
+		gd_lblCurentTurn.widthHint = 55;
 		lblCurentTurn.setLayoutData(gd_lblCurentTurn);
 		lblCurentTurn.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		lblCurentTurn.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
-		lblCurentTurn.setText("Curent Turn:");
+		lblCurentTurn.setText("Turn:");
 
 		lblCurrentCharacter = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblCurrentcharacter = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblCurrentcharacter.heightHint = 35;
 		gd_lblCurrentcharacter.widthHint = 116;
 		lblCurrentCharacter.setLayoutData(gd_lblCurrentcharacter);
-		lblCurrentCharacter.setFont(SWTResourceManager.getFont("Segoe UI Light", 14, SWT.BOLD));
-		lblCurrentCharacter.setText("currentPlayer");
-		new Label(characterStatsGroup, SWT.NONE);
-		new Label(characterStatsGroup, SWT.NONE);
+		lblCurrentCharacter.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.BOLD));
+		lblCurrentCharacter.setText("name");
 
 		Label lblPower = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblPower = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblPower.widthHint = 99;
+		gd_lblPower.widthHint = 63;
 		lblPower.setLayoutData(gd_lblPower);
 		lblPower.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 		lblPower.setText("Power:");
 
 		lblCharacterPower = new Label(characterStatsGroup, SWT.NONE);
+		GridData gd_lblCharacterPower = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblCharacterPower.widthHint = 115;
+		lblCharacterPower.setLayoutData(gd_lblCharacterPower);
 		lblCharacterPower.setText("power");
 		lblCharacterPower.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.BOLD));
 
 		Label lblDefence = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblDefence = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblDefence.widthHint = 99;
+		gd_lblDefence.widthHint = 71;
 		lblDefence.setLayoutData(gd_lblDefence);
 		lblDefence.setText("Defence:");
 		lblDefence.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterDefence = new Label(characterStatsGroup, SWT.NONE);
+		GridData gd_lblCharacterDefence = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblCharacterDefence.widthHint = 113;
+		lblCharacterDefence.setLayoutData(gd_lblCharacterDefence);
 		lblCharacterDefence.setText("defence");
 		lblCharacterDefence.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.BOLD));
 
 		Label lblPLife = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblPLife = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblPLife.widthHint = 98;
+		gd_lblPLife.widthHint = 41;
 		lblPLife.setLayoutData(gd_lblPLife);
 		lblPLife.setText("Life:");
 		lblPLife.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterLife = new Label(characterStatsGroup, SWT.NONE);
+		GridData gd_lblCharacterLife = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblCharacterLife.widthHint = 112;
+		lblCharacterLife.setLayoutData(gd_lblCharacterLife);
 		lblCharacterLife.setText("life");
 		lblCharacterLife.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.BOLD));
 
 		Label lblSpeed = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblSpeed = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblSpeed.widthHint = 99;
+		gd_lblSpeed.widthHint = 58;
 		lblSpeed.setLayoutData(gd_lblSpeed);
 		lblSpeed.setText("Speed:");
 		lblSpeed.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterSpeed = new Label(characterStatsGroup, SWT.NONE);
+		GridData gd_lblCharacterSpeed = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblCharacterSpeed.widthHint = 111;
+		lblCharacterSpeed.setLayoutData(gd_lblCharacterSpeed);
 		lblCharacterSpeed.setText("speed");
 		lblCharacterSpeed.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.BOLD));
 
 		lblPowerType = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblWeapon = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblWeapon.widthHint = 99;
+		gd_lblWeapon.widthHint = 73;
 		lblPowerType.setLayoutData(gd_lblWeapon);
 		lblPowerType.setText("Weapon:");
 		lblPowerType.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterPowerType = new Label(characterStatsGroup, SWT.NONE);
+		GridData gd_lblCharacterPowerType = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblCharacterPowerType.widthHint = 112;
+		lblCharacterPowerType.setLayoutData(gd_lblCharacterPowerType);
 		lblCharacterPowerType.setText("weapon");
 		lblCharacterPowerType.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.BOLD));
 
 		Label lblHealth = new Label(characterStatsGroup, SWT.NONE);
 		GridData gd_lblHealth = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblHealth.widthHint = 100;
+		gd_lblHealth.widthHint = 63;
 		lblHealth.setLayoutData(gd_lblHealth);
 		lblHealth.setText("Health:");
 		lblHealth.setFont(SWTResourceManager.getFont("Segoe UI Semibold", 12, SWT.NORMAL));
 
 		lblCharacterHealth = new Label(characterStatsGroup, SWT.NONE);
+		GridData gd_lblCharacterHealth = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblCharacterHealth.widthHint = 113;
+		lblCharacterHealth.setLayoutData(gd_lblCharacterHealth);
 		lblCharacterHealth.setText("health");
 		lblCharacterHealth.setFont(SWTResourceManager.getFont("Segoe UI Light", 12, SWT.BOLD));
 		shell.setSize(800, 600);
@@ -215,7 +232,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 		characterMovesGroup.setText("");
 
 		movesFolder = new TabFolder(characterMovesGroup, SWT.NONE);
-		movesFolder.setBounds(10, 123, 481, 412);		
+		movesFolder.setBounds(10, 123, 481, 412);
 	}
 	
 	
