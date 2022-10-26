@@ -329,6 +329,10 @@ public class SetupScreen extends Screen{
 			if (monsterAdded) {
 				// Add monster name to character list
 				listCharacters.add(comboChooser.getText() + "\n");
+				
+				// Update the combo chooser
+				updateCombo();
+				
 				btnNext.setEnabled(true);
 			}
 			else {
@@ -435,7 +439,7 @@ public class SetupScreen extends Screen{
 		lblSetupTitle.setText("Monster Setup");			
 		lblName.setText("Monster");		
 		comboChooser.setItems(new String[] {"Baron of Hell", "Imp", "Zombie", "Mancu-Ben", "Gary Demon"});
-		comboChooser.setText("Mancu-Ben");					
+		comboChooser.setText(comboChooser.getItem(0));
 		
 		btnAddCharacter.setText("Add Monster");	
 		btnNext.setText("Begin Game");
@@ -444,6 +448,20 @@ public class SetupScreen extends Screen{
 		
 		// Refresh layout
 		shell.layout(true, true);
+	}
+	
+	/*
+	 * Removes the selection from the combo chooser
+	 * If anything is left, sets the current selection to item at 0
+	 */
+	private void updateCombo() {	
+		
+		if(comboChooser.getItemCount() > 0) {		
+			comboChooser.remove(comboChooser.getSelectionIndex());
+			if(comboChooser.getItemCount() > 0) {
+				comboChooser.setText(comboChooser.getItem(0));
+			}
+		}
 	}
 	
 	

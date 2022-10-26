@@ -94,7 +94,7 @@ public class PopupScreen extends Screen{
 		fd_lblPopupText.right = new FormAttachment(0, 734);
 		lblPopupText.setLayoutData(fd_lblPopupText);
 		lblPopupText.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.NORMAL));
-		lblPopupText.setText("\n\n\n\n" + popupText);
+		lblPopupText.setText("\n\n" + popupText);
 		
 		Button btnContinue = new Button(shell, SWT.NONE);
 		FormData fd_btnContinue = new FormData();

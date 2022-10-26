@@ -100,6 +100,14 @@ public class Game {
 		// Shuffle turns list and begin the game
 		Collections.shuffle(turnList);	
 		turnsRemaining = true;		
+		
+		/*
+		 * DEBUG
+		 */
+//		System.out.println("Turns");
+//		for (GameCharacter gameCharacter : turnList) {
+//			System.out.println(gameCharacter.getName() + " alive? " + gameCharacter.isAlive());
+//		}
 	}
 	
 	/*
@@ -227,6 +235,7 @@ public class Game {
 		}
 		
 		turnList.removeAll(instancesToRemove);		
+		
 	}
 	
 	/*
@@ -408,5 +417,6 @@ public class Game {
 		monsters.clear();		
 		turnsRemaining = false;
 	}
+	
 	
 }
