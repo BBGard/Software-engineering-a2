@@ -62,7 +62,7 @@ public class CombatScreen extends Screen implements ICombatInterface{
 	Group characterMovesGroup;
 	FormData fd_characterMovesGroup;	
 	/////////////////////////////////////////////////
-	protected Shell shell;			   //REMOVE
+	//protected Shell shell;			   //REMOVE
 
 	// Constructor
 	public CombatScreen(View view) {
