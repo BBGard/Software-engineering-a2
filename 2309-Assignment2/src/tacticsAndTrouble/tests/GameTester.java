@@ -2,6 +2,7 @@ package tacticsAndTrouble.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,15 +21,24 @@ import tacticsAndTrouble.PowerType;
 public class GameTester {
 
 	private Game game;
-	private GameCharacter player;
 	private MonsterFactory monsterMaker;
 
-	@BeforeEach
-	public void setup() {
-		game = new Game();
-		player = new Player("Ben", 36, 24, 44, 3);
-		monsterMaker = new MonsterFactory();
-	}
+	// Player of each type
+	private GameCharacter playerLightning;
+	private GameCharacter playerMetal;
+	private GameCharacter playerNormal;
+	private GameCharacter playerSpirit;
+	private GameCharacter playerVoid;
+	private GameCharacter playerWood;
+
+	// Monster of each type
+	private GameCharacter monsterLightning;
+	private GameCharacter monsterMetal;
+	private GameCharacter monsterSpirit;
+	private GameCharacter monsterVoid;
+	private GameCharacter monsterWood;
+	private GameCharacter monsterNormal;
+
 
 	@Test
 	public void testCreatePlayer() {
@@ -68,6 +78,8 @@ public class GameTester {
 
 	@Test
 	public void testAddPlayer() {
+		GameCharacter player = new Player("Ben", 35, 44, 12, 2);
+
 		assertTrue(game.addGameCharacter(player));
 
 		assertEquals(1, game.getPlayersList().size());
@@ -198,7 +210,7 @@ public class GameTester {
 
 		assertEquals("Ben attacks the Baron of Hell.\n\n" + "Ben's Lightning weapon does double damage to "
 				+ "Metal monsters but is reduced by 40 Defense "
-				+ "so deals 1 damage.\n\nThe Baron of Hell now has 99 health.", game.attack(player, monster));
+				+ "so deals 30 damage.\n\nThe Baron of Hell now has 70 health.", game.attack(player, monster));
 
 		assertEquals("Baron of Hell attacks Bill.\n\n" + "It does 20 damage." + "\n\nBill now has 30 health.",
 				game.attack(monster, player2));
@@ -253,7 +265,205 @@ public class GameTester {
 		assertEquals("Baron of Hell attacks Old Greg.\n\n" + "It does 1 damage." + "\n\nOld Greg now has 19 health.",
 				game.attack(monster, player));
 	}
+	
+	@BeforeEach
+	public void setup() {
+		game = new Game();
+		monsterMaker = new MonsterFactory();
+		
+		// Create character with each power type
+		playerLightning = new Player("Antoxx", 40, 20, 80, 2, new PowerType(PowerType.LIGHTNING));
+		playerMetal = new Player("Breta", 40, 20, 80, 2, new PowerType(PowerType.METAL));
+		playerNormal = new Player("Crum", 40, 20, 80, 2, new PowerType(PowerType.NORMAL));
+		playerSpirit = new Player("Dazz", 40, 20, 80, 2, new PowerType(PowerType.SPIRIT));
+		playerVoid = new Player("Elden", 40, 20, 80, 2, new PowerType(PowerType.VOID));
+		playerWood = new Player("Frank", 40, 20, 80, 2, new PowerType(PowerType.WOOD));
 
+		// Create monsters for each type
+		monsterLightning = monsterMaker.createMonster(Monster.CYBER_DEMON);
+		monsterMetal = monsterMaker.createMonster(Monster.BARON_OF_HELL);
+		monsterSpirit = monsterMaker.createMonster(Monster.IMP);
+		monsterVoid = monsterMaker.createMonster(Monster.MANCU_BEN);
+		monsterWood = monsterMaker.createMonster(Monster.ZOMBIE);
+		monsterNormal = monsterMaker.createMonster(Monster.GARY_DEMON);
+	}
+	
+	// Test all possible attack combos
+	@Test
+	public void testNormalVsEverything() {
+		// Verify health before attack
+		assertEquals(80, playerNormal.getHealth());
+		assertEquals(100, monsterMetal.getHealth());
+		assertEquals(80, monsterLightning.getHealth());
+		assertEquals(70, monsterSpirit.getHealth());
+		assertEquals(60, monsterVoid.getHealth());
+		assertEquals(90, monsterWood.getHealth());
+		assertEquals(100, monsterNormal.getHealth());
+		
+		// Attack each monster
+		playerNormal.attack(monsterLightning);
+		playerNormal.attack(monsterMetal);
+		playerNormal.attack(monsterSpirit);
+		playerNormal.attack(monsterVoid);
+		playerNormal.attack(monsterWood);
+		playerNormal.attack(monsterNormal);
+		
+		// Verify results - normal damage to all
+		assertEquals(99, monsterMetal.getHealth()); 	//40p vs 40d = 1damage
+		assertEquals(70, monsterLightning.getHealth());
+		assertEquals(50, monsterSpirit.getHealth());
+		assertEquals(30, monsterVoid.getHealth());
+		assertEquals(70, monsterWood.getHealth());
+		assertEquals(80, monsterNormal.getHealth());
+		
+	}
+	
+	@Test
+	public void testMetalVsEverything() {
+		// Verify health before attack
+		assertEquals(80, playerMetal.getHealth());
+		assertEquals(100, monsterMetal.getHealth());
+		assertEquals(80, monsterLightning.getHealth());
+		assertEquals(70, monsterSpirit.getHealth());
+		assertEquals(60, monsterVoid.getHealth());
+		assertEquals(90, monsterWood.getHealth());
+		assertEquals(100, monsterNormal.getHealth());
+		
+		// Attack each monster
+		playerMetal.attack(monsterLightning);
+		playerMetal.attack(monsterMetal);
+		playerMetal.attack(monsterSpirit);
+		playerMetal.attack(monsterVoid);
+		playerMetal.attack(monsterWood);
+		playerMetal.attack(monsterNormal);
+		
+		// Verify results - metal damage to all
+		assertEquals(99, monsterMetal.getHealth()); 	//40p vs 40d = 1damage
+		assertEquals(79, monsterLightning.getHealth()); // Metal vs lightning half damage
+		assertEquals(50, monsterSpirit.getHealth());
+		assertEquals(30, monsterVoid.getHealth());
+		assertEquals(30, monsterWood.getHealth());		// Metal vs wood double damage
+		assertEquals(80, monsterNormal.getHealth());
+		
+	}
+	
+	@Test
+	public void testLightningVsEverything() {
+		// Verify health before attack
+		assertEquals(80, playerLightning.getHealth());
+		assertEquals(100, monsterMetal.getHealth());
+		assertEquals(80, monsterLightning.getHealth());
+		assertEquals(70, monsterSpirit.getHealth());
+		assertEquals(60, monsterVoid.getHealth());
+		assertEquals(90, monsterWood.getHealth());
+		assertEquals(100, monsterNormal.getHealth());
+		
+		// Attack each monster
+		playerLightning.attack(monsterLightning);
+		playerLightning.attack(monsterMetal);
+		playerLightning.attack(monsterSpirit);
+		playerLightning.attack(monsterVoid);
+		playerLightning.attack(monsterWood);
+		playerLightning.attack(monsterNormal);
+		
+		// Verify results - lightning damage to all
+		assertEquals(60, monsterMetal.getHealth()); 	// double damage
+		assertEquals(70, monsterLightning.getHealth()); 
+		assertEquals(50, monsterSpirit.getHealth());
+		assertEquals(30, monsterVoid.getHealth());
+		assertEquals(89, monsterWood.getHealth());		// half damage
+		assertEquals(80, monsterNormal.getHealth());
+		
+	}
+	
+	@Test
+	public void testSpiritVsEverything() {
+		// Verify health before attack
+		assertEquals(80, playerSpirit.getHealth());
+		assertEquals(100, monsterMetal.getHealth());
+		assertEquals(80, monsterLightning.getHealth());
+		assertEquals(70, monsterSpirit.getHealth());
+		assertEquals(60, monsterVoid.getHealth());
+		assertEquals(90, monsterWood.getHealth());
+		assertEquals(100, monsterNormal.getHealth());
+		
+		// Attack each monster
+		playerSpirit.attack(monsterLightning);
+		playerSpirit.attack(monsterMetal);
+		playerSpirit.attack(monsterSpirit);
+		playerSpirit.attack(monsterVoid);
+		playerSpirit.attack(monsterWood);
+		playerSpirit.attack(monsterNormal);
+		
+		// Verify results - spirit damage to all
+		assertEquals(99, monsterMetal.getHealth()); 	
+		assertEquals(70, monsterLightning.getHealth());
+		assertEquals(50, monsterSpirit.getHealth());
+		assertEquals(0, monsterVoid.getHealth());	//double damage, monster dead
+		assertEquals(70, monsterWood.getHealth());
+		assertEquals(80, monsterNormal.getHealth());
+		
+	}
+	
+	@Test
+	public void testVoidVsEverything() {
+		// Verify health before attack
+		assertEquals(80, playerVoid.getHealth());
+		assertEquals(100, monsterMetal.getHealth());
+		assertEquals(80, monsterLightning.getHealth());
+		assertEquals(70, monsterSpirit.getHealth());
+		assertEquals(60, monsterVoid.getHealth());
+		assertEquals(90, monsterWood.getHealth());
+		assertEquals(100, monsterNormal.getHealth());
+		
+		// Attack each monster
+		playerVoid.attack(monsterLightning);
+		playerVoid.attack(monsterMetal);
+		playerVoid.attack(monsterSpirit);
+		playerVoid.attack(monsterVoid);
+		playerVoid.attack(monsterWood);
+		playerVoid.attack(monsterNormal);
+		
+		// Verify results - void damage to all
+		assertEquals(99, monsterMetal.getHealth()); 	
+		assertEquals(70, monsterLightning.getHealth());
+		assertEquals(10, monsterSpirit.getHealth());	// double damage
+		assertEquals(30, monsterVoid.getHealth());
+		assertEquals(70, monsterWood.getHealth());
+		assertEquals(80, monsterNormal.getHealth());
+		
+	}
+	
+	@Test
+	public void testWoodVsEverything() {
+		// Verify health before attack
+		assertEquals(80, playerWood.getHealth());
+		assertEquals(100, monsterMetal.getHealth());
+		assertEquals(80, monsterLightning.getHealth());
+		assertEquals(70, monsterSpirit.getHealth());
+		assertEquals(60, monsterVoid.getHealth());
+		assertEquals(90, monsterWood.getHealth());
+		assertEquals(100, monsterNormal.getHealth());
+		
+		// Attack each monster
+		playerWood.attack(monsterLightning);
+		playerWood.attack(monsterMetal);
+		playerWood.attack(monsterSpirit);
+		playerWood.attack(monsterVoid);
+		playerWood.attack(monsterWood);
+		playerWood.attack(monsterNormal);
+		
+		// Verify results - wood damage to all
+		assertEquals(99, monsterMetal.getHealth()); 	// half damage
+		assertEquals(30, monsterLightning.getHealth());	// double damage
+		assertEquals(50, monsterSpirit.getHealth());
+		assertEquals(30, monsterVoid.getHealth());
+		assertEquals(70, monsterWood.getHealth());
+		assertEquals(80, monsterNormal.getHealth());
+		
+	}
+
+	
 	@Test
 	public void testRandomChanceRoll() {
 		boolean roll1 = game.rollForChance(75);

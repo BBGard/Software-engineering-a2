@@ -27,7 +27,9 @@ public class Player extends GameCharacter {
 	/*
 	 * Multiplies the attacking characters power vs this characters damage multiplier
 	 * Applies the damage to this character
-	 * Ignores powerTypes for player characters
+	 * Ignores powerTypes for player characters <-- different to player vs monster
+	 * 	which takes powerTypes into account.
+	 * 	In a fully fledged game, this calc should be the same for PvM and MvP
 	 * Returns the damage applied
 	 */
 	@Override

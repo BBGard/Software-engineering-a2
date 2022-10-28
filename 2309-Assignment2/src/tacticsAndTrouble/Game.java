@@ -339,22 +339,22 @@ public class Game {
 		if(!gameOver ) {
 
 			summary = "The beasts retreat temporarily, allowing our players a brief moment to regroup."
-					+ "\n\nRemaining players: ";
+					+ "\n\nRemaining players: \n";
 			
 			for (GameCharacter gameCharacter : players) {
 				if(gameCharacter.isAlive()) {
-					summary += ("\n" + gameCharacter.getName());
+					summary += (gameCharacter.getName() + ", ");
 				}
 			}
 			for (GameCharacter gameCharacter : sinBin) {
-				summary += ("\n" + gameCharacter.getName());				
+				summary += (gameCharacter.getName() + ", ");				
 			}
 			
-			summary += "\n\nRemaining Monsters:  ";
+			summary += "\n\nRemaining Monsters:  \n";
 			
 			for (GameCharacter gameCharacter : monsters) {
 				if(gameCharacter.isAlive()) {
-					summary += ("\n" + gameCharacter.getName());
+					summary += (gameCharacter.getName() + ", ");
 				}
 			}
 		}
@@ -363,21 +363,21 @@ public class Game {
 			if(playersRemain()) {
 				summary += "\nThe brave party is victorious!!"
 						+ "\n\nIt took the warriors " + roundCounter + " round(s) to win."
-						+ "\n\nReminaing players: ";
+						+ "\n\nRemaining players: \n";
 				for (GameCharacter gameCharacter : players) {
 					if(gameCharacter.isAlive()) {
-						summary += ("\n" + gameCharacter.getName());
+						summary += (gameCharacter.getName() + ", ");
 					}
 				}
 			}
 			// Monsters won!!
 			else if (monstersRemain()) {
-				summary += "The brave party has been defeated!!"
+				summary += "\nThe brave party has been defeated!!"
 						+ "\n\nIt took the monsters " + roundCounter + " round(s) to win."
-						+ "\n\nThe following beasts still roam: ";
+						+ "\n\nThe following beasts still roam: \n";
 				for (GameCharacter gameCharacter : monsters) {
 					if(gameCharacter.isAlive()) {
-						summary += ("\n" + gameCharacter.getName());
+						summary += (gameCharacter.getName() + ", ");
 					}
 				}
 			}

@@ -37,17 +37,16 @@ public class Monster extends GameCharacter {
 	 * Returns the damage applied
 	 */
 	@Override
-	public int applyDamage(GameCharacter attacker) {	
-		int damage = 1;
+	public int applyDamage(GameCharacter attacker) {
+		int damage = (int) (attacker.getPower() * attacker.getPowerType().getDamageMultiplier(this.getPowerType()))
+				- this.getDefense();
 		
-		// If Attacker power < defence, calculate damage
-		if (attacker.getPower() > this.getDefense()) {
-			damage = (int)(attacker.getPower() * attacker.getPowerType().getDamageMultiplier(this.getPowerType())) - this.getDefense();
-		}
-		
+		// If calculated damage < 1, make it 1 - minimum damage
+		damage = (damage < 1) ? 1:damage;
+
 		// Reduce health
-		reduceHealth(damage);		
-		
+		reduceHealth(damage);
+
 		return damage;
 	}
 
